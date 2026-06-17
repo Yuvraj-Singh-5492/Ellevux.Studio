@@ -1,0 +1,690 @@
+/* ============================================================
+   ELLEVUX · MAIN (page layout) — v5 PERSONAL PORTFOLIO · Henri Heymans style
+   "Independent Front-End Web Developer · 2026 Portfolio"
+   Owned by the main.css agent. Depends on tokens / base / components.
+
+   Pure-black editorial canvas, white type, ONE acid-green accent, oversized
+   display type, generous negative space, asymmetric. Lays out the Henri
+   section set as authored in index.html:
+
+     #nav      fixed-feel header: left wordmark · centred "available" marquee
+               pill · right PROJECTS/ABOUT/CONTACT (small uppercase tracked)
+     #hero     <canvas id="hero-canvas"> chrome blob full-bleed BEHIND a huge
+               3-line h1 that overlaps the blob; editorial welcome line; a
+               bottom row pinned (socials left · scroll-cue right)
+     #work     "SELECTED *WORKS*" centred with project thumbnails SCATTERED
+               asymmetrically around the title (desktop) → clean vertical
+               stack < 768 with NO overflow
+     #about    near-black card: vertical rotated "KNOW MORE ABOUT ME." strip ·
+               big mixed-type bio · B&W portrait right → stacks on mobile
+     #contact  footer: "WANT TO DISCUSS A NEW PROJECT?" + green-outline pill +
+               ↵ · GIANT "Ellevux" wordmark (--fs-mega, NEVER overflows) ·
+               bottom strip (thanks · socials · © 2026)
+
+   CONTRACT NOTES
+   - Tokens ONLY — never hard-code a color/space/radius/font/duration.
+   - No external images. Visuals = CSS gradients / the chrome canvas.
+   - Mobile-first; NO 375 overflow (scattered works → stack; mega wordmark
+     scales + is clipped, never scrolls the page).
+   - WCAG 2.1 AA: one h1 (hero), landmarks, visible focus on black, contrast.
+   - 60fps; reveals FAIL OPEN — animations.js owns the [data-reveal] from-state
+     in JS; this stylesheet NEVER hides content behind a class JS must add.
+   - prefers-reduced-motion → calm; ambient loops stop (chrome static handled
+     in three-hero.js; marquee handled in components.css).
+
+   Breakpoints (mobile-first up; a few max-width refinements):
+     375 baseline · 600 · 768 (scatter↔stack) · 1024 · 1280 · 1440
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   0 · Root: anchor offset for the fixed nav + guard horizontal overflow
+   ---------------------------------------------------------- */
+html {
+  /* Clear the fixed header for in-page anchors (PROJECTS/ABOUT/CONTACT +
+     "scroll to begin"). main.js may read a live offset for JS smooth-scroll;
+     this is the no-JS / native fallback, sized to the nav band + air. */
+  scroll-padding-top: 7rem;
+}
+
+/* Belt-and-braces against horizontal scroll from the bleeding mega wordmark
+   or scattered offsets (base.css already sets body overflow-x: hidden). */
+body { overflow-x: clip; }
+
+/* Each section owns its stacking context so scrims/seams layer under content
+   without bleeding across bands. */
+section,
+#contact { isolation: isolate; }
+
+/* ----------------------------------------------------------
+   0 · Film grain overlay (#grain) — kept very subtle, never interactive
+   ---------------------------------------------------------- */
+#grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 180px 180px;
+}
+@media (prefers-reduced-motion: reduce) { #grain { opacity: 0.03; } }
+
+/* ----------------------------------------------------------
+   1 · NAV (#nav) — fixed, clean. left wordmark · centred marquee pill ·
+       right uppercase links. Transparent over the hero; gains a frosted
+       hairline once scrolled (animations.js toggles .nav--scrolled past ~40px).
+   ---------------------------------------------------------- */
+#nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: var(--z-nav);
+  border-bottom: 1px solid transparent;
+  transition: background var(--dur-base) var(--ease-out-expo),
+              backdrop-filter var(--dur-base) var(--ease-out-expo),
+              border-color var(--dur-base) var(--ease-out-expo);
+}
+.nav__inner {
+  display: flex;
+  align-items: center;
+  gap: var(--s-5);
+  padding-block: var(--s-5);
+  transition: padding-block var(--dur-base) var(--ease-out-expo);
+}
+
+/* Compact, frosted state once scrolled. */
+#nav.nav--scrolled {
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border-bottom-color: var(--line-faint);
+}
+#nav.nav--scrolled .nav__inner { padding-block: var(--s-3); }
+
+/* Left: the "ellevux" wordmark (stand-in for the user's name). */
+.nav__logo {
+  flex: none;
+  position: relative;
+  z-index: 1;             /* above the centred marquee on tight widths */
+}
+.nav__logo:hover,
+.nav__logo:focus-visible { color: var(--accent); }
+
+/* Centre: the looping "available for freelance work" pill marquee.
+   Absolutely centred to the nav so the asymmetric left/right clusters don't
+   shift it; capped so it never crowds the wordmark or links. */
+.nav__marquee {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  width: min(38vw, 26rem);
+  pointer-events: none;       /* purely decorative (aria-hidden in markup) */
+}
+.nav__marquee .marquee { width: 100%; }
+
+/* Right: primary nav menu — pushed to the far edge. */
+.nav__menu {
+  flex: none;
+  margin-left: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ----------------------------------------------------------
+   2 · HERO (#hero) — the chrome blob (#hero-canvas) fills the section BEHIND
+       a massive 3-line headline that overlaps it. An editorial welcome line
+       sits above the headline; the bottom row (socials · scroll-cue) is pinned
+       to the base of the viewport-tall hero.
+   ---------------------------------------------------------- */
+#hero {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100svh;
+  /* Clear the fixed nav at top; comfortable air at the bottom row. */
+  padding-block: calc(var(--s-10) + var(--s-4)) var(--s-7);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* The liquid B&W chrome blob fills the hero and sits at the very back.
+   three-hero.js draws into it; if WebGL/canvas is missing it stays a calm,
+   near-black panel (a faint centre glow so the section never reads empty). */
+#hero-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* Behind ALL content, above the black body background, so the particle text
+     can render across the hero AND the work section as it morphs down onto the
+     #work title. (Transparent sections over the black body let it show through.) */
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* The hero scrim was REMOVED. It was a hero-only veil sitting above the now
+   page-level particle canvas, darkest at the hero's bottom edge — which created a
+   hard brightness band at the hero/#work seam as the particles cross between
+   sections. Hero-text legibility over the particles is handled by content-bound
+   text-shadows (which travel with the text and never create a section edge). */
+
+/* Content layer — the welcome + headline grow from the upper-left, the bottom
+   row is pushed to the base via margin-top:auto inside the column. */
+.hero__inner {
+  position: relative;
+  z-index: var(--z-content);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+/* Editorial welcome line: "WELCOME TO *my* 2026 *portfolio.*" — small, tracked
+   uppercase grotesque with italic-serif accents on "my" / "portfolio.". */
+.hero__welcome {
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: var(--s-6);
+  /* Soft dark halo (invisible on black) so the line stays legible over bright
+     particles — replaces the removed scrim, but travels with the text. */
+  text-shadow: 0 1px 18px var(--bg), 0 0 6px var(--bg);
+}
+.hero__welcome .accent-serif {
+  color: inherit;
+  font-size: 1.35em;          /* the serif italics read a touch larger optically */
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* The h1 — massive, uppercase, tight, white. Three stacked lines that overlap
+   the chrome blob. Negative right margin lets the longest line bleed wide. */
+.hero__title {
+  font-size: var(--fs-hero);
+  font-weight: var(--weight-black);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  color: var(--text);
+  /* Centre the headline vertically between the welcome line (top) and the bottom
+     row (pinned to the base via its own margin-top:auto): two auto margins split
+     the free space evenly. The particle layer tracks the <h1>, so it follows. */
+  margin-top: auto;
+  text-wrap: nowrap;          /* keep each line intact; --fs-hero clamps to fit */
+  /* Subtle legibility lift over the brightest chrome highlights (token-derived
+     dark so the white headline stays crisp over the blob). */
+  text-shadow: 0 2px 40px color-mix(in srgb, var(--bg) 45%, transparent);
+}
+.hero__line { display: block; }
+
+/* The hero <h1> is hidden BEFORE first paint by an inline <head> script (which adds
+   html.hero-particled only when WebGL is available + motion allowed) so the hero
+   boots straight as particles with NO crisp-text flash. The DOM text stays in the
+   a11y tree + layout (opacity:0). three-hero.js REVEALS it (removes the class) on any
+   failure, and a 2.5s failsafe reveals it if the script never confirms — fail open. */
+html.hero-particled #hero .hero__title { opacity: 0; }
+
+/* The hero particles morph DOWN and BECOME the #work heading (and stay), so the
+   real "Selected Works" <h2> is hidden — PRE-PAINT via html.work-particled (added
+   by the inline <head> script) so reloading IN the work section shows the particle
+   heading, not the crisp text. three-hero.js reveals it on any failure / if the
+   morph can't run, and the 2.5s failsafe backstops it (kept in the a11y tree). */
+html.work-particled #work .work__title { opacity: 0; }
+
+/* Bottom row — pinned to the base of the tall hero: socials left, scroll-cue
+   right. Wraps gracefully on narrow screens. */
+.hero__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--s-5) var(--s-6);
+  margin-top: auto;           /* push to the bottom of the flex column */
+  padding-top: var(--s-9);
+  /* Soft dark halo so the socials / scroll-cue stay legible over bright particles
+     during the morph (replaces the removed scrim; travels with the content). */
+  text-shadow: 0 1px 18px var(--bg), 0 0 6px var(--bg);
+}
+/* Hero tagline — a readable lead line where the social row used to sit (the
+   socials live in the footer). Sentence-case grotesque with a serif-italic
+   accent word, mirroring the welcome line. */
+.hero__tagline {
+  max-width: 34ch;
+  margin: 0;
+  font-size: var(--fs-lead);
+  font-weight: var(--weight-medium);
+  line-height: 1.32;
+  color: var(--text);
+  text-wrap: balance;
+}
+.hero__tagline .accent-serif {
+  font-size: 1.18em;          /* the serif italic reads a touch larger optically */
+  text-transform: none;
+}
+
+/* ----------------------------------------------------------
+   3 · WORK (#work) — "SELECTED *WORKS*" centred, project thumbnails SCATTERED
+       asymmetrically around it (desktop) → clean labelled vertical stack < 768.
+   ---------------------------------------------------------- */
+#work {
+  padding-block: var(--section-y);
+}
+.work__inner { position: relative; }
+
+/* The big centred title sits in the visual centre of the scatter field.
+   It stays in normal flow (robust — no fragile percentage positioning); the
+   scatter is pulled up beneath it so thumbnails surround/flank the title. */
+.work__title {
+  position: relative;
+  z-index: 2;
+  font-size: var(--fs-display);
+  font-weight: var(--weight-black);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  text-align: center;
+  margin-inline: auto;
+  margin-bottom: var(--s-7);
+  pointer-events: none;       /* never block clicks on thumbnails behind it */
+}
+.work__title .accent-serif {
+  color: inherit;
+  text-transform: none;
+}
+
+/* ----- MOBILE-FIRST (< 768): a clean vertical stack, NO overflow -----
+   Labels sit above each thumbnail (the .work-label / .work-art chrome lives
+   in components.css). Placeholder slots (03/04) are aria-hidden but still
+   shown as quiet "coming soon" tiles. */
+.work-scatter {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-7);
+}
+.work-scatter .work-item { width: 100%; }
+.work-scatter .work-art { width: 100%; }
+
+/* ----- DESKTOP SCATTER (≥ 768): asymmetric absolute placement around the
+   centred title. The scatter becomes a tall relative canvas; each item is
+   absolutely positioned at a varied size/offset (corners) so the field reads
+   editorial like Henri. The title stays in flow above, and the scatter is
+   pulled up under it so 01/02 flank the title and 03/04 sit below. ----- */
+@media (min-width: 768px) {
+  /* Lift ONLY the heading text up a little. The scatter is positioned from the
+     title's flow box, which a transform does not move — so the tiles stay put. */
+  .work__title { transform: translateY(-2rem); }
+
+  .work-scatter {
+    position: relative;
+    display: block;                 /* switch off the stack grid */
+    max-width: clamp(700px, 80vw, 1060px);   /* centred band — tiles cluster toward the middle, not the viewport edges */
+    margin-inline: auto;
+    min-height: clamp(520px, 56vw, 720px);   /* tighter canvas so the works don't float in empty space */
+    margin-top: calc(var(--s-6) * -1);       /* tiles sit a bit LOWER, leaving room under the title (title stays put) */
+  }
+
+  /* Shared: absolute items, capped widths, smooth hover lift. */
+  .work-scatter .work-item {
+    position: absolute;
+    width: clamp(15rem, 26vw, 24rem);
+    transition: transform var(--dur-slow) var(--ease-out-expo);
+  }
+  /* live projects lift slightly toward the viewer on hover */
+  .work-scatter a.work-item:hover,
+  .work-scatter a.work-item:focus-visible {
+    transform: translateY(-6px);
+    z-index: 3;
+  }
+
+  /* 01 · Aurora — upper-left, larger hero thumbnail (flanks the title) */
+  .work-item--a {
+    left: 0;
+    top: 0;
+    width: clamp(17rem, 30vw, 27rem);
+  }
+  /* 02 · Nebula — right, lower, mid size (flanks the title) */
+  .work-item--b {
+    right: 0;
+    top: 20%;
+    width: clamp(16rem, 27vw, 25rem);
+  }
+  /* 03 · Elements showcase — lower-left, real project (full strength) */
+  .work-item--c {
+    left: 5%;
+    bottom: 0;
+    width: clamp(15rem, 25vw, 23rem);
+  }
+  /* 04 · placeholder — lower-right, smallest, set back */
+  .work-item--d {
+    right: 9%;
+    bottom: 7%;
+    width: clamp(12rem, 19vw, 17rem);
+    opacity: 0.8;
+  }
+}
+
+/* Roomier scatter on large desktops — more air, push items further out. */
+@media (min-width: 1280px) {
+  .work-scatter { min-height: 740px; }
+  .work-item--a { top: 2%; }
+  .work-item--b { top: 18%; }
+  .work-item--c { bottom: 2%; }
+  .work-item--d { bottom: 9%; }
+}
+@media (min-width: 1440px) {
+  .work-scatter { min-height: 780px; }
+}
+
+/* ----------------------------------------------------------
+   4 · ABOUT (#about, .section.section--raised) — near-black card with a
+       vertical rotated "KNOW MORE ABOUT ME." strip down the left edge, a big
+       mixed-type bio (grotesque + italic serif + .ph placeholders + strike
+       gag), and a B&W portrait on the right. Stacks on mobile.
+   ---------------------------------------------------------- */
+#about {
+  position: relative;
+  padding-block: var(--section-y);
+}
+
+/* The card surface itself is defined in components.css (.about-card). Here we
+   lay out its three pieces. MOBILE-FIRST: single column; the vertical strip
+   becomes a horizontal eyebrow so it never collides with the bio. */
+.about-card {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s-7);
+  padding: clamp(var(--s-6), 5vw, var(--s-9));
+}
+
+/* Vertical rotated strip — hidden on mobile (shown ≥ 768 down the left edge). */
+.about-card__vertical {
+  display: none;
+}
+
+.about-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-7);
+  min-width: 0;
+}
+
+/* The bio — big, editorial, mixing bold grotesque with italic-serif accents.
+   White copy on near-black (AA). The .ph spans + .strike gag are styled in
+   base.css / components.css. */
+.about-card__bio {
+  /* Large editorial paragraph (NOT hero-display size). Fluid so it FILLS the
+     about column at every width: about 1.6rem on phones to 3rem on wide screens. */
+  font-size: clamp(1.6rem, 1rem + 2.5vw, 3rem);
+  font-weight: var(--weight-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+  text-wrap: balance;
+  max-width: 26ch;   /* wider measure so it fills the column, not just the left third */
+}
+.about-card__bio .accent-serif {
+  color: inherit;
+  letter-spacing: 0;
+  font-weight: var(--weight-regular);
+}
+/* the bio reads as a tighter block on the smallest phones */
+@media (max-width: 600px) {
+  .about-card__bio { max-width: none; }
+}
+
+.about-card__social { gap: var(--s-5); }
+
+/* Portrait slot (B&W) — full width on mobile, capped so it doesn't dominate. */
+.about-card__portrait {
+  width: 100%;
+  max-width: 22rem;
+}
+
+/* ----- ≥ 768: vertical strip down the left edge + portrait to the right ----- */
+@media (min-width: 768px) {
+  .about-card {
+    grid-template-columns: auto 1fr clamp(15rem, 28vw, 22rem);
+    align-items: center;   /* center the bio block against the tall photo (fills the vertical gap) */
+    gap: clamp(var(--s-6), 4vw, var(--s-9));
+  }
+  /* rotated label pinned to the left rail */
+  .about-card__vertical {
+    display: block;
+    align-self: stretch;
+    justify-self: start;
+  }
+  .about-card__portrait {
+    max-width: none;
+    position: sticky;
+    top: 7rem;
+  }
+}
+
+/* ----------------------------------------------------------
+   5 · CONTACT / FOOTER (#contact) — "WANT TO DISCUSS A NEW PROJECT?" + the
+       green-outline "Send me an e-mail" pill (+ ↵), then a GIANT "Ellevux"
+       wordmark spanning the width (must scale, NEVER overflow), then a bottom
+       strip: thanks · socials · © 2026.
+   ---------------------------------------------------------- */
+#contact {
+  position: relative;
+  background: var(--bg);
+  border-top: 1px solid var(--line-faint);
+  padding-block: var(--section-y) var(--s-7);
+  overflow: hidden;            /* the mega wordmark may bleed; clip, don't scroll */
+}
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-6);
+}
+
+/* "Want to discuss a *new project?*" — big, white, italic-serif accent. */
+.footer__discuss {
+  font-size: var(--fs-h2);
+  font-weight: var(--weight-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+  max-width: 18ch;
+}
+.footer__discuss .accent-serif {
+  color: inherit;
+  letter-spacing: 0;
+  font-weight: var(--weight-regular);
+}
+
+/* The "Send me an e-mail" pill (.pill-btn chrome lives in components.css). */
+.footer__pill {
+  align-self: flex-start;
+  margin-bottom: var(--s-7);
+}
+
+/* ----- The GIANT wordmark ("Ellevux") ----- */
+/* .big-wordmark (components.css) supplies the ultra-bold face + --fs-mega.
+   Here we centre it, let it bleed full-bleed of the container, and GUARANTEE
+   it never triggers horizontal scroll: the section clips overflow and the
+   wordmark is allowed to extend edge-to-edge of the viewport. */
+.footer__wordmark {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 0.82;
+  /* clamp keeps it scaling down on phones; the parent clips any bleed */
+  font-size: var(--fs-mega);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Bottom strip — thanks line · copyright. Wraps on small screens. */
+.footer__strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-5) var(--s-6);
+  margin-top: var(--s-8);
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--line-faint);
+}
+.footer__thanks {
+  flex: 1 1 22rem;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  line-height: var(--lh-base);
+  color: var(--text-soft);
+  max-width: 48ch;
+}
+.footer__copy {
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-mut);
+  white-space: nowrap;
+}
+
+/* ============================================================
+   6 · RESPONSIVE — max-width refinements (mobile-first base is above)
+   ============================================================ */
+
+/* ---- ≤ 768 — hide the centred marquee on tablet/phone so the nav stays a
+        clean two-cluster bar (wordmark · links). The "available" status is
+        decorative; dropping it avoids crowding small bars. ---- */
+@media (max-width: 768px) {
+  .nav__marquee { display: none; }
+
+  /* Hero: a touch less top padding; let the headline breathe. */
+  #hero { min-height: 92svh; }
+}
+
+/* ---- ≤ 600 — large/standard phone ---- */
+@media (max-width: 600px) {
+  /* Stack the hero bottom row: socials, then the scroll cue. */
+  .hero__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-6);
+    padding-top: var(--s-8);
+  }
+
+  /* Footer strip stacks for comfortable reading + tap targets. */
+  .footer__strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--s-5);
+  }
+  .footer__copy { white-space: normal; }
+}
+
+/* ---- ≤ 480 — small phone (375 baseline). NO horizontal overflow. ---- */
+@media (max-width: 480px) {
+  /* Nav links sit tight; gap shrinks so wordmark + links fit at 375. */
+  .nav__list { gap: var(--s-4); }
+
+  /* The hero headline must never force horizontal scroll — allow the longest
+     line ("WEB DEVELOPER") to wrap if the clamp floor still overruns 375. */
+  .hero__title { text-wrap: balance; }
+
+  /* The mega wordmark already clamps via --fs-mega; the clipped #contact
+     guarantees no scroll. Keep socials/links wrapping freely. */
+  .social-links { gap: var(--s-4); }
+}
+
+/* ============================================================
+   7 · Reduced-motion safety nets for page-specific motion
+   (tokens collapse --dur-* to ~0; here we cancel transform drifts /
+   hover lifts that aren't purely duration-driven.)
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .work-scatter a.work-item:hover,
+  .work-scatter a.work-item:focus-visible { transform: none; }
+  .nav__logo:hover { color: var(--accent); }
+}
+
+/* ============================================================
+   8 · HERO META CAPTION (.hero-meta-block) — a small editorial block in the
+   upper-right of the hero that mirrors the "Welcome to my 2026 portfolio" line
+   on the left: a hairline rule, an eyebrow, an availability status (with a slow
+   pulsing acid-green dot), and a soft sub-line. Decorative (aria-hidden).
+   Shown >=768px; hidden on phones so it never crowds the headline. The dot is
+   the only place green appears in the hero, kept sparing. Pulse stops under
+   prefers-reduced-motion.
+   ============================================================ */
+.hero-meta-block { display: none; }
+
+@media (min-width: 768px) {
+  .hero-meta-block {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;              /* legible above the headline if it ever bleeds right */
+    pointer-events: none;
+  }
+}
+
+.hero-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--s-2);
+  text-align: right;
+  /* Soft dark halo so the caption stays legible over bright particles during the
+     morph (matches the welcome line / hero bottom row). */
+  text-shadow: 0 1px 18px var(--bg), 0 0 6px var(--bg);
+}
+.hero-meta__rule {
+  width: 2.75rem;
+  height: 1px;
+  background: var(--line-strong);
+  margin-bottom: var(--s-1);
+}
+.hero-meta__eyebrow {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-mut);
+}
+.hero-meta__line {
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-soft);
+}
+.hero-meta__line--status {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--text);
+  font-weight: var(--weight-medium);
+}
+.hero-meta__line--soft { color: var(--text-mut); }
+.hero-meta__dot {
+  position: relative;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: var(--r-pill);
+  background: var(--accent);
+}
+.hero-meta__dot::after {
+  content: "";
+  position: absolute;
+  inset: -0.2rem;
+  border-radius: var(--r-pill);
+  background: radial-gradient(circle, var(--accent-soft), transparent 70%);
+  animation: hero-dot-ping var(--dur-ambient) var(--ease-in-out) infinite;
+}
+@keyframes hero-dot-ping {
+  0%, 100% { transform: scale(0.85); opacity: 0.65; }
+  50%      { transform: scale(1.6);  opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-meta__dot::after { animation: none; opacity: 0.4; transform: scale(1); }
+}

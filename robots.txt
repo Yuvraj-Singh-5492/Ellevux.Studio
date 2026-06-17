@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# Update the host below to the real deploy origin at deploy time.
+Sitemap: https://ellevux.studio/sitemap.xml

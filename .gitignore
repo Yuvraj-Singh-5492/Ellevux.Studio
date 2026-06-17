@@ -1,0 +1,19 @@
+# OS / editor cruft
+Thumbs.db
+.DS_Store
+desktop.ini
+
+# Internal Obsidian knowledge base (stale, not part of the shipped site)
+Ellevux WEB/
+
+# Superseded pre-comic café backup (large, kept locally only)
+demos/_cafe-backup-2026-06-16/
+# Stale in-folder café backup (would otherwise be web-accessible)
+demos/cafe/index.aurum-backup.html
+
+# Never commit secrets / local env
+.env
+.env.*
+*.token
+.ev_*
+.vercel/

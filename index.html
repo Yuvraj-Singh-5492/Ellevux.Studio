@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Ellevux · Independent Web Developer · 2026 Portfolio</title>
+  <meta name="description" content="The personal portfolio of Ellevux, an independent web developer building fast, expressive, accessible websites with real-time 3D and choreographed motion. Selected works, about, and contact.">
+  <meta name="author" content="Ellevux">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Ellevux · Independent Web Developer">
+  <meta property="og:description" content="Personal portfolio of Ellevux, an independent web developer. Selected works in real-time 3D, motion, and interaction. Welcome to my 2026 portfolio.">
+  <meta property="og:site_name" content="Ellevux">
+  <!-- DEPLOY: set og:url, og:image, twitter:image and canonical to the REAL deploy origin (e.g. https://<project>.vercel.app/) before/at deploy. og.png lives at the site root. -->
+  <meta property="og:url" content="https://ellevux.studio/">
+  <meta property="og:image" content="https://ellevux.studio/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ellevux, independent web developer, 2026 portfolio">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Ellevux · Independent Web Developer">
+  <meta name="twitter:description" content="Personal portfolio of Ellevux, an independent web developer. Selected works, about, and contact.">
+  <meta name="twitter:image" content="https://ellevux.studio/og.png">
+  <link rel="canonical" href="https://ellevux.studio/">
+
+  <!-- Favicon: inline SVG data-URI, acid-green "e" mark on black -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%23000000'/%3E%3Cpath%20d='M9%208h14v3.6H12.6v3.0H21v3.4h-8.4v3.4H23V28H9z'%20fill='%23c8fa3c'/%3E%3C/svg%3E">
+
+  <!-- Fonts (v5: Inter grotesque + Instrument Serif italic accents) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/tokens.css?v=7">
+  <link rel="stylesheet" href="assets/css/base.css?v=7">
+  <link rel="stylesheet" href="assets/css/components.css?v=7">
+  <link rel="stylesheet" href="assets/css/main.css?v=7">
+
+  <!-- Hide the crisp hero <h1> BEFORE first paint (so the hero boots straight as
+       particles, no crisp-text flash), but ONLY if WebGL is available and motion
+       is allowed. three-hero.js clears the failsafe on success and REVEALS the
+       headline on any failure; the 2.5s failsafe reveals it if the script never
+       confirms — so the real heading is always the fail-open fallback. -->
+  <script>
+    (function () {
+      try {
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var gl = false;
+        try {
+          var c = document.createElement('canvas');
+          gl = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
+        } catch (e) {}
+        if (gl && !reduce) {
+          var de = document.documentElement;
+          de.classList.add('hero-particled');   // hide the crisp hero <h1> pre-paint
+          de.classList.add('work-particled');    // hide the crisp #work <h2> pre-paint
+          window.__heroFailsafe = window.setTimeout(function () {
+            de.classList.remove('hero-particled');
+            de.classList.remove('work-particled');
+          }, 2500);
+        }
+      } catch (e) {}
+    })();
+  </script>
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Particle-text layer (three-hero.js): the hero headline is rendered as a
+       cluster of particles that, on scroll, morphs into and lands on the real
+       "Selected Works" heading. A FIXED, full-viewport layer BEHIND all content
+       (z-index:-1, above the black body bg) so the particles can travel from the
+       hero down onto the #work title. -->
+  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+  <!-- Subtle film grain overlay (CSS, kept very subtle) -->
+  <div id="grain" aria-hidden="true"></div>
+
+  <!-- ============================ NAV ============================ -->
+  <header id="nav">
+    <div class="nav__inner container container--wide">
+
+      <!-- left: wordmark (stand-in for the user's real name) -->
+      <a class="nav__logo wordmark" href="#hero" aria-label="Ellevux, home">ellevux</a>
+
+      <!-- right: primary nav links -->
+      <nav class="nav__menu" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="#work">Projects</a></li>
+          <li><a class="nav__link" href="#about">About</a></li>
+          <li><a class="nav__link" href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================ MAIN ============================ -->
+  <main id="main">
+
+    <!-- ----------------------------- HERO ----------------------------- -->
+    <section id="hero" aria-labelledby="hero-title">
+      <!-- The particle headline is drawn on the page-level #hero-canvas (above). -->
+
+      <div class="hero__inner container container--wide">
+
+        <p class="hero__welcome" data-reveal>
+          Welcome to <em class="accent-serif">my</em> 2026 <em class="accent-serif">portfolio.</em>
+        </p>
+
+        <h1 id="hero-title" class="hero__title">
+          <span class="hero__line">Independent</span>
+          <span class="hero__line">Web Developer</span>
+        </h1>
+
+        <div class="hero__bottom" data-reveal>
+          <!-- left: hero tagline (the social links live in the footer) -->
+          <p class="hero__tagline">
+            Building websites that feel <em class="accent-serif">alive</em>, with real-time 3D and choreographed motion.
+          </p>
+        </div>
+
+        <!-- Editorial meta caption, upper-right of the hero. Mirrors the welcome
+             line on the left: a hairline rule, an eyebrow, an availability status
+             (with a slow pulsing accent dot), and a soft sub-line. Decorative
+             (aria-hidden); the dot pulse stops under reduced-motion. Shown >=768px. -->
+        <div class="hero-meta-block" aria-hidden="true">
+          <p class="hero-meta">
+            <span class="hero-meta__rule"></span>
+            <span class="hero-meta__eyebrow">Currently</span>
+            <span class="hero-meta__line hero-meta__line--status">Open for work<span class="hero-meta__dot"></span></span>
+            <span class="hero-meta__line hero-meta__line--soft">Available worldwide</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------- WORK ----------------------------- -->
+    <section id="work" aria-labelledby="work-title" data-reveal>
+      <div class="container container--wide work__inner">
+
+        <h2 id="work-title" class="work__title">
+          Selected <em class="accent-serif">Works</em>
+        </h2>
+
+        <!-- Scattered project thumbnails (asymmetric on desktop, clean
+             stack < 768px). Each .work-item is a link to a live demo. -->
+        <div class="work-scatter">
+
+          <!-- 01 · Buzzy, Coffee House -->
+          <a class="work-item work-item--a" href="demos/cafe/index.html" data-cursor="View">
+            <span class="work-label">
+              <span class="work-label__num">01</span>
+              <span class="work-label__name">Buzzy</span>
+              <span class="work-label__sector">Coffee House</span>
+            </span>
+            <span class="work-art work-art--a">
+              <img src="assets/img/work-cafe.png?v=2" alt="Buzzy coffee house website" loading="lazy" decoding="async">
+              <span class="work-art__cue" aria-hidden="true">
+                View
+                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </span>
+          </a>
+
+          <!-- 02 · Ellevux, AI SaaS — live at ellevux.vercel.app (also built by the owner) -->
+          <a class="work-item work-item--b" href="https://ellevux.vercel.app/" rel="noopener" data-cursor="Visit">
+            <span class="work-label">
+              <span class="work-label__num">02</span>
+              <span class="work-label__name">Ellevux</span>
+              <span class="work-label__sector">AI SaaS</span>
+            </span>
+            <span class="work-art work-art--b">
+              <img src="assets/img/work-ellevux-site.png" alt="Ellevux AI receptionist landing page" loading="lazy" decoding="async">
+              <span class="work-art__cue" aria-hidden="true">
+                Visit
+                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </span>
+          </a>
+
+          <!-- 03 · Elements, a capabilities showcase -->
+          <a class="work-item work-item--c" href="demos/lab/index.html" data-cursor="View">
+            <span class="work-label">
+              <span class="work-label__num">03</span>
+              <span class="work-label__name">Elements</span>
+              <span class="work-label__sector">UI, Motion &amp; 3D</span>
+            </span>
+            <span class="work-art work-art--c">
+              <svg class="work-art__word" viewBox="0 0 100 30" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+                <text x="50" y="22.5" text-anchor="middle" textLength="90" lengthAdjust="spacingAndGlyphs">Elements</text>
+              </svg>
+              <span class="work-art__cue" aria-hidden="true">
+                View
+                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </span>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ----------------------------- ABOUT ----------------------------- -->
+    <section id="about" class="section section--raised" aria-labelledby="about-title" data-reveal>
+      <div class="container container--wide">
+        <div class="about-card">
+
+          <!-- vertical rotated strip down the left edge -->
+          <span class="vertical-text about-card__vertical" aria-hidden="true">Know more about me.</span>
+
+          <div class="about-card__body">
+            <h2 id="about-title" class="sr-only">About</h2>
+
+            <p class="about-card__bio">
+              <em class="accent-serif">Hey!</em> I&rsquo;m Yuvi, a 20-year-old web developer.
+              I build fast, expressive websites that people <em class="accent-serif">remember</em>,
+              equal parts pixels, motion, and clean code.
+            </p>
+
+            <ul class="social-links about-card__social">
+              <li><a class="social-link" href="https://www.instagram.com/ellevux/" rel="noopener noreferrer" target="_blank" aria-label="Ellevux on Instagram">Instagram</a></li>
+            </ul>
+          </div>
+
+          <!-- B&W portrait slot -->
+          <div class="portrait about-card__portrait">
+            <img src="assets/img/portrait.jpg" alt="Yuvi at work, a hooded silhouette at a laptop by a cliffside window" loading="lazy" decoding="async">
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================ CONTACT / FOOTER ============================ -->
+  <footer id="contact" aria-labelledby="contact-title" data-reveal>
+    <div class="container container--wide footer__inner">
+
+      <p class="footer__discuss">
+        Want to discuss a <em class="accent-serif">new project?</em>
+      </p>
+
+      <a class="pill-btn footer__pill" href="mailto:yuvrajsinghgill5492@gmail.com" data-magnetic>
+        <span data-magnetic-text>Send me an e-mail</span>
+        <span class="pill-btn__icon" aria-hidden="true">&#8629;</span>
+      </a>
+
+      <!-- giant wordmark (stand-in for the user's name; can bleed) -->
+      <h2 id="contact-title" class="big-wordmark footer__wordmark">Ellevux</h2>
+
+      <div class="footer__strip">
+        <p class="footer__thanks">
+          Thanks for stopping by. If something here speaks to you, send me a line.
+        </p>
+
+        <p class="footer__copy">&copy; <span id="year">2026</span> Ellevux</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================ SCRIPTS ============================ -->
+  <!-- GSAP (UMD globals) load first; defer preserves order so ScrollTrigger
+       resolves before the classic scripts that consume it. Three.js via import
+       map; the chrome blob is a single type=module entry (three-hero.js). -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script type="importmap">{ "imports": { "three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/" } }</script>
+  <script type="module" src="assets/js/three-hero.js"
+          onerror="var d=document.documentElement;d.classList.remove('hero-particled');d.classList.remove('work-particled');if(window.__heroFailsafe){clearTimeout(window.__heroFailsafe);window.__heroFailsafe=0;}"></script>
+  <script defer src="assets/js/animations.js"></script>
+  <script defer src="assets/js/main.js"></script>
+
+</body>
+</html>

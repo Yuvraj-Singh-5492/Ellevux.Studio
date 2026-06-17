@@ -1,0 +1,708 @@
+/* ============================================================
+   ELLEVUX · COMPONENTS  (v5 — PERSONAL PORTFOLIO, Henri Heymans style)
+   Editorial visual language: pure-black, white type, ONE acid-green accent,
+   hairline rules, squared corners, oversized type, lots of negative space.
+   Depends on tokens.css + base.css. Content fails OPEN (no class here hides
+   content without JS).
+
+   PART A — NEW Henri components (the page is built from these):
+     .marquee / .marquee__track / .marquee__chip   (looping "available" pill)
+     .nav / .nav__list / .nav__link                (small uppercase, tracked)
+     .work-item / .work-label / .work-art / .work-thumb  (scattered project cards)
+     .pill-btn (+ .pill-btn--icon)                 (acid-green OUTLINE pill)
+     .vertical-text                                (rotated 90deg label strip)
+     .big-wordmark                                 (ultra-bold giant wordmark)
+     .social-links / .social-link                  (social row)
+     .scroll-cue / .scroll-cue__circle             (text + circled arrow)
+     .portrait                                     (B&W photo slot)
+     .strike                                       (strikethrough gag)
+
+   PART B — LEGACY components kept & re-skinned (main.css may still reference
+   .case / .demo-card / .browser / .bento etc. during the transition). They
+   are neutralised onto the black/white palette so nothing renders navy/neon.
+   ============================================================ */
+
+/* ============================================================
+   PART A · NEW HENRI COMPONENTS
+   ============================================================ */
+
+/* ---------- Accent serif tint helper ----------
+   .accent-serif lives in base.css. This optional helper colours an italic
+   accent word acid-green (use only on large text to keep AA). */
+.accent-serif--accent { color: var(--accent); }
+
+/* ---------- Strikethrough gag (Henri "based in ~~Nowhere~~") ---------- */
+.strike {
+  text-decoration: line-through;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 0.08em;
+  color: var(--text-mut);
+}
+
+/* ---------- MARQUEE  ·  looping "● AVAILABLE FOR FREELANCE WORK ●" pill ----------
+   A capsule with an acid-green OUTLINE; the track loops horizontally. Two
+   identical chip groups sit side by side and translate -50% for a seamless
+   loop. animations.js may also drive this; CSS provides the default loop.
+   Reduced-motion / no-JS → static (animation paused; content visible). */
+.marquee {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0.4em 0;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--accent-line);
+  color: var(--accent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+.marquee__track {
+  display: flex;
+  flex: none;
+  align-items: center;
+  width: max-content;
+  animation: ev-marquee var(--dur-marquee) linear infinite;
+}
+.marquee__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7em;
+  padding-inline: 0.9em;
+  font-size: var(--fs-label);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.marquee__chip::before {
+  content: "●";
+  font-size: 0.7em;
+  line-height: 1;
+}
+@keyframes ev-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.marquee:hover .marquee__track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track { animation: none; }
+  .marquee {
+    -webkit-mask-image: none;
+            mask-image: none;
+  }
+}
+
+/* ---------- NAV  ·  small uppercase letter-spaced links ---------- */
+.nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--s-6);
+}
+.nav__link {
+  position: relative;
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-soft);
+  transition: color var(--dur-base) var(--ease-out-expo);
+}
+/* underline grows from the left on hover/focus */
+.nav__link::after {
+  content: "";
+  position: absolute;
+  left: 0; bottom: -0.4em;
+  width: 100%; height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-base) var(--ease-out-expo);
+}
+.nav__link:hover,
+.nav__link:focus-visible { color: var(--text); }
+.nav__link:hover::after,
+.nav__link:focus-visible::after,
+.nav__link[aria-current="page"]::after { transform: scaleX(1); }
+
+/* wordmark (top-left "ellevux") */
+.wordmark {
+  font-size: var(--fs-h3);
+  font-weight: var(--weight-black);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+  line-height: 1;
+}
+
+/* ---------- WORK ITEM  ·  scattered project thumbnail card ----------
+   A small uppercase label above a duotone/gradient art tile that holds an
+   optional <img>. The card is a link; hover scales the art + reveals a cue.
+   Layout/scatter positioning lives in main.css; this defines the look. */
+.work-item {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--s-3);
+  color: var(--text);
+}
+.work-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-soft);
+  transition: color var(--dur-base) var(--ease-out-expo);
+}
+.work-label__num { color: var(--text-muted); }
+.work-label__name { color: var(--text); font-weight: var(--weight-semibold); }
+.work-label__sector { color: var(--text-mut); }
+
+/* the art tile — CSS duotone/gradient fill with an <img> slot on top */
+.work-art {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  aspect-ratio: 16 / 9;   /* all work tiles share one wide 16:9 proportion */
+  background:
+    linear-gradient(140deg, #1a1a1a 0%, #050505 100%);
+  border: 1px solid var(--line);
+  isolation: isolate;
+}
+/* distinct duotone art variants (each project gets its own) */
+.work-art--a { background: linear-gradient(140deg, #2a2118 0%, #0a0805 70%); }
+.work-art--b { background: var(--bg); }   /* Ellevux — wide site screenshot (16:9 from the shared base) */
+.work-art--c { background: linear-gradient(140deg, #1d1a26 0%, #06050b 70%); }
+.work-art--d { background: linear-gradient(140deg, #241616 0%, #0a0404 70%); }
+/* faint grain/sheen overlay so empty tiles still read as "art" */
+.work-art::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 30% 0%, rgba(255,255,255,0.06), transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+/* the real screenshot, once dropped in assets/img/ */
+.work-art img {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+  transition: filter var(--dur-slow) var(--ease-out-expo),
+              transform var(--dur-slow) var(--ease-out-expo);
+  z-index: 2;
+}
+/* placeholder label centred when there's no <img> */
+.work-art__ph {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  color: var(--text-mut);
+  z-index: 2;
+}
+/* a type-specimen thumbnail: the project name as a GIANT wordmark filling the
+   tile, in the same ultra-bold tight face as the footer "Ellevux" wordmark
+   (slot 03). An SVG with textLength scales the word to fill the tile at ANY
+   size (no overflow, no container-query quirks); preserveAspectRatio centres it. */
+.work-art__word {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  overflow: visible;
+}
+.work-art__word text {
+  font-family: var(--font-sans);
+  font-weight: var(--weight-black);
+  font-size: 20px;             /* user units; textLength governs the fitted width */
+  fill: #ededf0;
+  transition: fill var(--dur-slow) var(--ease-out-expo);
+}
+.work-item:hover .work-art__word text,
+.work-item:focus-visible .work-art__word text { fill: #ffffff; }
+/* hover "VIEW" cue */
+.work-art__cue {
+  position: absolute;
+  left: 50%; top: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%) scale(0.85);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.5em 1em;
+  font-size: var(--fs-label);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-radius: var(--r-pill);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--dur-base) var(--ease-out-expo),
+              transform var(--dur-base) var(--ease-spring);
+}
+/* hover/focus: scale art, colour the screenshot, show the cue + label */
+.work-item:hover .work-art img,
+.work-item:focus-visible .work-art img { filter: grayscale(0) contrast(1.05); transform: scale(1.04); }
+.work-item:hover .work-art__cue,
+.work-item:focus-visible .work-art__cue { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+.work-item:hover .work-label,
+.work-item:focus-visible .work-label { color: var(--text); }
+.work-art,
+.work-item .work-art { transition: border-color var(--dur-base) var(--ease-out-expo); }
+.work-item:hover .work-art,
+.work-item:focus-visible .work-art { border-color: var(--accent-line); }
+
+@media (prefers-reduced-motion: reduce) {
+  .work-art img { transition: none; }
+  .work-art__cue { transition: opacity var(--dur-base); transform: translate(-50%, -50%); }
+  .work-item:hover .work-art img { transform: none; }
+}
+
+/* ---------- PILL BUTTON  ·  acid-green OUTLINE pill, italic-serif label ----------
+   Hover/focus fills acid-green with near-black ink. Used for "Send me an
+   e-mail" (with a ↵ glyph) and any primary CTA. */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  padding: 0.7em 1.4em;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  line-height: 1;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: background var(--dur-base) var(--ease-out-expo),
+              color var(--dur-base) var(--ease-out-expo),
+              border-color var(--dur-base) var(--ease-out-expo),
+              transform var(--dur-fast) var(--ease-out-quart);
+}
+.pill-btn:hover,
+.pill-btn:focus-visible {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: var(--accent);
+}
+.pill-btn:active { transform: scale(0.98); }
+/* the ↵ / arrow glyph riding inside the pill */
+.pill-btn__icon {
+  display: inline-grid;
+  place-items: center;
+  width: 1.4em; height: 1.4em;
+  font-family: var(--font-sans);
+  font-style: normal;
+  font-size: 0.8em;
+  border: 1px solid currentColor;
+  border-radius: var(--r-pill);
+}
+
+/* ---------- VERTICAL TEXT  ·  rotated 90° label strip ("KNOW MORE ABOUT ME.") ---------- */
+.vertical-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: var(--fs-label);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-mut);
+  white-space: nowrap;
+}
+/* opt-in: read top→bottom instead of bottom→top */
+.vertical-text--down { transform: none; }
+
+/* ---------- BIG WORDMARK  ·  ultra-bold giant footer name (can bleed) ---------- */
+.big-wordmark {
+  display: block;
+  font-family: var(--font-sans);
+  font-weight: var(--weight-black);
+  font-size: var(--fs-mega);
+  line-height: 0.82;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+  text-transform: none;
+  /* never cause horizontal scroll on small screens */
+  max-width: 100%;
+  white-space: nowrap;
+}
+/* outline variant (Henri sometimes uses a stroked giant name) */
+.big-wordmark--outline {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--line-strong);
+}
+
+/* ---------- SOCIAL LINKS  ·  INSTAGRAM · TWITTER · LINKEDIN · GITHUB ---------- */
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-5);
+}
+.social-link {
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-soft);
+  transition: color var(--dur-base) var(--ease-out-expo);
+}
+.social-link:hover,
+.social-link:focus-visible { color: var(--accent); }
+
+/* ---------- SCROLL CUE  ·  "SCROLL TO BEGIN YOUR JOURNEY →" + circled arrow ---------- */
+.scroll-cue {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-3);
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-soft);
+  transition: color var(--dur-base) var(--ease-out-expo);
+}
+.scroll-cue:hover,
+.scroll-cue:focus-visible { color: var(--text); }
+.scroll-cue__circle {
+  display: inline-grid;
+  place-items: center;
+  width: 2.4em; height: 2.4em;
+  flex: none;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--r-pill);
+  color: var(--accent);
+  transition: border-color var(--dur-base) var(--ease-out-expo),
+              transform var(--dur-base) var(--ease-out-expo);
+}
+.scroll-cue:hover .scroll-cue__circle,
+.scroll-cue:focus-visible .scroll-cue__circle {
+  border-color: var(--accent-line);
+  transform: translateY(3px);
+}
+.scroll-cue__circle svg { width: 1em; height: 1em; }
+@media (prefers-reduced-motion: reduce) {
+  .scroll-cue:hover .scroll-cue__circle { transform: none; }
+}
+
+/* ---------- PORTRAIT  ·  B&W photo slot (about) ----------
+   Holds an <img> at assets/img/portrait.jpg (commented in HTML until ready);
+   meanwhile shows a tasteful duotone placeholder + "[your photo]" label. */
+.portrait {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--r-sm);
+  aspect-ratio: 4 / 5;
+  background: linear-gradient(160deg, #1c1c1c 0%, #060606 80%);
+  border: 1px solid var(--line);
+  isolation: isolate;
+}
+.portrait::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,0.07), transparent 60%);
+  pointer-events: none;
+  z-index: 1;
+}
+.portrait img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) contrast(1.05);
+  z-index: 2;
+}
+.portrait__ph {
+  position: absolute; inset: 0;
+  display: grid; place-items: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-lead);
+  color: var(--text-mut);
+  z-index: 2;
+}
+
+/* ---------- Hairline divider ---------- */
+.divider { height: 1px; background: var(--line); border: 0; }
+.divider--accent { background: var(--accent-dim); }
+
+/* ---------- About card surface ---------- */
+.about-card {
+  position: relative;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+}
+
+/* ============================================================
+   PART B · LEGACY COMPONENTS — re-skinned onto the black/white palette
+   Kept so dependent CSS/markup that still references the old studio classes
+   never breaks or renders navy/neon. New work should use PART A above.
+   ============================================================ */
+
+/* ---------- Eyebrow / section label ---------- */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  font-family: var(--font-sans);
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-mut);
+}
+.eyebrow::before {
+  content: "";
+  width: 28px; height: 1px;
+  background: var(--accent);
+}
+
+/* ---------- Badge / chip / tag (small pills) ---------- */
+.badge, .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  padding: 0.4em 0.9em;
+  font-size: var(--fs-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0.02em;
+  color: var(--text-soft);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+}
+.badge__dot, .chip__dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+.badge--accent { color: var(--accent); border-color: var(--accent-line); }
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: 0.3em 0.7em;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.03em;
+  color: var(--text-mut);
+  border: 1px solid var(--line-faint);
+  border-radius: var(--r-pill);
+  white-space: nowrap;
+}
+
+/* ---------- Generic button (legacy .btn) → flat outline ---------- */
+.btn {
+  --btn-fg: var(--text);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  padding: 0.8em 1.4em;
+  font-weight: var(--weight-semibold);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  color: var(--btn-fg);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease-out-quart),
+              border-color var(--dur-base) var(--ease-out-expo),
+              background var(--dur-base) var(--ease-out-expo),
+              color var(--dur-base) var(--ease-out-expo);
+}
+.btn:hover { border-color: var(--accent-line); }
+.btn:active { transform: scale(0.98); }
+.btn--primary {
+  --btn-fg: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.btn--primary:hover { border-color: var(--accent); }
+.btn--ghost { background: transparent; }
+.btn--ghost:hover { background: var(--glass-1); }
+.btn--lg { padding: 0.95em 1.7em; font-size: var(--fs-body); }
+.btn__icon { width: 1.1em; height: 1.1em; transition: transform var(--dur-base) var(--ease-out-expo); }
+.btn:hover .btn__icon { transform: translateX(3px); }
+
+/* ---------- Glass card → flat near-black panel (no heavy blur) ---------- */
+.glass {
+  position: relative;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+.glass--hover { transition: border-color var(--dur-base) var(--ease-out-expo); }
+.glass--hover:hover { border-color: var(--line-strong); }
+
+/* ---------- Stat ---------- */
+.stat { display: flex; flex-direction: column; gap: var(--s-1); }
+.stat__num {
+  font-size: clamp(2rem, 1.3rem + 2.4vw, 3.2rem);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+}
+.stat__num--green, .stat__num--accent { color: var(--accent); }
+.stat__label { font-size: var(--fs-sm); color: var(--text-mut); }
+
+/* ---------- Section index numeral ---------- */
+.index {
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--tracking-wide);
+  color: var(--accent);
+}
+.eyebrow-index {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: clamp(2.5rem, 1.5rem + 4vw, 4.5rem);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  letter-spacing: var(--tracking-tight);
+  color: var(--text-dim);
+}
+
+/* ---------- Browser frame (legacy demo chrome) ---------- */
+.browser {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+}
+.browser__bar {
+  display: flex; align-items: center; gap: var(--s-3); flex: none;
+  padding: var(--s-3) var(--s-4);
+  background: var(--bg-soft-2);
+  border-bottom: 1px solid var(--line-faint);
+}
+.browser__dots { display: inline-flex; align-items: center; gap: var(--s-2); flex: none; }
+.browser__dots i {
+  width: 11px; height: 11px; border-radius: 50%;
+  background: var(--bg-soft-2);
+  border: 1px solid var(--line-faint);
+}
+.browser__url {
+  flex: 1; display: flex; align-items: center; gap: var(--s-2); min-width: 0;
+  padding: 0.35em 0.8em;
+  font-size: var(--fs-xs);
+  color: var(--text-mut);
+  border: 1px solid var(--line-faint);
+  border-radius: var(--r-pill);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.browser__url svg { flex: none; width: 12px; height: 12px; opacity: 0.7; }
+.browser__viewport {
+  position: relative; flex: 1; min-height: 0; overflow: hidden;
+  background: var(--bg);
+}
+.browser__viewport img,
+.browser__viewport iframe,
+.browser__viewport canvas { display: block; width: 100%; height: 100%; border: 0; }
+
+/* ---------- Case / demo card (legacy work card) ---------- */
+.demo-card, .case { position: relative; display: block; isolation: isolate; }
+.case__inner, .demo-card__inner {
+  position: relative;
+  display: grid;
+  gap: var(--s-5);
+  padding: var(--s-6);
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  transition: border-color var(--dur-base) var(--ease-out-expo);
+}
+.case:hover .case__inner,
+.case:focus-within .case__inner,
+.demo-card:hover .demo-card__inner,
+.demo-card:focus-within .demo-card__inner { border-color: var(--accent-line); }
+.case__media, .demo-card__media { position: relative; z-index: 2; aspect-ratio: 16 / 10; }
+.case__media .browser, .demo-card__media .browser { height: 100%; }
+.case__head {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: var(--s-3) var(--s-5);
+}
+.case__index { font-size: var(--fs-sm); letter-spacing: var(--tracking-wide); color: var(--accent); }
+.case__title {
+  font-size: var(--fs-h3); font-weight: var(--weight-bold);
+  letter-spacing: var(--tracking-tight); color: var(--text);
+}
+.case__sector { color: var(--text-mut); font-size: var(--fs-sm); }
+.case__meta {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-4) var(--s-5); margin: 0; padding-top: var(--s-4);
+  border-top: 1px solid var(--line-faint);
+}
+.case__meta > div { display: flex; flex-direction: column; gap: var(--s-1); min-width: 0; }
+.case__meta dt {
+  font-size: var(--fs-xs); letter-spacing: var(--tracking-wide);
+  text-transform: uppercase; color: var(--text-mut);
+}
+.case__meta dd { margin: 0; font-size: var(--fs-sm); color: var(--text-soft); }
+.case__cta {
+  display: inline-flex; align-items: center; gap: var(--s-2);
+  font-weight: var(--weight-semibold); font-size: var(--fs-sm); color: var(--accent);
+}
+.case__cta svg { width: 1em; height: 1em; transition: transform var(--dur-base) var(--ease-out-expo); }
+.case:hover .case__cta svg, .demo-card:hover .demo-card__cta svg { transform: translateX(3px); }
+@media (min-width: 768px) { .case__meta { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* ---------- Bento (legacy services grid) ---------- */
+.bento { display: grid; grid-template-columns: 1fr; gap: var(--s-4); }
+.bento__tile {
+  position: relative; display: flex; flex-direction: column; gap: var(--s-3);
+  min-height: 180px; padding: var(--s-6);
+  background: var(--bg-soft); border: 1px solid var(--line);
+  border-radius: var(--r-lg); overflow: hidden;
+  transition: border-color var(--dur-base) var(--ease-out-expo);
+}
+.bento__tile:hover, .bento__tile:focus-within { border-color: var(--accent-line); }
+.bento__title { font-size: var(--fs-h3); font-weight: var(--weight-bold); color: var(--text); }
+.bento__scope { color: var(--text-soft); font-size: var(--fs-body); }
+@media (min-width: 768px) { .bento { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-5); } }
+@media (min-width: 1024px) {
+  .bento { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .bento__tile--wide { grid-column: span 2; }
+  .bento__tile--tall { grid-row: span 2; }
+}
+
+/* ---------- Loader / spinner (small inline) ---------- */
+.loader {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 3px solid var(--glass-3); border-top-color: var(--accent);
+  animation: ev-spin 0.8s linear infinite;
+}
+@keyframes ev-spin { to { transform: rotate(360deg); } }
+
+/* ---------- Raised section ground (legacy) ---------- */
+.section--raised { background: var(--bg-soft); }
+.section--raised::before,
+.section--raised::after {
+  content: ""; position: absolute; left: 0; right: 0; height: 1px;
+  background: var(--line-faint); pointer-events: none;
+}
+.section--raised::before { top: 0; }
+.section--raised::after  { bottom: 0; }
+
+/* ============================================================
+   Reduced-motion: keep legacy visuals static.
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .loader { animation: none !important; }
+  .case__inner, .demo-card__inner, .bento__tile { transition: none !important; }
+}

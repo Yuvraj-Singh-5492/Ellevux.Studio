@@ -1,0 +1,208 @@
+/* ============================================================
+   ELLEVUX · DESIGN TOKENS  (v5 — PERSONAL PORTFOLIO, Henri Heymans style)
+   The single source of truth. Pure-black editorial canvas, white type,
+   ONE acid-green accent (chartreuse #c8fa3c) used SPARINGLY, hairline rules.
+   Bold uppercase grotesque (Inter) + italic serif accents (Instrument Serif).
+   Squared / minimal radii, oversized display type, generous black space.
+   Never hard-code a color, radius, font, or duration — always use a token.
+
+   LEGACY MAP: every v4 token name (navy surfaces, glass, indigo accent,
+   --bg-900, --grad-*, etc.) is re-pointed at this black/white palette at the
+   end of :root so dependent stylesheets can never render the old neon/navy.
+   ============================================================ */
+
+:root {
+  /* ---------- Core surfaces — PURE BLACK ---------- */
+  --bg:        #000000;        /* page base — pure black */
+  --bg-soft:   #0a0a0a;        /* near-black raised sections / cards */
+  --bg-soft-2: #121212;        /* one tonal step up (hover panels) */
+
+  /* ---------- Text ---------- */
+  --text:      #ffffff;        /* primary — white */
+  --text-soft: #b3b3b3;        /* secondary — AA on black, safe for body */
+  --text-mut:  #7a7a7a;        /* muted / captions (large or decorative) */
+  --text-dim:  #4d4d4d;        /* faint / decorative ONLY — never body copy */
+
+  /* ---------- Accent — ONE acid-green (chartreuse), sparing ---------- */
+  --accent:      #c8fa3c;                       /* the only color on the page */
+  --accent-ink:  #0a0a0a;                       /* near-black text ON the accent (AA) */
+  --accent-soft: rgba(200, 250, 60, 0.14);      /* faint accent wash */
+  --accent-line: rgba(200, 250, 60, 0.55);      /* accent hairlines / outlines */
+  --accent-dim:  rgba(200, 250, 60, 0.30);      /* dim accent rule */
+
+  /* ---------- Hairlines / structural rules ---------- */
+  --line:        rgba(255, 255, 255, 0.16);     /* default hairline */
+  --line-strong: rgba(255, 255, 255, 0.28);     /* emphasised hairline */
+  --line-faint:  rgba(255, 255, 255, 0.08);     /* whisper rule */
+
+  /* ---------- Shadows (restrained — editorial, mostly flat) ---------- */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
+  --shadow-md: 0 12px 40px -16px rgba(0, 0, 0, 0.8);
+  --shadow-lg: 0 30px 80px -30px rgba(0, 0, 0, 0.9);
+
+  /* ---------- Typography ----------
+     Inter = bold uppercase grotesque (Helvetica-like) for everything display
+     + body. Instrument Serif (italic) = the signature accent on select words. */
+  --font-sans:  'Inter', Helvetica, Arial, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+
+  /* ---------- Fluid type scale (clamp: min, fluid, max) ----------
+     Editorial = HUGE display. --fs-hero drives the 3-line headline;
+     --fs-mega drives the giant footer wordmark (bleeds, up to ~22vw). */
+  --fs-mega:    clamp(4.5rem, 22vw, 22rem);     /* footer "Ellevux" wordmark */
+  --fs-hero:    clamp(2.8rem, 8vw, 9rem);       /* hero headline (bigger — fills the space the blob held) */
+  --fs-display: clamp(2.4rem, 1rem + 6.4vw, 7rem); /* big section titles ("SELECTED WORKS"). vw-proportional so the long word "Selected" cannot overflow on phones; ~108px on desktop, ~40px at 375. */
+  --fs-h1:      clamp(2.25rem, 1.6rem + 3.4vw, 4.5rem);
+  --fs-h2:      clamp(1.75rem, 1.2rem + 2.6vw, 3.25rem);
+  --fs-h3:      clamp(1.3rem, 1.05rem + 1.2vw, 1.85rem);
+  --fs-lead:    clamp(1.1rem, 0.98rem + 0.6vw, 1.5rem);   /* bio / lead copy */
+  --fs-body:    1rem;
+  --fs-sm:      0.875rem;
+  --fs-xs:      0.75rem;
+  --fs-label:   0.72rem;        /* nav / work labels (uppercase, tracked) */
+
+  --lh-tight:   0.92;           /* huge display headlines, tight stacked lines */
+  --lh-snug:    1.15;
+  --lh-base:    1.55;           /* body copy */
+
+  --tracking-tight: -0.03em;    /* big grotesque headlines */
+  --tracking-base:  0;
+  --tracking-wide:  0.18em;     /* small uppercase labels / nav */
+  --tracking-wider: 0.26em;     /* tiniest tracked microcopy */
+
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+  --weight-black:    900;       /* display headlines + wordmarks */
+
+  /* ---------- Spacing scale (8px rhythm, generous) ---------- */
+  --s-1: 0.25rem;  --s-2: 0.5rem;  --s-3: 0.75rem;  --s-4: 1rem;
+  --s-5: 1.5rem;   --s-6: 2rem;    --s-7: 3rem;     --s-8: 4rem;
+  --s-9: 6rem;     --s-10: 8rem;   --s-11: 10rem;   --s-12: 14rem;
+  --section-y: clamp(5rem, 3rem + 10vw, 11rem);     /* generous vertical band */
+
+  /* ---------- Layout ---------- */
+  --container:      1280px;
+  --container-wide: 1440px;
+  --gutter: clamp(1.25rem, 0.5rem + 3vw, 3.5rem);
+
+  /* ---------- Radii — SQUARED / minimal (editorial) ---------- */
+  --r-none: 0;
+  --r-xs:   2px;   --r-sm: 4px;   --r-md: 8px;   --r-lg: 12px;   --r-xl: 16px;
+  --r-pill: 999px;                /* the only round thing: pills/chips */
+
+  /* ---------- Motion ---------- */
+  --dur-fast:    0.2s;
+  --dur-base:    0.35s;
+  --dur-slow:    0.6s;
+  --dur-slower:  0.9s;
+  --dur-marquee: 26s;             /* the looping "available" pill marquee */
+  --dur-ambient: 2.4s;            /* slow ambient loops (outside interaction band) */
+  --ease-out-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-in-out:    cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring:    cubic-bezier(0.34, 1.4, 0.64, 1);
+
+  /* ---------- z-index scale ---------- */
+  --z-bg:      0;
+  --z-content: 1;
+  --z-nav:     100;
+  --z-overlay: 9600;
+
+  /* ---------- blur ---------- */
+  --blur-sm: 6px;
+  --blur-md: 14px;
+
+  /* ============================================================
+     LEGACY TOKEN MAP  (DEPRECATED names → black/white v5 palette)
+     The v4 studio used deep-navy surfaces, glass, an indigo accent, a cyan
+     secondary, gradients and glows. Those NAMES still appear in dependent
+     CSS (main.css, components leftovers). Every one is re-pointed here so the
+     page can NEVER render the old navy/neon. New CSS must use the tokens
+     above (--bg, --text, --accent, --line, etc.).
+     ============================================================ */
+
+  /* surfaces → black scale */
+  --bg-900: var(--bg);
+  --bg-850: var(--bg-soft);
+  --bg-800: var(--bg-soft);
+  --bg-700: var(--bg-soft-2);
+  --bg-600: var(--bg-soft-2);
+  --surface-base:   var(--bg);
+  --surface-raised: var(--bg-soft);
+  --surface-panel:  var(--bg-soft);
+
+  /* glass → flat near-black / faint white films (no heavy glass) */
+  --glass-1: rgba(255, 255, 255, 0.03);
+  --glass-2: rgba(255, 255, 255, 0.06);
+  --glass-3: rgba(255, 255, 255, 0.09);
+
+  /* borders → hairlines */
+  --border:        var(--line);
+  --border-strong: var(--line-strong);
+  --hairline:      var(--line-faint);
+
+  /* text aliases */
+  --text-muted: var(--text-mut);
+
+  /* accent aliases (indigo/cyan/violet/etc. → the single acid-green) */
+  --accent-strong: var(--accent);
+  --accent-2:      var(--accent);
+  --accent-2-soft: var(--accent-soft);
+  --accent-2-line: var(--accent-line);
+  --green:         var(--accent);
+  --green-soft:    var(--accent-soft);
+  --violet:        var(--accent);
+  --violet-bright: var(--accent);
+  --cyan:          var(--accent);
+  --magenta:       var(--accent);
+  --blue:          var(--accent);
+
+  /* brand mapping */
+  --brand:          var(--accent);
+  --brand-contrast: var(--accent-ink);
+  --status-online:      var(--accent);
+  --status-online-glow: var(--accent-soft);
+
+  /* fonts (display/body/mono all collapse onto Inter; serif = Instrument) */
+  --font-display: var(--font-sans);
+  --font-body:    var(--font-sans);
+  --font-mono:    var(--font-sans);
+
+  /* gradients → mostly neutralised to flat accent/white (no aurora/neon).
+     Used only where a dependent expects a paint value. */
+  --grad-accent:     linear-gradient(135deg, var(--accent), var(--accent));
+  --grad-cta:        var(--grad-accent);
+  --grad-aurora:     var(--grad-accent);
+  --grad-nebula:     var(--grad-accent);
+  --grad-aurora-anim:var(--grad-accent);
+  --grad-dimension:  var(--grad-accent);
+  --grad-text:       linear-gradient(100deg, var(--text) 0%, #ffffff 60%, var(--accent) 100%);
+  --grad-sheen:      linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0));
+  --grad-hero-glow:    radial-gradient(60% 50% at 80% 0%, rgba(200,250,60,0.08), transparent 70%);
+  --grad-radial-violet:radial-gradient(60% 60% at 50% 0%, rgba(255,255,255,0.05), transparent 70%);
+  --grad-radial-cyan:  radial-gradient(50% 50% at 100% 0%, rgba(200,250,60,0.06), transparent 70%);
+
+  /* glows → reduced to flat hairline rings (editorial = minimal glow) */
+  --glow-accent: 0 0 0 1px var(--accent-line);
+  --glow-violet: var(--glow-accent);
+  --glow-cyan:   0 0 0 1px var(--accent-line);
+  --shadow-inset: inset 0 1px 0 rgba(255,255,255,0.05);
+
+  /* legacy type-scale names → new scale */
+  --fs-quote:   var(--fs-display);
+  --fs-eyebrow: var(--fs-label);
+
+  /* legacy radii names already provided above (--r-xs..--r-pill) */
+}
+
+/* Honor user motion preference globally (component-level loops also gated) */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast:   0.001s;
+    --dur-base:   0.001s;
+    --dur-slow:   0.001s;
+    --dur-slower: 0.001s;
+  }
+}
