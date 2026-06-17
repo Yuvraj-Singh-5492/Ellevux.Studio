@@ -76,6 +76,27 @@ import * as THREE from 'three';
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
+  // Phones / small screens: skip the WebGL particle hero + scroll morph entirely.
+  // The crisp DOM headings (left visible by the inline boot gate) are the mobile
+  // experience — no frizzy particles, no cursor repel, no mobile-address-bar morph
+  // stick. It is a desktop-only showpiece. (Defensively reveal in case a class stuck.)
+  const smallScreen =
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(max-width: 768px)').matches;
+  if (smallScreen) {
+    try {
+      document.documentElement.classList.remove('hero-particled');
+      document.documentElement.classList.remove('work-particled');
+    } catch (e) {}
+    return;
+  }
+
+  // Real mouse only (never touch): used to gate the cursor-repel so touch devices
+  // that DO run the hero (e.g. large touch laptops > 768px) never get the "blackhole".
+  const finePointer =
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
   let renderer, scene, camera, mesh, geometry, material;
   let posA;                 // Float32Array (x,y,z) — layout A attribute (the 'position')
   let targets;              // Float32Array (x,y) — layout A working buffer (headline)
@@ -518,6 +539,7 @@ import * as THREE from 'three';
   }
 
   function onPointerMove(e) {
+    if (!finePointer) { cursorTarget = 0; return; }   // touch devices: no cursor repel / parallax (the "blackhole")
     if (!visibleInView || document.hidden) { cursorTarget = 0; return; }
     const rect = canvas.getBoundingClientRect();
     cursorX = e.clientX - rect.left;
@@ -636,6 +658,9 @@ import * as THREE from 'three';
     if (!ST || !window.gsap) { document.documentElement.classList.remove('work-particled'); return; }
     try {
       try { window.gsap.registerPlugin(ST); } catch (e) {}
+      // Ignore the mobile address-bar show/hide (a height-only viewport change) so the
+      // scrubbed morph never jumps or sticks on touch devices that run the hero.
+      try { ST.config({ ignoreMobileResize: true }); } catch (e) {}
       // No pin: the page scrolls normally and the headline particles fly DOWN
       // the page, reassembling onto the real #work heading as it reaches its rest.
       morphST = ST.create({
@@ -696,12 +721,19 @@ import * as THREE from 'three';
     posA = targets = targetsB = scatterVecs = null;
   }
 
-  let resizeTimer = 0;
+  let resizeTimer = 0, lastResizeW = (typeof window !== 'undefined' ? window.innerWidth : 0);
   function onResize() {
     window.clearTimeout(resizeTimer);
     resizeTimer = window.setTimeout(function () {
       if (disposed || !booted) return;
-      sizeToBox();
+      var w = window.innerWidth;
+      var widthChanged = w !== lastResizeW;
+      lastResizeW = w;
+      sizeToBox();   // always keep the canvas covering the viewport
+      // Height-only change (e.g. mobile address bar): the svh-based layout is stable, so
+      // do NOT resample or refresh ScrollTrigger here — that re-cache + refresh is what
+      // made the scrubbed morph jump/stick. Only do the heavy work on real WIDTH changes.
+      if (!widthChanged) { if (!running) renderFrame(elapsedSec, false); return; }
       try { if (computeTargets()) applyGeometry(); } catch (e) { /* keep previous */ }
       reconcileMorph();
       if (window.ScrollTrigger) { try { window.ScrollTrigger.refresh(); } catch (e) {} }

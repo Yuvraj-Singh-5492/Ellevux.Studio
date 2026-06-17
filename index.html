@@ -50,12 +50,14 @@
     (function () {
       try {
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        // Phones / small screens get the crisp DOM headings; the WebGL particle hero + scroll morph are desktop-only.
+        var small = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
         var gl = false;
         try {
           var c = document.createElement('canvas');
           gl = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
         } catch (e) {}
-        if (gl && !reduce) {
+        if (gl && !reduce && !small) {
           var de = document.documentElement;
           de.classList.add('hero-particled');   // hide the crisp hero <h1> pre-paint
           de.classList.add('work-particled');    // hide the crisp #work <h2> pre-paint
@@ -273,10 +275,10 @@
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script type="importmap">{ "imports": { "three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/" } }</script>
-  <script type="module" src="assets/js/three-hero.js"
+  <script type="module" src="assets/js/three-hero.js?v=7"
           onerror="var d=document.documentElement;d.classList.remove('hero-particled');d.classList.remove('work-particled');if(window.__heroFailsafe){clearTimeout(window.__heroFailsafe);window.__heroFailsafe=0;}"></script>
-  <script defer src="assets/js/animations.js"></script>
-  <script defer src="assets/js/main.js"></script>
+  <script defer src="assets/js/animations.js?v=7"></script>
+  <script defer src="assets/js/main.js?v=7"></script>
 
 </body>
 </html>
