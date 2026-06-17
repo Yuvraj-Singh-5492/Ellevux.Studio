@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Update <loc> to the real deploy origin at deploy time. -->
+<!-- Update <loc> to https://ellevux.studio/ when that domain is attached in Vercel. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://ellevux.studio/</loc>
+    <loc>https://ellevux-studio.vercel.app/</loc>
     <lastmod>2026-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>

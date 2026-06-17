@@ -1,5 +1,5 @@
 User-agent: *
 Allow: /
 
-# Update the host below to the real deploy origin at deploy time.
-Sitemap: https://ellevux.studio/sitemap.xml
+# Update the host below to https://ellevux.studio/ when that domain is attached in Vercel.
+Sitemap: https://ellevux-studio.vercel.app/sitemap.xml
