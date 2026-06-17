@@ -50,14 +50,12 @@
     (function () {
       try {
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        // Phones / small screens get the crisp DOM headings; the WebGL particle hero + scroll morph are desktop-only.
-        var small = window.matchMedia && window.matchMedia('(max-width: 768px)').matches;
         var gl = false;
         try {
           var c = document.createElement('canvas');
           gl = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
         } catch (e) {}
-        if (gl && !reduce && !small) {
+        if (gl && !reduce) {
           var de = document.documentElement;
           de.classList.add('hero-particled');   // hide the crisp hero <h1> pre-paint
           de.classList.add('work-particled');    // hide the crisp #work <h2> pre-paint

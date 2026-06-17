@@ -76,23 +76,8 @@ import * as THREE from 'three';
     window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReducedMotion) return;
 
-  // Phones / small screens: skip the WebGL particle hero + scroll morph entirely.
-  // The crisp DOM headings (left visible by the inline boot gate) are the mobile
-  // experience — no frizzy particles, no cursor repel, no mobile-address-bar morph
-  // stick. It is a desktop-only showpiece. (Defensively reveal in case a class stuck.)
-  const smallScreen =
-    typeof window.matchMedia === 'function' &&
-    window.matchMedia('(max-width: 768px)').matches;
-  if (smallScreen) {
-    try {
-      document.documentElement.classList.remove('hero-particled');
-      document.documentElement.classList.remove('work-particled');
-    } catch (e) {}
-    return;
-  }
-
-  // Real mouse only (never touch): used to gate the cursor-repel so touch devices
-  // that DO run the hero (e.g. large touch laptops > 768px) never get the "blackhole".
+  // Real mouse only (never touch): gate the cursor-repel so touch devices never get
+  // the "blackhole" effect. Particles run on ALL screen sizes, including phones.
   const finePointer =
     typeof window.matchMedia === 'function' &&
     window.matchMedia('(hover: hover) and (pointer: fine)').matches;
@@ -116,10 +101,13 @@ import * as THREE from 'three';
   let morphP = 0;
   let morphST = null;
 
-  const PARTICLE_COUNT = (typeof window !== 'undefined' && window.innerWidth && window.innerWidth < 720)
-    ? 11000 : 24000;
-  const PARTICLE_PX = 2.4;
-  const WOBBLE_AMP = 1.7;
+  const IS_SMALL = (typeof window !== 'undefined' && window.innerWidth && window.innerWidth < 720);
+  // Mobile: MANY more particles so the small glyphs read SOLID (was 11000 → sparse/scattered),
+  // smaller dots that tile thin strokes, and almost no idle wobble/jitter so the text sits crisp.
+  const PARTICLE_COUNT = IS_SMALL ? 22000 : 24000;
+  const PARTICLE_PX = IS_SMALL ? 1.7 : 2.4;
+  const WOBBLE_AMP = IS_SMALL ? 0.5 : 1.7;
+  const JITTER = IS_SMALL ? 0.45 : 1.4;   // placement spread around each sampled glyph pixel
   const CURSOR_RADIUS = 110;
   const CURSOR_FORCE = 46;
   const CURSOR_EASE = 0.08;
@@ -341,8 +329,8 @@ import * as THREE from 'three';
     const lit = flat.length / 2;
     for (let i = 0; i < count; i++) {
       const s = (i % lit) * 2;
-      buf[i * 2] = flat[s] + (Math.random() - 0.5) * 1.4;
-      buf[i * 2 + 1] = flat[s + 1] + (Math.random() - 0.5) * 1.4;
+      buf[i * 2] = flat[s] + (Math.random() - 0.5) * JITTER;
+      buf[i * 2 + 1] = flat[s + 1] + (Math.random() - 0.5) * JITTER;
     }
   }
 
