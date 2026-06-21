@@ -17,3 +17,6 @@ demos/cafe/index.aurum-backup.html
 *.token
 .ev_*
 .vercel/
+
+# ARC is a separate Vite/React project (its own Vercel deploy) - not part of the portfolio repo
+ARC/

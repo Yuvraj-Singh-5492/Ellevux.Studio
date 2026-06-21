@@ -360,12 +360,11 @@ html.work-particled #work .work__title { opacity: 0; }
     bottom: 0;
     width: clamp(15rem, 25vw, 23rem);
   }
-  /* 04 · placeholder — lower-right, smallest, set back */
+  /* 04 · ARC architecture studio — lower-right, real project (full strength) */
   .work-item--d {
-    right: 9%;
-    bottom: 7%;
-    width: clamp(12rem, 19vw, 17rem);
-    opacity: 0.8;
+    right: 7%;
+    bottom: 6%;
+    width: clamp(14rem, 22vw, 20rem);
   }
 }
 
