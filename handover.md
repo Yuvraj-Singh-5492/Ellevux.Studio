@@ -1,115 +1,98 @@
 # Handover — Ellevux portfolio
 
-Snapshot of where the project stands and what is left to do. Day-to-day conventions live in `CLAUDE.md`.
-Date: 2026-06-17.
+Snapshot of where the project stands and what is left. Day-to-day conventions + deploy mechanics live in
+`CLAUDE.md`. Date: 2026-06-21.
 
 ## TL;DR
-A static, no-build personal **portfolio** for **Ellevux** (the person behind it is **Yuvi**, a 20-year-old
-web developer). Styled like henriheymans.com: pure-black editorial, Inter + Instrument-Serif italic
-accents, a sparing acid-green accent, a **particle-text hero** (the headline is a GPU particle cluster that
-morphs on scroll into the "Selected Works" heading), scattered Selected Works, playful About, giant footer
-wordmark. Open it over http (see "Run").
+A static, no-build personal **portfolio** for **Ellevux** (the person is **Yuvi / Yuvraj Singh**, 20, a web
+developer). Henri-Heymans editorial: pure-black, Inter + Instrument-Serif accents, a sparing acid-green
+accent, a **particle-text hero** that morphs on scroll into "Selected Works", four scattered Selected Works,
+a playful About with a B&W portrait, a giant footer wordmark. **It is LIVE:**
+- Portfolio → **https://ellevux-studio.vercel.app**
+- ARC (work #4) → **https://arc-atelier.vercel.app** (its own Vite/React project)
 
 ## What is built and done
-- **Hero — PARTICLE TEXT + scroll morph (`three-hero.js`, rewritten this session):** the headline
-  "INDEPENDENT WEB DEVELOPER" is a GPU `ShaderMaterial` particle cluster sampled from the real `<h1>`. On
-  scroll (no pin; "break" starts ~halfway down the hero) the particles fly DOWN the page and reassemble onto
-  the #work "Selected Works" heading, then PERSIST as it. The `#hero-canvas` is a page-level `position:fixed;
-  z-index:-1` layer (behind all content, on the black bg — relies on `section{isolation:isolate}`). Boots
-  straight to particles with no crisp-text flash (the hero `<h1>` and #work `<h2>` are hidden pre-paint via
-  `html.hero-particled` / `html.work-particled`). FULLY FAIL-OPEN: any WebGL/Three/GSAP/shader failure (or
-  reduced-motion) reveals the crisp headings; a 2.5s failsafe + module `onerror` back it up. Also present:
-  "WELCOME TO my 2026 portfolio" and a social row; the headline is centered between them and `--fs-hero` was
-  bumped a bit. (REMOVED this session: the nav "AVAILABLE FOR FREELANCE WORK" marquee and the hero "SCROLL TO
-  BEGIN YOUR JOURNEY" cue — their CSS in components.css/main.css is now dead but harmless. Earlier chrome-blob
-  and plain particle-cloud hero builds were superseded by the particle-text morph.) Added this session: a
-  small editorial **meta caption** top-right of the hero (`.hero-meta-block`: a hairline rule + "Currently /
-  Open for work / Available worldwide" with a slow pulsing sage dot, >=768px, decorative). **bfcache fix:**
-  work links open in the SAME tab, so returning via the browser **Back** button restored a dead white hero
-  from bfcache; `three-hero.js` now PAUSES on `pagehide[e.persisted]` (keeps the GL context) and RELOADS on
-  `pageshow[e.persisted]` for a clean hero.
-- **Selected Works (`#work`):** the tiles are a uniform **16:9**; thumbnails are `cover`, grayscale at rest,
-  full colour on hover.
-  - **01 Buzzy — Coffee House** -> `demos/cafe/index.html`. Renamed from "Marigold" and rebuilt several
-    times this session: earthy Marigold -> a research-driven "warm-minimalist" re-skin (rejected as bland)
-    -> a dark **"Liquid Coffee Spectacle"** (full-page WebGL fluid-coffee shader you STIR with the cursor,
-    pour-in hero type, pinned canvas pour, liquid footer wordmark) -> the **current CUTE COMIC / illustrated
-    theme**: cream paper, **Baloo 2 + Caveat + Inter Tight**, dark-brown ink, amber/terracotta pops,
-    hand-drawn doodles, chunky outlined "comic" buttons/cards, and the owner's own **watercolor iced-coffee
-    illustration** as the hero art (`cafe/assets/iced-coffee.png`, background removed). The comic theme is
-    toggled by `class="comic"` on `<body>`; the dark liquid theme is preserved underneath and disabled by
-    that class. Built on three (ESM) + GSAP/ScrollTrigger/Draggable + Lenis. NOTE: this demo now uses ONE
-    external image (the cup), so it is no longer fully self-contained. Backup of the pre-comic build:
-    `demos/_cafe-backup-2026-06-16/`. Research: `CAFE-RESEARCH.md` (60-café audit + colour/design briefs).
-    Thumbnail = a 16:9 screenshot of the comic hero (`assets/img/work-cafe.png`).
-  - **02 Ellevux — AI SaaS** -> `https://ellevux.vercel.app/` (the owner's live project; opens in the
-    **same tab** now). Thumbnail = a headless screenshot of the live site hero, 16:9
-    (`assets/img/work-ellevux-site.png`; the old particle-logo `work-ellevux.png` was removed).
-  - **03 Elements — UI, Motion & 3D** -> `demos/lab/index.html`. A **capabilities showcase** (not a site
-    demo): one self-contained page of 11 numbered sections — navigation, a WebGL **3D render** + a
-    **particle morph**, feature tabs, tilt cards, micro-interactions, an **accordion**, a **form** (with a
-    success state), a **modal** (backdrop + Esc), **loaders/progress**, **count-up stats**, and footers.
-    Ships **LOCKED to Dark Editorial** with a **mint `#2ee6b6`** accent: the theme switcher AND the
-    6-colour accent picker were both removed (the `.lab` playful theme remains only as dead/reference CSS).
-    three (ESM) + GSAP. The portfolio slot-03 thumbnail is now an **SVG text wordmark** ("Elements", in the
-    same ultra-bold tight face as the footer "Ellevux" wordmark, sized to fill the tile via viewBox +
-    textLength), not an image, so `assets/img/work-lab.png` is orphaned (safe to delete).
-- **About:** "Hey! I'm Yuvi, a 20-year-old web developer. I build fast, expressive websites..." with a
-  vertical "KNOW MORE ABOUT ME" strip and a B&W portrait (`assets/img/portrait.jpg`, a moody hooded
-  silhouette at a laptop by a cliffside window, fills the 4:5 `.portrait` slot). Bio fills the card.
-- **Footer:** giant "Ellevux" wordmark, "Send me an e-mail" pill, a thanks line, copyright. (The social
-  rows in the hero and footer were removed: the hero now shows a tagline, "Building websites that feel
-  *alive*...". The About card still carries a social row. The base `.social-links`/`.social-link` CSS is
-  now only used by that one row.)
-- **Polish applied across sessions:** brand reverted to Ellevux (Yuvi kept only in About); acid-green
-  reduced to match the reference (italic-serif accent words are white now); Selected Works centered and
-  the heading lifted; no em-dashes in copy.
+- **Hero — particle text + scroll morph (`three-hero.js`):** "INDEPENDENT WEB DEVELOPER" is a GPU
+  ShaderMaterial particle cluster sampled from the real `<h1>`; on scroll the particles fly DOWN and reassemble
+  onto the #work "Selected Works" heading and persist. Page-level fixed `z-index:-1` canvas. Fully FAIL-OPEN
+  (any WebGL/Three/GSAP/shader failure or reduced-motion shows the crisp headings; 2.5s failsafe + module
+  onerror backstops). **Runs on phones too** — mobile uses ~22000 particles, smaller dots, near-zero
+  wobble/jitter so the small glyphs read SOLID (an earlier "scattered/frizzy" mobile look was the cause; a
+  brief "disable particles on mobile" attempt was reverted on the owner's request). Cursor-repel is gated to
+  fine pointers (no touch "blackhole"); the morph survives the mobile address bar (ignoreMobileResize +
+  width-only resize guard). **bfcache** handled (pause on `pagehide[persisted]`, reload on `pageshow
+  [persisted]`). Top-right **meta caption** ("Currently / Open for work / Available worldwide"); hero
+  bottom-left is now a **tagline** ("Building websites that feel *alive*, with real-time 3D and choreographed
+  motion."), not a social row.
+- **Selected Works (`#work`) — FOUR cards, 16:9, grayscale→colour on hover:**
+  - **01 Buzzy — Coffee House** → `demos/cafe/index.html`. Cute COMIC / illustrated coffee house (cream
+    paper, Baloo 2 + Caveat, the owner's watercolor iced-coffee cup), toggled by `class="comic"`. A dark
+    WebGL "Liquid Coffee Spectacle" is preserved underneath, disabled by that class. (Most-iterated piece:
+    Marigold → warm-minimalist (rejected) → liquid → comic → renamed Buzzy.)
+  - **02 Ellevux — AI SaaS** → `https://ellevux.vercel.app/` (the owner's live project, opens same tab).
+    Thumbnail = headless screenshot of the live hero (reads dark — that's how the site looks).
+  - **03 Elements — UI, Motion & 3D** → `demos/lab/index.html`. A capabilities showcase, 11 sections (nav,
+    a WebGL 3D render + particle morph, feature tabs, tilt cards, micro-interactions, accordion, form, modal,
+    loaders/progress, count-up stats, footers). Locked Dark Editorial. **Accent is now CHROME / metallic
+    silver** (`#d6dde6` + `--chrome`/`--chrome-surf` gradient tokens applied via `background-clip:text` to
+    accent text and as beveled-metal button surfaces; the 3D render is a polished silver-chrome). The theme
+    switcher + accent picker were removed; a11y was cleaned (switch label, accordion aria-expanded, modal
+    focus trap, tablist roving + arrows, `--faint` contrast). Slot-03 thumbnail = an inline SVG wordmark.
+  - **04 ARC — Architecture & 3D** → `https://arc-atelier.vercel.app/` (opens same tab, rel=noopener). A
+    SEPARATE Vite + React 19 + react-three-fiber + Tailwind v4 + GSAP + Lenis app ("ARC Atelier", an
+    architecture studio with a scroll-built low-poly 3D house hero + a 3D/Blueprint toggle). Fonts: **Inter**
+    + IBM Plex Mono (a serif display, Fraunces, was tried and rejected). Copy refined (no em-dashes). A full
+    QA pass added a mobile nav, anchor scroll-margin, turned dead `#work` self-links into `<article>`,
+    inerted dead social links, added fail-open to reveals + the blueprint, fixed first-load ScrollTrigger
+    refresh timing, paused the 3D render loop when offscreen, and tidied the Lenis teardown. `ARC/` is
+    GITIGNORED (it has its own node_modules + Vercel deploy). Thumbnail = `assets/img/work-arc.png`.
+- **About:** "Hey! I'm Yuvi, a 20-year-old web developer..." + a vertical "KNOW MORE ABOUT ME" strip + a B&W
+  portrait (`assets/img/portrait.jpg`). The only social link on the whole site is the **Instagram** one here
+  (→ instagram.com/ellevux). Footer has no social row.
+- **Footer:** giant "Ellevux" wordmark, a "Send me an e-mail" pill (real address now), a thanks line, copyright.
+- **Deploy-readiness:** `og.png` (1200x630) + `robots.txt` + `sitemap.xml` at root; canonical + twitter:image
+  + og dims in the head; CSS links cache-busted `?v=8`.
 
 ## Open items / next steps
-1. **Contact email is a placeholder** — the footer "Send me an e-mail" pill points to
-   `mailto:hello@ellevux.studio` (og:url/og:image also use that domain). Swap in the real email/domain.
-2. **No git yet.** Strongly recommended: `git init` + an initial commit so versions are recoverable
-   (earlier in the project a rebuild overwrote files with no backup; reconstruction was needed). This is
-   the single most important hygiene step before more changes.
-3. **About photo** is filled (`assets/img/portrait.jpg`, a B&W silhouette). It is a moody stock-style
-   aesthetic shot, not a real photo of Yuvi, so swap it for an actual portrait when one is available.
-4. **Obsidian vault (`Ellevux WEB/`) is stale** — it documents an abandoned "AI-receptionist SaaS"
-   direction, not the current portfolio. Realign it or delete it; it is not shipped with the site.
-5. **Archived demos** `demos/aurora` and `demos/nebula` remain on disk, unlinked. Delete if you want a
-   leaner repo, or keep for reference.
-6. **Orphaned on disk:** `assets/img/work-lab.png` (slot-03 is now an SVG wordmark) is unused; delete if
-   you want a leaner repo. Slot 03 itself is filled (the "Elements" capabilities showcase).
+1. **Attach a real domain.** og:url / og:image / `<link rel=canonical>` / robots / sitemap still use the
+   PLACEHOLDER `ellevux.studio`. When a domain is attached in Vercel, update those to the real origin (and
+   the share preview will resolve).
+2. **GitHub repo is BEHIND the live site.** The portfolio repo is `Yuvraj-Singh-5492/Ellevux.Studio`; several
+   commits are committed locally but unpushed (recent turns only had a Vercel token). Push to sync when a
+   GitHub PAT is provided. Live site is current regardless.
+3. **Dead-code cleanup is identified but NOT done.** A large set of provably-unused CSS/JS (the components.css
+   "PART B legacy" block, the marquee/scroll-cue leftovers, the unused tokens.css "LEGACY TOKEN MAP", the
+   write-only `revealed` var in three-hero.js, the orphaned `work-lab.png`) is listed in CLAUDE.md → "Dead
+   code". Removing it changes no behavior; do it with a before/after screenshot diff as the safety net.
+4. **ARC content is fictional placeholder** (a fake studio + email + projects). Swap in real details if ARC is
+   ever meant to be more than a portfolio showcase piece.
+5. **About photo** is a stock-style B&W silhouette, not a real photo of Yuvi — swap when one's available.
+6. **Contact pill is a `mailto:`** (no backend). Wire to Formspree / a form endpoint if it should actually send.
+7. **Obsidian vault (`Ellevux WEB/`, gitignored) is stale** (describes the abandoned AI-SaaS direction).
+8. **Archived demos** `demos/aurora` + `demos/nebula` are on disk + deployed but unlinked. Delete for a leaner
+   repo or keep for reference.
 
-## Direction history (context, so the pivots make sense)
-Started as a web-design/motion **studio** showcase -> briefly (mis)built as an **AI-receptionist SaaS**
-product after a reference URL was read as a content template (later reverted) -> settled as a personal
-**portfolio in the Henri Heymans style** (current). Reference sites are used for LOOK only. The earlier
-`CONTRACT*.md` / `REDESIGN-PLAN.md` files are historical specs from those phases.
+## Direction history (so the pivots make sense)
+Web-design/motion **studio** showcase → briefly mis-built as an **AI-receptionist SaaS** (a reference URL read
+as a content template; reverted) → settled as a personal **portfolio in the Henri Heymans style**, now LIVE.
+Reference sites are used for LOOK only. The `CONTRACT*.md` / `REDESIGN-PLAN.md` files are historical specs.
 
-## Run
-- **Serve over http** (the hero uses ES modules; `file://` will not load them):
-  - VS Code: install **Live Server**, right-click `index.html` -> Open with Live Server, or
-  - `python -m http.server 5510` in the project root, then open `http://localhost:5510/`.
-- Click/scroll through: the hero particle headline + the scroll morph into "Selected Works", then the
-  Selected Works (Buzzy opens the café; Ellevux opens the live site in the **same tab**), About, footer.
-- **Caching:** browsers cache the ES module + CSS hard — hard-refresh (Ctrl+Shift+R) after edits, or serve
-  with `Cache-Control: no-store` (a tiny `python -c` no-cache server) while iterating.
+## Run (local)
+- Serve over http (the hero uses ES modules; `file://` won't load them):
+  `python -m http.server 5510` in the project root, then open `http://localhost:5510/`. (Or VS Code Live Server.)
+- ARC can NOT run locally (no Node). Test ARC by redeploying to Vercel + screenshotting the live site.
+- Caching: browsers cache CSS/ESM hard — hard-refresh (Ctrl+Shift+R) after edits.
 
-## Deploy
-No build. Netlify Drop (drag the folder), Vercel (preset "Other", no build command, output = root), or
-GitHub Pages on root. No env vars. Wire the contact pill to a real endpoint (Formspree / Netlify Forms)
-if you want it to actually send.
+## Deploy (no Node here → Vercel REST API; see CLAUDE.md → "Deploy" for the exact calls)
+- Portfolio: static deploy to the `ellevux-studio` Vercel project (upload tracked web files by SHA, then
+  create a production deployment, `framework:null`).
+- ARC: build deploy to the `arc-atelier` Vercel project (`framework:"vite"`, `buildCommand:"vite build"`,
+  `outputDirectory:"dist"`; upload ARC source minus node_modules/.verify/scripts; Vercel builds it).
+- Tokens are per-session, stored outside the repo, and revoked after use.
 
-## Known quirks
-- The hero is `~100svh`; the particle morph spans the hero -> #work scroll. Headless Chrome can't reliably
-  scroll-to-anchor and WebGL may stall, so **verify the hero + morph + lower sections in a real browser**.
-- The hero particle layer is a fixed `z-index:-1` canvas behind transparent sections on black — don't move
-  it back into `#hero`. There is no `.hero__scrim` (removed; it banded the hero/#work seam).
-- Headless screenshots of the live ellevux site need an isolated `--user-data-dir` (else they collide with
-  an open Chrome and fail to write).
-- Keep using design tokens (`assets/css/tokens.css`); keep copy em-dash-free; keep reveals + the particle
-  headings FAIL OPEN (see CLAUDE.md "Particle headings FAIL OPEN").
-- **The Buzzy café** is the most-iterated piece. Its comic theme is a `body.comic` token-remap over the
-  preserved dark liquid build; remove the `comic` class on `<body>` to get the dark version back. Headless
-  Chrome can NOT scroll its 100svh/pinned sections (to QA lower sections, temporarily neutralise the
-  `min-height:100svh` and capture a tall window), so verify the café by scrolling in a real browser.
+## Known quirks (testing)
+- Use **Playwright** (installed) for real viewports + console + interaction. Headless Chrome's `--window-size`
+  clamps to ~482px and HIDES true mobile overflow — do NOT trust a 375px `--window-size` screenshot.
+- Verify the particle hero + morph (and the cafe/ARC scroll-built heroes) in a real browser or via Playwright;
+  they need true scroll + WebGL.
+- Keep design tokens, keep copy em-dash-free, keep the reveals + particle headings FAIL OPEN.
