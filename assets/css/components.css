@@ -5,92 +5,15 @@
    Depends on tokens.css + base.css. Content fails OPEN (no class here hides
    content without JS).
 
-   PART A — NEW Henri components (the page is built from these):
-     .marquee / .marquee__track / .marquee__chip   (looping "available" pill)
-     .nav / .nav__list / .nav__link                (small uppercase, tracked)
-     .work-item / .work-label / .work-art / .work-thumb  (scattered project cards)
-     .pill-btn (+ .pill-btn--icon)                 (acid-green OUTLINE pill)
-     .vertical-text                                (rotated 90deg label strip)
-     .big-wordmark                                 (ultra-bold giant wordmark)
-     .social-links / .social-link                  (social row)
-     .scroll-cue / .scroll-cue__circle             (text + circled arrow)
-     .portrait                                     (B&W photo slot)
-     .strike                                       (strikethrough gag)
-
-   PART B — LEGACY components kept & re-skinned (main.css may still reference
-   .case / .demo-card / .browser / .bento etc. during the transition). They
-   are neutralised onto the black/white palette so nothing renders navy/neon.
+   Components (the page is built from these):
+     .nav / .nav__list / .nav__link        (small uppercase, tracked)
+     .work-item / .work-label / .work-art   (scattered project cards)
+     .pill-btn (+ .pill-btn__icon)          (acid-green OUTLINE pill)
+     .vertical-text                         (rotated 90deg label strip)
+     .big-wordmark                          (ultra-bold giant footer wordmark)
+     .social-links / .social-link           (the About Instagram link)
+     .portrait                              (B&W photo slot)
    ============================================================ */
-
-/* ============================================================
-   PART A · NEW HENRI COMPONENTS
-   ============================================================ */
-
-/* ---------- Accent serif tint helper ----------
-   .accent-serif lives in base.css. This optional helper colours an italic
-   accent word acid-green (use only on large text to keep AA). */
-.accent-serif--accent { color: var(--accent); }
-
-/* ---------- Strikethrough gag (Henri "based in ~~Nowhere~~") ---------- */
-.strike {
-  text-decoration: line-through;
-  text-decoration-color: var(--accent);
-  text-decoration-thickness: 0.08em;
-  color: var(--text-mut);
-}
-
-/* ---------- MARQUEE  ·  looping "● AVAILABLE FOR FREELANCE WORK ●" pill ----------
-   A capsule with an acid-green OUTLINE; the track loops horizontally. Two
-   identical chip groups sit side by side and translate -50% for a seamless
-   loop. animations.js may also drive this; CSS provides the default loop.
-   Reduced-motion / no-JS → static (animation paused; content visible). */
-.marquee {
-  display: inline-flex;
-  align-items: center;
-  max-width: 100%;
-  overflow: hidden;
-  padding: 0.4em 0;
-  border-radius: var(--r-pill);
-  border: 1px solid var(--accent-line);
-  color: var(--accent);
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-}
-.marquee__track {
-  display: flex;
-  flex: none;
-  align-items: center;
-  width: max-content;
-  animation: ev-marquee var(--dur-marquee) linear infinite;
-}
-.marquee__chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.7em;
-  padding-inline: 0.9em;
-  font-size: var(--fs-label);
-  font-weight: var(--weight-semibold);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.marquee__chip::before {
-  content: "●";
-  font-size: 0.7em;
-  line-height: 1;
-}
-@keyframes ev-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-.marquee:hover .marquee__track { animation-play-state: paused; }
-@media (prefers-reduced-motion: reduce) {
-  .marquee__track { animation: none; }
-  .marquee {
-    -webkit-mask-image: none;
-            mask-image: none;
-  }
-}
 
 /* ---------- NAV  ·  small uppercase letter-spaced links ---------- */
 .nav__list {
@@ -192,18 +115,6 @@
   filter: grayscale(1) contrast(1.05);
   transition: filter var(--dur-slow) var(--ease-out-expo),
               transform var(--dur-slow) var(--ease-out-expo);
-  z-index: 2;
-}
-/* placeholder label centred when there's no <img> */
-.work-art__ph {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--fs-lead);
-  color: var(--text-mut);
   z-index: 2;
 }
 /* a type-specimen thumbnail: the project name as a GIANT wordmark filling the
@@ -319,8 +230,6 @@
   color: var(--text-mut);
   white-space: nowrap;
 }
-/* opt-in: read top→bottom instead of bottom→top */
-.vertical-text--down { transform: none; }
 
 /* ---------- BIG WORDMARK  ·  ultra-bold giant footer name (can bleed) ---------- */
 .big-wordmark {
@@ -336,13 +245,8 @@
   max-width: 100%;
   white-space: nowrap;
 }
-/* outline variant (Henri sometimes uses a stroked giant name) */
-.big-wordmark--outline {
-  color: transparent;
-  -webkit-text-stroke: 1px var(--line-strong);
-}
 
-/* ---------- SOCIAL LINKS  ·  INSTAGRAM · TWITTER · LINKEDIN · GITHUB ---------- */
+/* ---------- SOCIAL LINKS  ·  the single About Instagram link ---------- */
 .social-links {
   display: flex;
   flex-wrap: wrap;
@@ -360,44 +264,9 @@
 .social-link:hover,
 .social-link:focus-visible { color: var(--accent); }
 
-/* ---------- SCROLL CUE  ·  "SCROLL TO BEGIN YOUR JOURNEY →" + circled arrow ---------- */
-.scroll-cue {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-3);
-  font-size: var(--fs-label);
-  font-weight: var(--weight-medium);
-  letter-spacing: var(--tracking-wide);
-  text-transform: uppercase;
-  color: var(--text-soft);
-  transition: color var(--dur-base) var(--ease-out-expo);
-}
-.scroll-cue:hover,
-.scroll-cue:focus-visible { color: var(--text); }
-.scroll-cue__circle {
-  display: inline-grid;
-  place-items: center;
-  width: 2.4em; height: 2.4em;
-  flex: none;
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-pill);
-  color: var(--accent);
-  transition: border-color var(--dur-base) var(--ease-out-expo),
-              transform var(--dur-base) var(--ease-out-expo);
-}
-.scroll-cue:hover .scroll-cue__circle,
-.scroll-cue:focus-visible .scroll-cue__circle {
-  border-color: var(--accent-line);
-  transform: translateY(3px);
-}
-.scroll-cue__circle svg { width: 1em; height: 1em; }
-@media (prefers-reduced-motion: reduce) {
-  .scroll-cue:hover .scroll-cue__circle { transform: none; }
-}
-
 /* ---------- PORTRAIT  ·  B&W photo slot (about) ----------
-   Holds an <img> at assets/img/portrait.jpg (commented in HTML until ready);
-   meanwhile shows a tasteful duotone placeholder + "[your photo]" label. */
+   Holds the <img> at assets/img/portrait.jpg (object-fit:cover, grayscale).
+   The duotone gradient + sheen show through only if the image fails to load. */
 .portrait {
   position: relative;
   overflow: hidden;
@@ -421,19 +290,6 @@
   filter: grayscale(1) contrast(1.05);
   z-index: 2;
 }
-.portrait__ph {
-  position: absolute; inset: 0;
-  display: grid; place-items: center;
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-size: var(--fs-lead);
-  color: var(--text-mut);
-  z-index: 2;
-}
-
-/* ---------- Hairline divider ---------- */
-.divider { height: 1px; background: var(--line); border: 0; }
-.divider--accent { background: var(--accent-dim); }
 
 /* ---------- About card surface ---------- */
 .about-card {

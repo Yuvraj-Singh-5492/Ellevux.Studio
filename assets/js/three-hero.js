@@ -96,7 +96,6 @@ import * as THREE from 'three';
   let disposed = false;
   let booted = false;
   let bootRaf = 0;
-  let revealed = false;
   let morphReady = false;
   let morphP = 0;
   let morphST = null;
@@ -553,7 +552,6 @@ import * as THREE from 'three';
   function onContextLost(e) {
     e.preventDefault();
     revealHeadline();
-    revealed = false;
     if (morphST) { try { morphST.kill(); } catch (e2) {} morphST = null; morphP = 0; }
     if (window.ScrollTrigger) { try { window.ScrollTrigger.refresh(); } catch (e2) {} }
     stop();
@@ -625,7 +623,6 @@ import * as THREE from 'three';
     // once the morph driver exists — so a missing GSAP can't leave #work headless.
     document.documentElement.classList.add('hero-particled');
     if (window.__heroFailsafe) { window.clearTimeout(window.__heroFailsafe); window.__heroFailsafe = 0; }
-    revealed = true;
     raf = window.requestAnimationFrame(loop);
   }
 

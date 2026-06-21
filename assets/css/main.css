@@ -7,11 +7,11 @@
    display type, generous negative space, asymmetric. Lays out the Henri
    section set as authored in index.html:
 
-     #nav      fixed-feel header: left wordmark · centred "available" marquee
-               pill · right PROJECTS/ABOUT/CONTACT (small uppercase tracked)
-     #hero     <canvas id="hero-canvas"> chrome blob full-bleed BEHIND a huge
-               3-line h1 that overlaps the blob; editorial welcome line; a
-               bottom row pinned (socials left · scroll-cue right)
+     #nav      fixed-feel header: left wordmark · right PROJECTS/ABOUT/CONTACT
+               (small uppercase tracked)
+     #hero     page-level <canvas id="hero-canvas"> particle text full-bleed
+               BEHIND a huge 3-line h1 that overlaps it; editorial welcome line;
+               a bottom-left tagline
      #work     "SELECTED *WORKS*" centred with project thumbnails SCATTERED
                asymmetrically around the title (desktop) → clean vertical
                stack < 768 with NO overflow
@@ -19,7 +19,7 @@
                big mixed-type bio · B&W portrait right → stacks on mobile
      #contact  footer: "WANT TO DISCUSS A NEW PROJECT?" + green-outline pill +
                ↵ · GIANT "Ellevux" wordmark (--fs-mega, NEVER overflows) ·
-               bottom strip (thanks · socials · © 2026)
+               bottom strip (thanks · © 2026)
 
    CONTRACT NOTES
    - Tokens ONLY — never hard-code a color/space/radius/font/duration.
@@ -29,8 +29,8 @@
    - WCAG 2.1 AA: one h1 (hero), landmarks, visible focus on black, contrast.
    - 60fps; reveals FAIL OPEN — animations.js owns the [data-reveal] from-state
      in JS; this stylesheet NEVER hides content behind a class JS must add.
-   - prefers-reduced-motion → calm; ambient loops stop (chrome static handled
-     in three-hero.js; marquee handled in components.css).
+   - prefers-reduced-motion → calm; ambient loops stop (particle hero does not
+     run at all in three-hero.js; the crisp DOM headings show instead).
 
    Breakpoints (mobile-first up; a few max-width refinements):
      375 baseline · 600 · 768 (scatter↔stack) · 1024 · 1280 · 1440
@@ -71,8 +71,8 @@ section,
 @media (prefers-reduced-motion: reduce) { #grain { opacity: 0.03; } }
 
 /* ----------------------------------------------------------
-   1 · NAV (#nav) — fixed, clean. left wordmark · centred marquee pill ·
-       right uppercase links. Transparent over the hero; gains a frosted
+   1 · NAV (#nav) — fixed, clean. left wordmark · right uppercase links.
+       Transparent over the hero; gains a frosted
        hairline once scrolled (animations.js toggles .nav--scrolled past ~40px).
    ---------------------------------------------------------- */
 #nav {
@@ -105,25 +105,10 @@ section,
 .nav__logo {
   flex: none;
   position: relative;
-  z-index: 1;             /* above the centred marquee on tight widths */
+  z-index: 1;             /* keep the wordmark above hero content on tight widths */
 }
 .nav__logo:hover,
 .nav__logo:focus-visible { color: var(--accent); }
-
-/* Centre: the looping "available for freelance work" pill marquee.
-   Absolutely centred to the nav so the asymmetric left/right clusters don't
-   shift it; capped so it never crowds the wordmark or links. */
-.nav__marquee {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  width: min(38vw, 26rem);
-  pointer-events: none;       /* purely decorative (aria-hidden in markup) */
-}
-.nav__marquee .marquee { width: 100%; }
 
 /* Right: primary nav menu — pushed to the far edge. */
 .nav__menu {
@@ -134,10 +119,10 @@ section,
 }
 
 /* ----------------------------------------------------------
-   2 · HERO (#hero) — the chrome blob (#hero-canvas) fills the section BEHIND
+   2 · HERO (#hero) — the particle text (page-level #hero-canvas) paints BEHIND
        a massive 3-line headline that overlaps it. An editorial welcome line
-       sits above the headline; the bottom row (socials · scroll-cue) is pinned
-       to the base of the viewport-tall hero.
+       sits above the headline; a tagline is pinned to the base of the
+       viewport-tall hero.
    ---------------------------------------------------------- */
 #hero {
   position: relative;
@@ -237,8 +222,8 @@ html.hero-particled #hero .hero__title { opacity: 0; }
    morph can't run, and the 2.5s failsafe backstops it (kept in the a11y tree). */
 html.work-particled #work .work__title { opacity: 0; }
 
-/* Bottom row — pinned to the base of the tall hero: socials left, scroll-cue
-   right. Wraps gracefully on narrow screens. */
+/* Bottom row — pinned to the base of the tall hero, holding the tagline.
+   Wraps gracefully on narrow screens. */
 .hero__bottom {
   display: flex;
   flex-wrap: wrap;
@@ -247,13 +232,13 @@ html.work-particled #work .work__title { opacity: 0; }
   gap: var(--s-5) var(--s-6);
   margin-top: auto;           /* push to the bottom of the flex column */
   padding-top: var(--s-9);
-  /* Soft dark halo so the socials / scroll-cue stay legible over bright particles
-     during the morph (replaces the removed scrim; travels with the content). */
+  /* Soft dark halo so the tagline stays legible over bright particles during
+     the morph (replaces the removed scrim; travels with the content). */
   text-shadow: 0 1px 18px var(--bg), 0 0 6px var(--bg);
 }
-/* Hero tagline — a readable lead line where the social row used to sit (the
-   socials live in the footer). Sentence-case grotesque with a serif-italic
-   accent word, mirroring the welcome line. */
+/* Hero tagline — a readable lead line where the social row used to sit.
+   Sentence-case grotesque with a serif-italic accent word, mirroring the
+   welcome line. */
 .hero__tagline {
   max-width: 34ch;
   margin: 0;
@@ -300,8 +285,7 @@ html.work-particled #work .work__title { opacity: 0; }
 
 /* ----- MOBILE-FIRST (< 768): a clean vertical stack, NO overflow -----
    Labels sit above each thumbnail (the .work-label / .work-art chrome lives
-   in components.css). Placeholder slots (03/04) are aria-hidden but still
-   shown as quiet "coming soon" tiles. */
+   in components.css). All four slots are real projects. */
 .work-scatter {
   display: grid;
   grid-template-columns: 1fr;
@@ -383,8 +367,8 @@ html.work-particled #work .work__title { opacity: 0; }
 /* ----------------------------------------------------------
    4 · ABOUT (#about, .section.section--raised) — near-black card with a
        vertical rotated "KNOW MORE ABOUT ME." strip down the left edge, a big
-       mixed-type bio (grotesque + italic serif + .ph placeholders + strike
-       gag), and a B&W portrait on the right. Stacks on mobile.
+       mixed-type bio (grotesque + italic-serif accents), and a B&W portrait
+       on the right. Stacks on mobile.
    ---------------------------------------------------------- */
 #about {
   position: relative;
@@ -414,8 +398,7 @@ html.work-particled #work .work__title { opacity: 0; }
 }
 
 /* The bio — big, editorial, mixing bold grotesque with italic-serif accents.
-   White copy on near-black (AA). The .ph spans + .strike gag are styled in
-   base.css / components.css. */
+   White copy on near-black (AA). */
 .about-card__bio {
   /* Large editorial paragraph (NOT hero-display size). Fluid so it FILLS the
      about column at every width: about 1.6rem on phones to 3rem on wide screens. */
@@ -552,12 +535,7 @@ html.work-particled #work .work__title { opacity: 0; }
    6 · RESPONSIVE — max-width refinements (mobile-first base is above)
    ============================================================ */
 
-/* ---- ≤ 768 — hide the centred marquee on tablet/phone so the nav stays a
-        clean two-cluster bar (wordmark · links). The "available" status is
-        decorative; dropping it avoids crowding small bars. ---- */
 @media (max-width: 768px) {
-  .nav__marquee { display: none; }
-
   /* Hero: a touch less top padding; let the headline breathe. */
   #hero { min-height: 92svh; }
 }

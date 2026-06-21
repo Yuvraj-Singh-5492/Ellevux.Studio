@@ -3,7 +3,7 @@
    Modern reset + base element styling + a11y foundations.
    body → pure black + Inter; .accent-serif → Instrument Serif italic.
    White selection; focus-visible ring in --accent (visible on black);
-   skip-link; reduced-motion; .ph placeholder span (dim + dotted underline).
+   skip-link; reduced-motion.
    Depends on tokens.css. Content fails OPEN: nothing here hides content.
    ============================================================ */
 
@@ -78,16 +78,6 @@ h3 { font-size: var(--fs-h3); }
   letter-spacing: 0;
 }
 
-/* ---- Placeholder span (.ph) — swap-me identity markers ----
-   Wraps [Your Name] / [Your City] etc. Dim + dotted underline so they're
-   obviously meant to be replaced. Inherits surrounding type. */
-.ph {
-  color: var(--text-mut);
-  text-decoration: underline dotted var(--accent-dim);
-  text-underline-offset: 0.22em;
-  text-decoration-thickness: 1.5px;
-}
-
 /* ---- Selection — white ---- */
 ::selection { background: var(--text); color: var(--bg); }
 
@@ -152,15 +142,6 @@ h3 { font-size: var(--fs-h3); }
 .section {
   position: relative;
   padding-block: var(--section-y);
-}
-
-/* ---- Gradient/text utilities (kept for dependents; flat on this palette) ---- */
-.text-gradient,
-.text-nebula {
-  background: var(--grad-text);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
 }
 
 /* Reduced-motion users: no parallax / transform drift */

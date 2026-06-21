@@ -37,13 +37,13 @@ robots.txt, sitemap.xml at root. NOTE: their host + og:url/canonical in index.ht
 .gitignore              excludes the Obsidian vault (Ellevux WEB/), the cafe backup, ARC/ (separate project),
                         secrets, and a stale in-folder cafe backup.
 assets/css/             linked from index.html with ?v=8 cache-bust (bump ALL FOUR together on any CSS edit):
-  tokens.css            design tokens (single source of truth) — colors, type, spacing, motion. Has a big
-                        "LEGACY TOKEN MAP" of v4 names re-pointed at the v5 black/white palette; MOST of that
-                        map is now unused (see "Dead code" below).
+  tokens.css            design tokens (single source of truth) — colors, type, spacing, motion. Still has a
+                        big "LEGACY TOKEN MAP" of v4 names; ~58 of them are unused and pending removal (see
+                        "Dead-code cleanup" below).
   base.css              reset, base elements, a11y (focus, skip link, reduced-motion)
   components.css        reusable UI (nav, .work-item/.work-art, .pill-btn, social-links, labels...). Its
-                        "PART B legacy components" block (.bento/.case/.demo-card/.glass/.stat/.browser/
-                        .btn/.badge/.chip/...) is fully DEAD (leftover from the abandoned AI-SaaS phase).
+                        "PART B legacy components" block (.bento/.case/.glass/.stat/.browser/.btn/...) was
+                        REMOVED in the dead-code cleanup (see "Dead-code cleanup" below).
   main.css              page layout for index.html (hero, the Selected Works scatter, about, footer)
 assets/js/
   three-hero.js         (ES module) the HERO PARTICLE TEXT. #hero-canvas is a PAGE-LEVEL fixed layer
@@ -65,8 +65,6 @@ assets/img/
   portrait.jpg          About-card B&W portrait (4:5): a moody hooded silhouette at a laptop by a cliffside
                         window. Fills the .portrait slot (object-fit:cover, grayscale). NOTE: it is a stock-
                         style aesthetic shot, not a real photo of Yuvi.
-  work-lab.png          ORPHANED — slot 03 is now an inline SVG wordmark; this file is referenced nowhere.
-                        Safe to delete.
 demos/                  (the cafe + lab are LINKED from #work; aurora + nebula are archived/unlinked)
   cafe/index.html       BUZZY (was Marigold), Selected Works 01, LIVE. A CUTE COMIC / illustrated coffee
                         house (cream paper, Baloo 2 + Caveat, brown ink, amber/terracotta pops, doodles,
@@ -190,18 +188,27 @@ The #work `<h2>` "Selected Works" is the morph TARGET: the hero particles land o
 - **Headless screenshots of external live sites** need an isolated `--user-data-dir` or they collide with an
   open Chrome and silently fail to write.
 
-## Dead code (identified, NOT yet removed — a pending cleanup)
-An audit found large blocks of provably-dead code in the portfolio CSS/JS (leftover from removed features and
-the abandoned AI-SaaS phase). NONE of it affects behavior (it is unreferenced), but it is clutter:
-- **components.css:** the MARQUEE block, the SCROLL-CUE block, `.work-art__ph`, `.portrait__ph`,
-  `.vertical-text--down`, `.big-wordmark--outline`, `.accent-serif--accent`, and the entire **"PART B legacy
-  components"** section (bento/case/demo-card/glass/stat/browser/btn/badge/chip/loader/divider). KEEP
-  `.section--raised` (used by #about) and `.social-links`/`.social-link` (used by the About Instagram link).
-- **main.css:** `.nav__marquee` rules + its `display:none` in the <=768 media query.
-- **base.css:** `.text-gradient`/`.text-nebula`, `.ph`.
-- **tokens.css:** `--dur-marquee`, `--grad-text`, and most of the "LEGACY TOKEN MAP" (zero `var()`
-  consumers). KEEP `--glass-1/3`, `--text-muted`, `--text-dim`, `--accent-dim`, `--line*`.
-- **three-hero.js:** the write-only `revealed` variable (declared + assigned, never read).
-- **asset:** `assets/img/work-lab.png` (orphaned).
-If you remove it: capture a before/after screenshot diff (reduced-motion, desktop + mobile) to prove the
-render is pixel-identical, and re-verify the particle hero still boots + no console errors.
+## Dead-code cleanup (DONE)
+An audit found large blocks of provably-dead CSS/JS (leftover from removed features + the abandoned AI-SaaS
+phase). None of it affected behavior (it was unreferenced). The whole sweep is now COMPLETE and verified:
+the render is unchanged (mobile pixel-identical to pre-cleanup; desktop reproduces the baseline byte-for-byte
+in a clean capture — the only variance is a headless image-decode race on a work thumbnail), no horizontal
+overflow, and the functional snapshot is intact (particle hero boots, 4 work cards, 3 nav links, About
+portrait, footer pill, Instagram → ellevux, slot-03 SVG wordmark). Removed across the sweep:
+- **components.css:** the "PART B legacy components" block (bento/case/demo-card/glass/stat/browser/btn/badge/
+  chip/loader + `ev-spin` + index/eyebrow + the legacy reduced-motion @media); the MARQUEE block; the
+  SCROLL-CUE block; `.work-art__ph`; `.portrait__ph`; `.vertical-text--down`; `.big-wordmark--outline`;
+  `.accent-serif--accent`; `.strike`; `.divider`/`.divider--accent`; + comment tidy.
+- **main.css:** the `.nav__marquee` rules (+ its `display:none` in the <=768 @media); stale comments scrubbed
+  (marquee / scroll-cue / socials / `.ph`/`.strike` / "placeholder slots 03/04"). (`.ph`/`.strike` only ever
+  appeared in main.css COMMENTS, never as rules.)
+- **base.css:** `.ph`; `.text-gradient`/`.text-nebula`; comment tidy.
+- **tokens.css:** 62 unused tokens (the entire "LEGACY TOKEN MAP" except the still-referenced `--text-muted`,
+  plus `--bg-soft-2`, `--text-dim`, `--shadow-sm/md/lg`, `--tracking-base`, `--r-none`, `--dur-slower`,
+  `--dur-marquee`, `--z-bg`, `--blur-sm`, `--accent-dim`). Detected by transitive `var()`-usage; after removal
+  every defined token has a live consumer and no `var()` is dangling.
+- **three-hero.js:** the write-only `revealed` variable.
+- **asset:** `assets/img/work-lab.png` (orphaned; slot 03 is an inline SVG wordmark).
+
+ALWAYS keep `.social-links`/`.social-link` (the About Instagram link), `.section--raised` (#about), and the
+`--text-muted` token — they are LIVE.

@@ -60,10 +60,12 @@ a playful About with a B&W portrait, a giant footer wordmark. **It is LIVE:**
 2. **GitHub repo is BEHIND the live site.** The portfolio repo is `Yuvraj-Singh-5492/Ellevux.Studio`; several
    commits are committed locally but unpushed (recent turns only had a Vercel token). Push to sync when a
    GitHub PAT is provided. Live site is current regardless.
-3. **Dead-code cleanup is identified but NOT done.** A large set of provably-unused CSS/JS (the components.css
-   "PART B legacy" block, the marquee/scroll-cue leftovers, the unused tokens.css "LEGACY TOKEN MAP", the
-   write-only `revealed` var in three-hero.js, the orphaned `work-lab.png`) is listed in CLAUDE.md → "Dead
-   code". Removing it changes no behavior; do it with a before/after screenshot diff as the safety net.
+3. **Dead-code cleanup is DONE** (full breakdown in CLAUDE.md → "Dead-code cleanup"). Removed the components.css
+   "PART B legacy" block + marquee/scroll-cue/placeholder/modifier leftovers + `.divider*`; the `.nav__marquee`
+   rules in main.css; `.ph`/`.text-gradient`/`.text-nebula` in base.css; 62 unused tokens in tokens.css; the
+   write-only `revealed` var in three-hero.js; and the orphaned `assets/img/work-lab.png`. Verified
+   render-neutral (mobile pixel-identical to pre-cleanup, desktop reproduces the baseline byte-for-byte in a
+   clean capture), no overflow, functional snapshot intact. All committed.
 4. **ARC content is fictional placeholder** (a fake studio + email + projects). Swap in real details if ARC is
    ever meant to be more than a portfolio showcase piece.
 5. **About photo** is a stock-style B&W silhouette, not a real photo of Yuvi — swap when one's available.
