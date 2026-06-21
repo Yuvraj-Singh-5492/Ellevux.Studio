@@ -6,7 +6,7 @@
 <title>Elements, a look at what I can build</title>
 <meta name="description" content="A capabilities showcase: headers, footers, feature tabs, 3D renders, 3D morphing, cards, and micro-interactions, in a dark editorial theme." />
 <meta name="theme-color" content="#08080b" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2308080b'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%232ee6b6' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%232ee6b6'/%3E%3C/svg%3E" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2308080b'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%23d6dde6' stroke-width='2.4'/%3E%3Ccircle cx='16' cy='16' r='2.6' fill='%23d6dde6'/%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&family=Baloo+2:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
 <style>
   /* ============================================================
      ELEMENTS, a capabilities showcase. Ships LOCKED to the dark,
-     minimal .editorial theme (mint #2ee6b6). The .lab (bold, playful)
+     minimal .editorial theme (chrome/silver #d6dde6). The .lab (bold, playful)
      token set is kept below as a reference variant but is no longer
      switchable in the UI. Components read tokens either way.
      ============================================================ */
@@ -29,7 +29,7 @@
     --bg:#08080b; --bg2:#101014; --bg3:#17171d; --panel:rgba(255,255,255,.03);
     --text:#f4f4f6; --dim:#a2a2ac; --faint:#8f8f99;
     --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.20);
-    --accent:#2ee6b6; --accent-ink:#04231b; --accent2:#aef5e2;
+    --accent:#d6dde6; --accent-ink:#0c0e13; --accent2:#a7b1bd;
     --r:10px; --r-lg:16px; --pill:999px;
     --fdisp:'Inter',sans-serif; --fbody:'Inter',sans-serif; --facc:'Instrument Serif',serif;
     --disp-weight:800; --disp-tracking:-.03em; --disp-lh:.96;
@@ -486,7 +486,7 @@
 import * as THREE from 'three';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-function accent(){ return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#c8fa3c'; }
+function accent(){ return getComputedStyle(document.body).getPropertyValue('--accent').trim() || '#d6dde6'; }
 
 /* ---------- RENDER: a lit glossy knot ---------- */
 (function(){
@@ -499,7 +499,7 @@ function accent(){ return getComputedStyle(document.body).getPropertyValue('--ac
     const scene=new THREE.Scene();
     const pmrem=new THREE.PMREMGenerator(renderer); scene.environment=pmrem.fromScene(new RoomEnvironment(),0.05).texture;
     const cam=new THREE.PerspectiveCamera(40,1,0.1,100); cam.position.set(0,0,5);
-    const mat=new THREE.MeshStandardMaterial({color:new THREE.Color(accent()),metalness:.55,roughness:.18,envMapIntensity:1.2});
+    const mat=new THREE.MeshStandardMaterial({color:new THREE.Color(accent()),metalness:.9,roughness:.1,envMapIntensity:2.1});
     const mesh=new THREE.Mesh(new THREE.TorusKnotGeometry(1,.34,180,32),mat); scene.add(mesh);
     scene.add(new THREE.AmbientLight(0xffffff,.4));
     const k=new THREE.DirectionalLight(0xffffff,2); k.position.set(3,4,5); scene.add(k);
