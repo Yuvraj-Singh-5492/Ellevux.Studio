@@ -30,6 +30,9 @@
     --text:#f4f4f6; --dim:#a2a2ac; --faint:#8f8f99;
     --line:rgba(255,255,255,.10); --line2:rgba(255,255,255,.20);
     --accent:#d6dde6; --accent-ink:#0c0e13; --accent2:#a7b1bd;
+    /* polished-chrome gradients: bright -> dark reflection band -> bright = metallic, not flat */
+    --chrome:linear-gradient(176deg,#ffffff 0%,#d6dee8 24%,#7c8795 49%,#aab4c1 58%,#f4f7fb 84%,#c2cbd6 100%);
+    --chrome-surf:linear-gradient(180deg,#f6f9fc 0%,#dbe2eb 44%,#b2bcc9 51%,#cfd7e0 53%,#eef3f8 100%);
     --r:10px; --r-lg:16px; --pill:999px;
     --fdisp:'Inter',sans-serif; --fbody:'Inter',sans-serif; --facc:'Instrument Serif',serif;
     --disp-weight:800; --disp-tracking:-.03em; --disp-lh:.96;
@@ -266,6 +269,33 @@
   @media (max-width:640px){.stats{grid-template-columns:repeat(2,1fr);}}
   .stat .n{font-family:var(--fdisp);font-weight:800;font-size:clamp(2.2rem,5vw,3.4rem);color:var(--accent);line-height:1;font-variant-numeric:tabular-nums;letter-spacing:var(--disp-tracking);}
   .stat .sl{font-size:.74rem;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);margin-top:.5rem;font-weight:600;}
+
+  /* ---- METALLIC CHROME: gradient fills + bevels so the accent reads as polished metal, not flat gray ---- */
+  body.editorial .eyebrow,
+  body.editorial .sc-num,
+  body.editorial .acc,
+  body.editorial .stat .n,
+  body.editorial .hero .meta b{
+    background-image:var(--chrome);
+    -webkit-background-clip:text;background-clip:text;
+    color:transparent;-webkit-text-fill-color:transparent;
+  }
+  body.editorial .btn-solid,
+  body.editorial .tab[aria-selected="true"],
+  body.editorial .navrow .np,
+  body.editorial .card .ci,
+  body.editorial .form-ok .ok-tick,
+  body.editorial .tgl.on{
+    background:var(--chrome-surf);color:var(--accent-ink);border-color:transparent;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.75),inset 0 -2px 2px rgba(10,12,18,.20),0 2px 12px rgba(0,0,0,.30);
+  }
+  body.editorial .btn-solid span{text-shadow:0 1px 0 rgba(255,255,255,.4);}
+  /* chrome ball for the brand + nav dots */
+  body.editorial .brand .bd,
+  body.editorial .navrow .nm i{
+    background:radial-gradient(circle at 34% 26%,#ffffff,#d6dde6 36%,#79828f 100%);
+    box-shadow:inset 0 0 2px rgba(0,0,0,.3);
+  }
 </style>
 </head>
 <body class="editorial">
