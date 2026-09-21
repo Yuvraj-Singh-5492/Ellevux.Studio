@@ -1,7 +1,7 @@
 # Handover — Ellevux portfolio
 
 Snapshot of where the project stands and what is left. Day-to-day conventions + deploy mechanics live in
-`CLAUDE.md`. Date: 2026-06-21.
+`CLAUDE.md`. Date: 2026-09-21.
 
 ## TL;DR
 A static, no-build personal **portfolio** for **Ellevux** (the person is **Yuvi / Yuvraj Singh**, 20, a web
@@ -29,15 +29,18 @@ a playful About with a B&W portrait, a giant footer wordmark. **It is LIVE:**
     paper, Baloo 2 + Caveat, the owner's watercolor iced-coffee cup), toggled by `class="comic"`. A dark
     WebGL "Liquid Coffee Spectacle" is preserved underneath, disabled by that class. (Most-iterated piece:
     Marigold → warm-minimalist (rejected) → liquid → comic → renamed Buzzy.)
-  - **02 Ellevux — AI SaaS** → `https://ellevux.vercel.app/` (the owner's live project, opens same tab).
+  - **02 Ellevux — AI SaaS** → `https://ellevux.vercel.app/` (built for a partner team, opens same tab).
     Thumbnail = headless screenshot of the live hero (reads dark — that's how the site looks).
-  - **03 Elements — UI, Motion & 3D** → `demos/lab/index.html`. A capabilities showcase, 11 sections (nav,
+  - **03 Mirror Solutions — AI Agency** → `https://mirror-solutions.com/` (real client, same tab). Replaced
+    Elements on 2026-09-21. Also the first card on `testimonials.html`.
+  - *(formerly 03)* **Elements — UI, Motion & 3D** → `demos/lab/index.html`, now UNLINKED but still deployed.
+    A capabilities showcase, 11 sections (nav,
     a WebGL 3D render + particle morph, feature tabs, tilt cards, micro-interactions, accordion, form, modal,
     loaders/progress, count-up stats, footers). Locked Dark Editorial. **Accent is now CHROME / metallic
     silver** (`#d6dde6` + `--chrome`/`--chrome-surf` gradient tokens applied via `background-clip:text` to
     accent text and as beveled-metal button surfaces; the 3D render is a polished silver-chrome). The theme
     switcher + accent picker were removed; a11y was cleaned (switch label, accordion aria-expanded, modal
-    focus trap, tablist roving + arrows, `--faint` contrast). Slot-03 thumbnail = an inline SVG wordmark.
+    focus trap, tablist roving + arrows, `--faint` contrast).
   - **04 ARC — Architecture & 3D** → `https://arc-atelier.vercel.app/` (opens same tab, rel=noopener). A
     SEPARATE Vite + React 19 + react-three-fiber + Tailwind v4 + GSAP + Lenis app ("ARC Atelier", an
     architecture studio with a scroll-built low-poly 3D house hero + a 3D/Blueprint toggle). Fonts: **Inter**
@@ -46,20 +49,19 @@ a playful About with a B&W portrait, a giant footer wordmark. **It is LIVE:**
     inerted dead social links, added fail-open to reveals + the blueprint, fixed first-load ScrollTrigger
     refresh timing, paused the 3D render loop when offscreen, and tidied the Lenis teardown. `ARC/` is
     GITIGNORED (it has its own node_modules + Vercel deploy). Thumbnail = `assets/img/work-arc.png`.
-- **About:** "Hey! I'm Yuvi, a 20-year-old web developer..." + a vertical "KNOW MORE ABOUT ME" strip + a B&W
+- **About:** "Hey! I'm Yuvraj, a 20-year-old web developer..." + a vertical "KNOW MORE ABOUT ME" strip + a B&W
   portrait (`assets/img/portrait.jpg`). The only social link on the whole site is the **Instagram** one here
   (→ instagram.com/ellevux). Footer has no social row.
 - **Footer:** giant "Ellevux" wordmark, a "Send me an e-mail" pill (real address now), a thanks line, copyright.
 - **Deploy-readiness:** `og.png` (1200x630) + `robots.txt` + `sitemap.xml` at root; canonical + twitter:image
-  + og dims in the head; CSS links cache-busted `?v=8`.
+  + og dims in the head; CSS links cache-busted `?v=11` (on both pages).
 
 ## Open items / next steps
-0. **Testimonial quotes are pending.** `testimonials.html` ships with hidden, EMPTY quote slots for Mirror
-   Solutions and Ellevux. Fill them only with real words the owner sends (name + role too), then remove
-   `hidden`. Never write placeholder or invented quotes into the live page.
-1. **Attach a real domain.** og:url / og:image / `<link rel=canonical>` / robots / sitemap still use the
-   PLACEHOLDER `ellevux.studio`. When a domain is attached in Vercel, update those to the real origin (and
-   the share preview will resolve).
+0. **Testimonial attribution is pending.** The Mirror Solutions (5.0) and Ellevux (4.5) quotes are in, written
+   with the clients' go-ahead and approved by the owner, but credited to the company. When the owner sends each
+   person's real name + role, swap them into `.tm-quote__name` / `.tm-quote__role`. Never invent names.
+1. **Custom domain (optional).** og:url / og:image / canonical / robots / sitemap use the live
+   `ellevux-studio.vercel.app` origin. If `ellevux.studio` is ever attached in Vercel, swap them over.
 2. **GitHub repo is BEHIND the live site.** The portfolio repo is `Yuvraj-Singh-5492/Ellevux.Studio`; several
    commits are committed locally but unpushed (recent turns only had a Vercel token). Push to sync when a
    GitHub PAT is provided. Live site is current regardless.
@@ -74,8 +76,8 @@ a playful About with a B&W portrait, a giant footer wordmark. **It is LIVE:**
 5. **About photo** is a stock-style B&W silhouette, not a real photo of Yuvi — swap when one's available.
 6. **Contact pill is a `mailto:`** (no backend). Wire to Formspree / a form endpoint if it should actually send.
 7. **Obsidian vault (`Ellevux WEB/`, gitignored) is stale** (describes the abandoned AI-SaaS direction).
-8. **Archived demos** `demos/aurora` + `demos/nebula` are on disk + deployed but unlinked. Delete for a leaner
-   repo or keep for reference.
+8. **Unlinked demos** `demos/aurora` + `demos/nebula` (archived) and `demos/lab` (Elements, unlinked when
+   Mirror Solutions took slot 03) are on disk + deployed but unlinked. Delete, re-link, or keep for reference.
 
 ## Direction history (so the pivots make sense)
 Web-design/motion **studio** showcase → briefly mis-built as an **AI-receptionist SaaS** (a reference URL read
@@ -97,8 +99,9 @@ Reference sites are used for LOOK only. The `CONTRACT*.md` / `REDESIGN-PLAN.md` 
 - Tokens are per-session, stored outside the repo, and revoked after use.
 
 ## Known quirks (testing)
-- Use **Playwright** (installed) for real viewports + console + interaction. Headless Chrome's `--window-size`
+- Playwright is NOT installed any more: use a same-origin harness page of fixed-width iframes in headless
+  Chrome for real viewports (see CLAUDE.md Stack). Headless Chrome's `--window-size`
   clamps to ~482px and HIDES true mobile overflow — do NOT trust a 375px `--window-size` screenshot.
-- Verify the particle hero + morph (and the cafe/ARC scroll-built heroes) in a real browser or via Playwright;
+- Verify the particle hero + morph (and the cafe/ARC scroll-built heroes) in a real browser;
   they need true scroll + WebGL.
 - Keep design tokens, keep copy em-dash-free, keep the reveals + particle headings FAIL OPEN.

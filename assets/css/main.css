@@ -7,7 +7,7 @@
    display type, generous negative space, asymmetric. Lays out the Henri
    section set as authored in index.html:
 
-     #nav      fixed-feel header: left wordmark · right PROJECTS/ABOUT/CONTACT
+     #nav      fixed-feel header: left wordmark · right PROJECTS/TESTIMONIALS/ABOUT/CONTACT
                (small uppercase tracked)
      #hero     page-level <canvas id="hero-canvas"> particle text full-bleed
                BEHIND a huge 3-line h1 that overlaps it; editorial welcome line;
@@ -326,19 +326,19 @@ html.work-particled #work .work__title { opacity: 0; }
     z-index: 3;
   }
 
-  /* 01 · Aurora — upper-left, larger hero thumbnail (flanks the title) */
+  /* 01 · Buzzy — upper-left, larger hero thumbnail (flanks the title) */
   .work-item--a {
     left: 0;
     top: 0;
     width: clamp(17rem, 30vw, 27rem);
   }
-  /* 02 · Nebula — right, lower, mid size (flanks the title) */
+  /* 02 · Ellevux — right, lower, mid size (flanks the title) */
   .work-item--b {
     right: 0;
     top: 20%;
     width: clamp(16rem, 27vw, 25rem);
   }
-  /* 03 · Elements showcase — lower-left, real project (full strength) */
+  /* 03 · Mirror Solutions (AI agency) — lower-left, client project (full strength) */
   .work-item--c {
     left: 5%;
     bottom: 0;
@@ -815,7 +815,7 @@ html.work-particled #work .work__title { opacity: 0; }
 }
 .tm-card__shot .work-art { width: 100%; }
 
-/* Client quote — ships `hidden`; author display:grid must not override that. */
+/* Client quote. Keep [hidden] working: author display:grid would override it. */
 .tm-quote {
   display: grid;
   gap: var(--s-4);
@@ -832,6 +832,33 @@ html.work-particled #work .work__title { opacity: 0; }
   letter-spacing: var(--tracking-tight);
   color: var(--text);
   text-wrap: pretty;
+}
+/* Star rating: ONE element. A star-shaped mask repeats 5x across it; the
+   background is a hard-stop gradient filled to --rating/5, so halves are exact.
+   Filled = white, empty = a strong hairline grey. aria-label carries the value. */
+.tm-rating {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  margin: 0;
+}
+.tm-rating__stars {
+  --star-size: 1.15rem;
+  --star: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 2.6l2.9 6.2 6.8.7-5.1 4.6 1.4 6.7L12 17.4l-6 3.4 1.4-6.7-5.1-4.6 6.8-.7z'/%3E%3C/svg%3E");
+  display: block;
+  width: calc(var(--star-size) * 5);
+  height: var(--star-size);
+  background: linear-gradient(90deg,
+    var(--text) calc(var(--rating, 5) / 5 * 100%),
+    var(--line-strong) calc(var(--rating, 5) / 5 * 100%));
+  -webkit-mask: var(--star) 0 0 / var(--star-size) var(--star-size) repeat-x;
+          mask: var(--star) 0 0 / var(--star-size) var(--star-size) repeat-x;
+}
+.tm-rating__value {
+  font-size: var(--fs-label);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-soft);
 }
 .tm-quote__text p::before { content: "\201C"; }
 .tm-quote__text p::after  { content: "\201D"; }

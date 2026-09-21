@@ -68,8 +68,9 @@
 }
 .work-label {
   display: flex;
+  flex-wrap: wrap;          /* too long for the tile? the sector drops to a new line */
   align-items: baseline;
-  gap: var(--s-3);
+  gap: var(--s-1) var(--s-3);
   font-size: var(--fs-label);
   font-weight: var(--weight-medium);
   letter-spacing: var(--tracking-wide);
@@ -80,6 +81,8 @@
 .work-label__num { color: var(--text-muted); }
 .work-label__name { color: var(--text); font-weight: var(--weight-semibold); }
 .work-label__sector { color: var(--text-mut); }
+/* keep each part whole ("MIRROR SOLUTIONS", not "MIRROR / SOLUTIONS") */
+.work-label > span { white-space: nowrap; }
 
 /* the art tile — CSS duotone/gradient fill with an <img> slot on top */
 .work-art {
@@ -117,27 +120,6 @@
               transform var(--dur-slow) var(--ease-out-expo);
   z-index: 2;
 }
-/* a type-specimen thumbnail: the project name as a GIANT wordmark filling the
-   tile, in the same ultra-bold tight face as the footer "Ellevux" wordmark
-   (slot 03). An SVG with textLength scales the word to fill the tile at ANY
-   size (no overflow, no container-query quirks); preserveAspectRatio centres it. */
-.work-art__word {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  overflow: visible;
-}
-.work-art__word text {
-  font-family: var(--font-sans);
-  font-weight: var(--weight-black);
-  font-size: 20px;             /* user units; textLength governs the fitted width */
-  fill: #ededf0;
-  transition: fill var(--dur-slow) var(--ease-out-expo);
-}
-.work-item:hover .work-art__word text,
-.work-item:focus-visible .work-art__word text { fill: #ffffff; }
 /* hover "VIEW" cue */
 .work-art__cue {
   position: absolute;

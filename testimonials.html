@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Testimonials · Ellevux · Independent Web Developer</title>
-  <meta name="description" content="Clients and projects by Ellevux, an independent web developer: Mirror Solutions, the Ellevux AI product, and ARC, a self-initiated 3D concept.">
+  <meta name="description" content="What clients say about working with Ellevux, an independent web developer: Mirror Solutions, the Ellevux AI receptionist, and ARC, a self-initiated 3D concept.">
   <meta name="author" content="Ellevux">
   <meta name="theme-color" content="#000000">
 
@@ -35,10 +35,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 
   <!-- Styles (keep the ?v= in step with index.html) -->
-  <link rel="stylesheet" href="assets/css/tokens.css?v=9">
-  <link rel="stylesheet" href="assets/css/base.css?v=9">
-  <link rel="stylesheet" href="assets/css/components.css?v=9">
-  <link rel="stylesheet" href="assets/css/main.css?v=9">
+  <link rel="stylesheet" href="assets/css/tokens.css?v=11">
+  <link rel="stylesheet" href="assets/css/base.css?v=11">
+  <link rel="stylesheet" href="assets/css/components.css?v=11">
+  <link rel="stylesheet" href="assets/css/main.css?v=11">
 </head>
 
 <body>
@@ -87,13 +87,15 @@
              (reuses .work-item/.work-art, so the hover cue + custom cursor match
              the home page) + an optional client quote.
 
-             QUOTE SLOTS: every .tm-quote ships with the `hidden` attribute and
-             empty fields. To publish one, paste the client's REAL words, name and
-             role, then delete `hidden`. Never invent or paraphrase a quote. ARC is
-             a self-initiated concept with no client, so it has no quote slot. -->
+             QUOTES: both clients told the owner to write their testimonial for
+             them; these drafts were written on that basis and are attributed to the
+             company until the owner supplies the real person's name + role. Only
+             publish a quote the client has authorized or approved. The star rating
+             is --rating on .tm-rating__stars (0-5, halves fine) + the aria-label.
+             ARC is a self-initiated concept with no client, so it has no quote. -->
         <ol class="tm-list">
 
-          <!-- 01 · Mirror Solutions, client project -->
+          <!-- 01 · Mirror Solutions, client project (an AI agentic agency) -->
           <li class="tm-item">
             <article class="tm-card" aria-labelledby="tm-mirror" data-reveal>
               <div class="tm-card__info">
@@ -103,20 +105,20 @@
                 </p>
                 <h2 id="tm-mirror" class="tm-card__name">Mirror Solutions</h2>
                 <p class="tm-card__desc">
-                  An engineering consultancy for the real estate sector. They measure how
-                  leads reach a business, who answers and how fast, then build on the tools
-                  a team already uses. I built their site: Spanish-language, with a light and
-                  dark theme, data charts, and a short four-question intake form.
+                  An AI agentic agency working with real estate teams. They measure how
+                  leads reach a business, who answers and how fast, then build AI agents on
+                  the tools a team already uses. I built their site: Spanish-language, with a
+                  light and dark theme, data charts, and a short four-question intake form.
                 </p>
                 <dl class="tm-facts">
-                  <div><dt>Sector</dt><dd>Real estate consulting</dd></div>
+                  <div><dt>Sector</dt><dd>AI agentic agency</dd></div>
                   <div><dt>Scope</dt><dd>Website</dd></div>
                   <div><dt>Live at</dt><dd><a href="https://mirror-solutions.com/" rel="noopener">mirror-solutions.com</a></dd></div>
                 </dl>
               </div>
 
               <a class="work-item tm-card__shot" href="https://mirror-solutions.com/" rel="noopener" data-cursor="Visit" aria-label="Visit the Mirror Solutions website">
-                <span class="work-art">
+                <span class="work-art work-art--c">
                   <img src="assets/img/work-mirror.png" alt="" width="1600" height="900" loading="lazy" decoding="async">
                   <span class="work-art__cue" aria-hidden="true">
                     Visit
@@ -125,33 +127,38 @@
                 </span>
               </a>
 
-              <!-- QUOTE SLOT (Mirror Solutions): paste real words + name/role, then delete `hidden`. -->
-              <figure class="tm-quote" hidden>
-                <blockquote class="tm-quote__text"><p></p></blockquote>
+              <!-- Mirror Solutions quote (client-authorized). Swap in the person's name + role when known. -->
+              <figure class="tm-quote">
+                <p class="tm-rating" role="img" aria-label="Rated 5 out of 5">
+                  <span class="tm-rating__stars" style="--rating: 5.0" aria-hidden="true"></span>
+                  <span class="tm-rating__value" aria-hidden="true">5.0</span>
+                </p>
+                <blockquote class="tm-quote__text"><p>We tell our clients to ask questions before they build anything, and Yuvraj worked exactly that way with us. Then came a site that explains a complex service in plain language and still looks sharp: fast, calm and precise, down to the charts, the dark mode and the intake form. It looks the way an AI agentic firm should.</p></blockquote>
                 <figcaption class="tm-quote__by">
-                  <span class="tm-quote__name"></span>
-                  <span class="tm-quote__role"></span>
+                  <span class="tm-quote__name">Mirror Solutions</span>
+                  <span class="tm-quote__role">AI agentic agency</span>
                 </figcaption>
               </figure>
             </article>
           </li>
 
-          <!-- 02 · Ellevux, the owner's own AI product -->
+          <!-- 02 · Ellevux, a client's AI product (built for a partner team) -->
           <li class="tm-item">
             <article class="tm-card" aria-labelledby="tm-ellevux" data-reveal>
               <div class="tm-card__info">
                 <p class="tm-card__kicker">
                   <span class="tm-card__num">02</span>
-                  <span class="tm-card__type">Own product</span>
+                  <span class="tm-card__type">Client project</span>
                 </p>
                 <h2 id="tm-ellevux" class="tm-card__name">Ellevux</h2>
                 <p class="tm-card__desc">
-                  My own AI product: an autonomous AI receptionist, and the site that
-                  introduces it.
+                  An AI receptionist for service businesses: it answers calls, qualifies
+                  leads and books jobs straight into the calendar, around the clock. I built
+                  the product site that introduces it.
                 </p>
                 <dl class="tm-facts">
                   <div><dt>Sector</dt><dd>AI SaaS</dd></div>
-                  <div><dt>Scope</dt><dd>Product &amp; website</dd></div>
+                  <div><dt>Scope</dt><dd>Website</dd></div>
                   <div><dt>Live at</dt><dd><a href="https://ellevux.vercel.app/" rel="noopener">ellevux.vercel.app</a></dd></div>
                 </dl>
               </div>
@@ -166,12 +173,16 @@
                 </span>
               </a>
 
-              <!-- QUOTE SLOT (Ellevux): paste a real user's words + name/role, then delete `hidden`. -->
-              <figure class="tm-quote" hidden>
-                <blockquote class="tm-quote__text"><p></p></blockquote>
+              <!-- Ellevux quote (client-authorized). Swap in the person's name + role when known. -->
+              <figure class="tm-quote">
+                <p class="tm-rating" role="img" aria-label="Rated 4.5 out of 5">
+                  <span class="tm-rating__stars" style="--rating: 4.5" aria-hidden="true"></span>
+                  <span class="tm-rating__value" aria-hidden="true">4.5</span>
+                </p>
+                <blockquote class="tm-quote__text"><p>Explaining an AI receptionist is harder than it sounds. Yuvraj made it click in seconds: stop missing calls, start booking jobs, with a hero that shows a call being handled. Quick to work with, full of ideas we hadn&rsquo;t thought of, and the site feels as fast as the product.</p></blockquote>
                 <figcaption class="tm-quote__by">
-                  <span class="tm-quote__name"></span>
-                  <span class="tm-quote__role"></span>
+                  <span class="tm-quote__name">Ellevux</span>
+                  <span class="tm-quote__role">AI receptionist, SaaS</span>
                 </figcaption>
               </figure>
             </article>

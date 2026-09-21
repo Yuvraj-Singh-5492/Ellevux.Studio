@@ -34,16 +34,16 @@ and a giant footer wordmark.
 ## File map
 ```
 index.html              the whole portfolio (nav · hero · #work · #about · footer/#contact)
-testimonials.html       second page: client/project cards + hidden quote slots (see "Testimonials page")
+testimonials.html       second page: client/project cards, 2 client quotes + star ratings (see "Testimonials page")
 og.png                  1200x630 social share image (the hero on black). Served at site root (/og.png).
-robots.txt, sitemap.xml at root. NOTE: their host + og:url/canonical in index.html still use the PLACEHOLDER
-                        domain ellevux.studio; update to the real deploy origin when a domain is attached.
+robots.txt, sitemap.xml at root. Their host + og:url/canonical use the live Vercel origin
+                        ellevux-studio.vercel.app; swap to ellevux.studio if that domain is ever attached.
 .gitignore              excludes the Obsidian vault (Ellevux WEB/), the cafe backup, ARC/ (separate project),
                         secrets, and a stale in-folder cafe backup.
-assets/css/             linked from index.html with ?v=8 cache-bust (bump ALL FOUR together on any CSS edit):
-  tokens.css            design tokens (single source of truth) — colors, type, spacing, motion. Still has a
-                        big "LEGACY TOKEN MAP" of v4 names; ~58 of them are unused and pending removal (see
-                        "Dead-code cleanup" below).
+assets/css/             linked from index.html AND testimonials.html with ?v=11 cache-bust (bump ALL EIGHT
+                        links together on any CSS edit):
+  tokens.css            design tokens (single source of truth) — colors, type, spacing, motion. The legacy
+                        v4 token map was removed (see "Dead-code cleanup" below).
   base.css              reset, base elements, a11y (focus, skip link, reduced-motion)
   components.css        reusable UI (nav, .work-item/.work-art, .pill-btn, social-links, labels...). Its
                         "PART B legacy components" block (.bento/.case/.glass/.stat/.browser/.btn/...) was
@@ -67,11 +67,12 @@ assets/img/
   work-cafe.png         16:9 thumbnail for the Buzzy cafe work card (comic hero screenshot)
   work-ellevux-site.png 16:9 thumbnail for the Ellevux SaaS card (headless screenshot of ellevux.vercel.app)
   work-arc.png          16:9 thumbnail for the ARC card (the scroll-built 3D house hero, from ARC/.verify)
-  work-mirror.png       16:9 thumbnail for Mirror Solutions (headless-Chrome shot of mirror-solutions.com)
+  work-mirror.png       16:9 thumbnail for Mirror Solutions (headless-Chrome shot of mirror-solutions.com);
+                        used by Selected Works 03 AND the testimonials page
   portrait.jpg          About-card B&W portrait (4:5): a moody hooded silhouette at a laptop by a cliffside
                         window. Fills the .portrait slot (object-fit:cover, grayscale). NOTE: it is a stock-
                         style aesthetic shot, not a real photo of Yuvi.
-demos/                  (the cafe + lab are LINKED from #work; aurora + nebula are archived/unlinked)
+demos/                  (only the cafe is LINKED from #work; lab, aurora + nebula are deployed but unlinked)
   cafe/index.html       BUZZY (was Marigold), Selected Works 01, LIVE. A CUTE COMIC / illustrated coffee
                         house (cream paper, Baloo 2 + Caveat, brown ink, amber/terracotta pops, doodles,
                         chunky "comic" buttons) toggled by class="comic" on <body>. A dark "Liquid Coffee
@@ -81,7 +82,8 @@ demos/                  (the cafe + lab are LINKED from #work; aurora + nebula a
                         external image (cafe/assets/iced-coffee.png, the owner's watercolor cup).
   cafe/assets/iced-coffee.png  the owner's own watercolor iced-coffee illustration (bg removed); hero art.
   _cafe-backup-2026-06-16/     backup of the pre-comic cafe build (gitignored).
-  lab/index.html        ELEMENTS (Selected Works 03), a capabilities showcase (NOT a site demo). 11 numbered
+  lab/index.html        ELEMENTS, a capabilities showcase (NOT a site demo). Was Selected Works 03 until
+                        2026-09-21, when Mirror Solutions replaced it; now UNLINKED (still deployed). 11 numbered
                         sections: nav, a WebGL 3D render + particle morph, feature tabs, tilt cards, micro-
                         interactions, accordion, form, modal, loaders/progress, count-up stats, footers.
                         Ships LOCKED to the dark .editorial theme. ACCENT IS NOW **CHROME / metallic silver**
@@ -103,21 +105,27 @@ handover.md             current state + what's left (read alongside this file)
 ```
 
 ## Testimonials page (`testimonials.html`, nav link on both pages)
-Three cards: **01 Mirror Solutions** (real client, https://mirror-solutions.com, a Spanish-language real-estate
-engineering consultancy), **02 Ellevux** (own product), **03 ARC** (labelled a SELF-INITIATED CONCEPT, since the
-studio is fictional; it has no quote slot). Each real card has a `<figure class="tm-quote" hidden>` with empty
-fields. **Never invent or paraphrase a testimonial:** only fill a slot with words the owner supplies, then
-remove `hidden`. Until then the page reads as a client/project list. The nav has FOUR links now; <=600px they
-fold into a right-aligned 2x2 grid (one row overflows at phone widths).
+Three cards: **01 Mirror Solutions** (real client, https://mirror-solutions.com, a Spanish-language AI agentic
+agency working with real estate teams; the owner wants it described as an "AI agentic agency"), **02 Ellevux** (client project: an AI receptionist SaaS the owner built for a
+partner team), **03 ARC** (labelled a SELF-INITIATED CONCEPT, since the studio is fictional; it has NO quote).
+**Quotes (live since 2026-09-21):** Mirror Solutions 5.0 stars, Ellevux 4.5 stars. Both clients told the owner
+to write their testimonial for them; Claude drafted the words, the owner approved them (the owner edited the
+Mirror line to "an AI agentic firm"). They are attributed to the COMPANY for now; the owner will send the real
+person's name + role for each, which go in `.tm-quote__name` / `.tm-quote__role`. Only publish quotes a client
+has authorized or approved, and never invent a person's name. Stars = `--rating` on `.tm-rating__stars`
+(0 to 5, halves exact via a masked hard-stop gradient) + the wrapper's `aria-label`. Do NOT add schema.org
+Review/AggregateRating markup (self-serving reviews). The nav has FOUR links now; <=600px they fold into a
+right-aligned 2x2 grid (one row overflows at phone widths).
 
 ## Selected Works (in `#work`) — FOUR cards now, scattered (4 corners on desktop, stacked < 768px)
 The `.work-art` tiles are **16:9**; thumbnails are `object-fit: cover`, grayscale at rest, full colour on hover.
 1. **Buzzy — Coffee House** → `demos/cafe/index.html` (internal; cute comic coffee house, `body.comic` theme).
-2. **Ellevux — AI SaaS** → `https://ellevux.vercel.app/` (external, opens **same tab**; the owner's live
-   project). Thumbnail `work-ellevux-site.png` (live-site screenshot, reads dark — that's the site).
-3. **Elements — UI, Motion & 3D** → `demos/lab/index.html` (internal capabilities showcase, 11 sections,
-   locked Dark Editorial with a **chrome/silver** accent, see file map). Slot-03 thumbnail is an inline SVG
-   wordmark ("Elements"), not an image.
+2. **Ellevux — AI SaaS** → `https://ellevux.vercel.app/` (external, opens **same tab**; an AI receptionist
+   the owner built for a partner team, NOT the owner's solo product; same name as this portfolio's brand). Thumbnail `work-ellevux-site.png` (live-site screenshot, reads dark — that's the site).
+3. **Mirror Solutions — AI Agency** → `https://mirror-solutions.com/` (external, opens **same tab**,
+   `rel="noopener"`; a real client, a Spanish-language AI agentic agency working with real estate teams). Thumbnail
+   `work-mirror.png`. It replaced **Elements** (`demos/lab`, now unlinked); the inline-SVG wordmark thumbnail
+   and its `.work-art__word` CSS were removed with it.
 4. **ARC — Architecture & 3D** → `https://arc-atelier.vercel.app/` (external, opens **same tab**,
    `rel="noopener"`; a separate Vite/React/R3F architecture site). Thumbnail `work-arc.png`.
 
@@ -158,9 +166,9 @@ The #work `<h2>` "Selected Works" is the morph TARGET: the hero particles land o
   REMOVES those classes (revealing the crisp headings) on ANY failure, and the inline script's 2.5s failsafe
   + the module-tag `onerror` are backstops. Do NOT hide either heading in CSS without a JS reveal path. The
   DOM keeps one real `<h1>`/`<h2>` (opacity:0, still in the a11y tree).
-- **Responsive, mobile-first:** must hold at 375 / 768 / 1280 / 1440 with no horizontal overflow. Use
-  Playwright (true viewports) to test — headless Chrome's `--window-size` clamps to ~482px and HIDES real
-  mobile overflow (this exact trap masked a real "Selected Works" overflow bug earlier).
+- **Responsive, mobile-first:** must hold at 375 / 768 / 1280 / 1440 with no horizontal overflow. Test with
+  TRUE viewports (a same-origin harness page of fixed-width iframes; see Stack) — headless Chrome's
+  `--window-size` clamps to ~482px and HIDES real mobile overflow (this exact trap masked a real bug earlier).
 - **WCAG 2.1 AA:** semantic landmarks, one `<h1>`, labelled form fields, visible focus on black, decorative
   canvas/SVG `aria-hidden`. Do not use `--text-dim`-level greys for body copy.
 - **`prefers-reduced-motion`:** every animation has a calm static fallback; the particle hero does NOT run.
@@ -180,8 +188,8 @@ The #work `<h2>` "Selected Works" is the morph TARGET: the hero particles land o
   extraHeader does NOT work for GitHub git. Redact the token from any command output.
 - **The GitHub repo is BEHIND the live site:** recent turns only had a Vercel token, so several commits are
   local-only (committed but unpushed). The LIVE site is current. Push to sync when a GitHub token is given.
-- **Contact email** is real now: `mailto:yuvrajsinghgill5492@gmail.com`. The `ellevux.studio` domain in
-  og:url / og:image / canonical / robots / sitemap is still a placeholder.
+- **Contact email** is real now: `mailto:yuvrajsinghgill5492@gmail.com`. og:url / og:image / canonical /
+  robots / sitemap use the live `ellevux-studio.vercel.app` origin (`ellevux.studio` is not attached).
 
 ## Gotchas
 - **Hero particle layering:** `#hero-canvas` is a page-level `position:fixed; z-index:-1` layer on the black
@@ -196,8 +204,9 @@ The #work `<h2>` "Selected Works" is the morph TARGET: the hero particles land o
   Available worldwide" with a pulsing dot. Hero bottom-left is now a **tagline** (`.hero__tagline`), not a
   social row. The footer has no social row; the only social link is the **Instagram** one in the About card.
 - **Test the real thing.** Headless Chrome can't reliably scroll-to-anchor and WebGL/loaders may stall;
-  Playwright (installed) gives true viewports + console capture + interaction — use it. The cafe/ARC heroes
-  need a real browser or Playwright (100svh/pinned/scroll-built).
+  use the headless-Chrome iframe harness for true viewports. For screenshots after timers/animations use
+  `--virtual-time-budget` (plain `--screenshot` fires at load), and never make an iframe taller than the
+  viewport on index.html (the 100svh hero grows with it). The cafe/ARC heroes need a real browser.
 - **Browser caches CSS/ESM hard.** Hard-refresh after edits; the CSS `?v=` bump exists for this.
 - **Headless screenshots of external live sites** need an isolated `--user-data-dir` or they collide with an
   open Chrome and silently fail to write.
@@ -222,7 +231,7 @@ portrait, footer pill, Instagram → ellevux, slot-03 SVG wordmark). Removed acr
   `--dur-marquee`, `--z-bg`, `--blur-sm`, `--accent-dim`). Detected by transitive `var()`-usage; after removal
   every defined token has a live consumer and no `var()` is dangling.
 - **three-hero.js:** the write-only `revealed` variable.
-- **asset:** `assets/img/work-lab.png` (orphaned; slot 03 is an inline SVG wordmark).
+- **asset:** `assets/img/work-lab.png` (orphaned; slot 03 was an inline SVG wordmark at the time).
 
 ALWAYS keep `.social-links`/`.social-link` (the About Instagram link), `.section--raised` (#about), and the
 `--text-muted` token — they are LIVE.
