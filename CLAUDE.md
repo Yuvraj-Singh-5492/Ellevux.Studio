@@ -57,7 +57,9 @@ assets/js/
                         DOWN and morph into the #work "Selected Works" heading (scroll-scrubbed, no pin) and
                         PERSIST as it. Boots straight to particles (no crisp flash). FAIL OPEN (see below).
                         Runs on ALL screens incl. phones (mobile uses ~22000 particles, smaller dots, near-
-                        zero wobble/jitter so the small glyphs read SOLID, not scattered). Cursor-repel is
+                        zero wobble/jitter so the small glyphs read SOLID, not scattered). The #work heading's
+                        particle copy is all Inter (the DOM "Works" is a narrower serif), so sampleWorkTitle()
+                        shrinks it to fit the h2 box on phones (was clipping the edge S's). Cursor-repel is
                         gated to fine pointers (no touch "blackhole"). Morph survives the mobile address bar
                         (ScrollTrigger ignoreMobileResize + width-only resize guard).
   animations.js         GSAP/ScrollTrigger reveals (FAIL OPEN) + nav compact-on-scroll

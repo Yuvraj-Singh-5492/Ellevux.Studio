@@ -298,6 +298,20 @@ import * as THREE from 'three';
     if (!isFinite(lineBoxH) || lineBoxH < fontSize * 0.5) lineBoxH = fontSize * 1.15;
     const visualLines = Math.max(1, Math.round(h / lineBoxH));
     const runs = visualLines > 1 ? wrapWords(octx, text, w) : [text];
+    // The particle copy is ALL one face (the DOM "Works" is a narrower serif), so on
+    // phones it can be wider than the heading box and the edge glyphs get clipped by
+    // the offscreen canvas. Shrink font + tracking to fit (never grow): desktop,
+    // where it already fits, is untouched.
+    let fitSize = fontSize;
+    for (let pass = 0; pass < 2; pass++) {
+      let widest = 0;
+      for (let li = 0; li < runs.length; li++) widest = Math.max(widest, octx.measureText(runs[li]).width);
+      if (widest <= w) break;
+      const k = (w / widest) * 0.98;
+      fitSize *= k;
+      octx.font = weight + ' ' + fitSize + 'px ' + family;
+      try { const ls2 = parseFloat(octx.letterSpacing); if (isFinite(ls2)) octx.letterSpacing = (ls2 * k) + 'px'; } catch (e) {}
+    }
     const x = align === 'center' ? w / 2 : (align === 'right' ? w : 0);
     const slot = h / runs.length;
     for (let li = 0; li < runs.length; li++) octx.fillText(runs[li], x, slot * (li + 0.5));
