@@ -21,7 +21,10 @@ and a giant footer wordmark.
 
 ## Stack & hard constraints
 - **Static, no build step** for the portfolio. Plain HTML/CSS/JS. There is **no Node/npm** on this machine
-  (git + Python 3.12 + Playwright-python are available). Do not introduce a bundler/framework for the
+  (git is). **Python 3.12 + Playwright were UNINSTALLED (found 2026-09-18).** Workarounds: Blender's bundled
+  Python `D:/Blender/5.2/python/bin/python.exe` runs stdlib-only scripts (deploy, a local http server);
+  headless Chrome (`--headless=new`, own `--user-data-dir`) does screenshots, and a same-origin harness page
+  of fixed-width iframes gives true-viewport overflow checks. Do not introduce a bundler/framework for the
   portfolio unless explicitly asked. (ARC is the exception — it is a separate Vite/React app, see ARC below.)
 - **Libraries via CDN:** Three.js (ES module, via `<script type="importmap">`) for the hero particle-text
   system (a custom GPU `ShaderMaterial`), and GSAP + ScrollTrigger for scroll motion (incl. the hero morph).
@@ -31,6 +34,7 @@ and a giant footer wordmark.
 ## File map
 ```
 index.html              the whole portfolio (nav · hero · #work · #about · footer/#contact)
+testimonials.html       second page: client/project cards + hidden quote slots (see "Testimonials page")
 og.png                  1200x630 social share image (the hero on black). Served at site root (/og.png).
 robots.txt, sitemap.xml at root. NOTE: their host + og:url/canonical in index.html still use the PLACEHOLDER
                         domain ellevux.studio; update to the real deploy origin when a domain is attached.
@@ -44,7 +48,8 @@ assets/css/             linked from index.html with ?v=8 cache-bust (bump ALL FO
   components.css        reusable UI (nav, .work-item/.work-art, .pill-btn, social-links, labels...). Its
                         "PART B legacy components" block (.bento/.case/.glass/.stat/.browser/.btn/...) was
                         REMOVED in the dead-code cleanup (see "Dead-code cleanup" below).
-  main.css              page layout for index.html (hero, the Selected Works scatter, about, footer)
+  main.css              page layout (hero, the Selected Works scatter, about, footer; §9 phone nav 2x2
+                        grid <=600px; §10 the testimonials page .tm-*)
 assets/js/
   three-hero.js         (ES module) the HERO PARTICLE TEXT. #hero-canvas is a PAGE-LEVEL fixed layer
                         (z-index:-1, behind all content, on the black bg) — NOT inside #hero. Samples the
@@ -62,6 +67,7 @@ assets/img/
   work-cafe.png         16:9 thumbnail for the Buzzy cafe work card (comic hero screenshot)
   work-ellevux-site.png 16:9 thumbnail for the Ellevux SaaS card (headless screenshot of ellevux.vercel.app)
   work-arc.png          16:9 thumbnail for the ARC card (the scroll-built 3D house hero, from ARC/.verify)
+  work-mirror.png       16:9 thumbnail for Mirror Solutions (headless-Chrome shot of mirror-solutions.com)
   portrait.jpg          About-card B&W portrait (4:5): a moody hooded silhouette at a laptop by a cliffside
                         window. Fills the .portrait slot (object-fit:cover, grayscale). NOTE: it is a stock-
                         style aesthetic shot, not a real photo of Yuvi.
@@ -95,6 +101,14 @@ Ellevux WEB/            an Obsidian vault (gitignored). STALE — describes an a
 CAFE-RESEARCH.md / CAFE-SPEC.md / CONTRACT*.md / REDESIGN-PLAN.md   historical specs/research (reference only)
 handover.md             current state + what's left (read alongside this file)
 ```
+
+## Testimonials page (`testimonials.html`, nav link on both pages)
+Three cards: **01 Mirror Solutions** (real client, https://mirror-solutions.com, a Spanish-language real-estate
+engineering consultancy), **02 Ellevux** (own product), **03 ARC** (labelled a SELF-INITIATED CONCEPT, since the
+studio is fictional; it has no quote slot). Each real card has a `<figure class="tm-quote" hidden>` with empty
+fields. **Never invent or paraphrase a testimonial:** only fill a slot with words the owner supplies, then
+remove `hidden`. Until then the page reads as a client/project list. The nav has FOUR links now; <=600px they
+fold into a right-aligned 2x2 grid (one row overflows at phone widths).
 
 ## Selected Works (in `#work`) — FOUR cards now, scattered (4 corners on desktop, stacked < 768px)
 The `.work-art` tiles are **16:9**; thumbnails are `object-fit: cover`, grayscale at rest, full colour on hover.

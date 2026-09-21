@@ -54,6 +54,9 @@ a playful About with a B&W portrait, a giant footer wordmark. **It is LIVE:**
   + og dims in the head; CSS links cache-busted `?v=8`.
 
 ## Open items / next steps
+0. **Testimonial quotes are pending.** `testimonials.html` ships with hidden, EMPTY quote slots for Mirror
+   Solutions and Ellevux. Fill them only with real words the owner sends (name + role too), then remove
+   `hidden`. Never write placeholder or invented quotes into the live page.
 1. **Attach a real domain.** og:url / og:image / `<link rel=canonical>` / robots / sitemap still use the
    PLACEHOLDER `ellevux.studio`. When a domain is attached in Vercel, update those to the real origin (and
    the share preview will resolve).
@@ -82,6 +85,7 @@ Reference sites are used for LOOK only. The `CONTRACT*.md` / `REDESIGN-PLAN.md` 
 ## Run (local)
 - Serve over http (the hero uses ES modules; `file://` won't load them):
   `python -m http.server 5510` in the project root, then open `http://localhost:5510/`. (Or VS Code Live Server.)
+  Python itself is currently uninstalled: use `D:/Blender/5.2/python/bin/python.exe -m http.server 5510`.
 - ARC can NOT run locally (no Node). Test ARC by redeploying to Vercel + screenshotting the live site.
 - Caching: browsers cache CSS/ESM hard — hard-refresh (Ctrl+Shift+R) after edits.
 

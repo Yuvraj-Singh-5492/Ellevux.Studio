@@ -557,13 +557,13 @@ html.work-particled #work .work__title { opacity: 0; }
     gap: var(--s-5);
   }
   .footer__copy { white-space: normal; }
+  /* In the stacked (column) strip, the 22rem flex-basis would become a HEIGHT
+     (a ~350px gap under two lines of text), so let the line size to its copy. */
+  .footer__thanks { flex: none; }
 }
 
 /* ---- ≤ 480 — small phone (375 baseline). NO horizontal overflow. ---- */
 @media (max-width: 480px) {
-  /* Nav links sit tight; gap shrinks so wordmark + links fit at 375. */
-  .nav__list { gap: var(--s-4); }
-
   /* The hero headline must never force horizontal scroll — allow the longest
      line ("WEB DEVELOPER") to wrap if the clamp floor still overruns 375. */
   .hero__title { text-wrap: balance; }
@@ -664,4 +664,206 @@ html.work-particled #work .work__title { opacity: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   .hero-meta__dot::after { animation: none; opacity: 0.4; transform: scale(1); }
+}
+
+/* ============================================================
+   9 · NAV on phones — FOUR links (Projects · Testimonials · About · Contact)
+   can't share one row with the wordmark at 375, so at 600px and below they fold
+   into a compact right-aligned 2 x 2 grid (one row fits down to ~580px).
+   Nothing is hidden behind a toggle; the header just grows by one line.
+   ============================================================ */
+@media (max-width: 600px) {
+  .nav__list {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-items: end;
+    gap: var(--s-2) var(--s-4);
+  }
+}
+
+/* ============================================================
+   10 · TESTIMONIALS PAGE (testimonials.html)
+   A page head (eyebrow · huge title · lead) then a hairline-ruled list of
+   projects. Each card: an info column (kicker, name, description, facts)
+   beside a 16:9 thumbnail link that reuses .work-item/.work-art, plus an
+   optional client quote. Quotes ship with the `hidden` attribute until a
+   real one is pasted in. Mobile-first stack → two columns ≥ 900, with the
+   thumbnail side alternating per row for an editorial rhythm.
+   ============================================================ */
+.tm-head {
+  /* clear the fixed nav, then generous air before the list */
+  padding-block: calc(var(--s-10) + var(--s-4)) var(--s-8);
+}
+.tm-head__eyebrow {
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin-bottom: var(--s-6);
+}
+.tm-head__eyebrow .accent-serif {
+  font-size: 1.35em;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.tm-head__title {
+  /* vw-proportional so the one long word never overflows at 375 */
+  font-size: clamp(2rem, 0.25rem + 8.4vw, 9rem);
+  font-weight: var(--weight-black);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  color: var(--text);
+}
+.tm-head__lead {
+  max-width: 34ch;
+  margin-top: var(--s-6);
+  font-size: var(--fs-lead);
+  font-weight: var(--weight-medium);
+  line-height: 1.32;
+  color: var(--text);
+  text-wrap: balance;
+}
+.tm-head__lead .accent-serif { font-size: 1.18em; }
+
+.tm-list {
+  border-top: 1px solid var(--line-faint);
+  margin-bottom: var(--s-8);
+}
+.tm-item {
+  padding-block: clamp(var(--s-7), 6vw, var(--s-9));
+  border-bottom: 1px solid var(--line-faint);
+}
+/* the footer's own top hairline closes the list, so no double rule */
+.tm-item:last-child { border-bottom: 0; }
+
+.tm-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-6);
+}
+.tm-card__info { min-width: 0; }
+
+.tm-card__kicker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-3);
+  font-size: var(--fs-label);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+.tm-card__num  { color: var(--text-muted); }
+.tm-card__type { color: var(--text-soft); }
+
+.tm-card__name {
+  margin-top: var(--s-4);
+  font-size: var(--fs-h1);
+  font-weight: var(--weight-black);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+}
+.tm-card__desc {
+  margin-top: var(--s-5);
+  max-width: 46ch;
+  font-size: var(--fs-body);
+  line-height: var(--lh-base);
+  color: var(--text-soft);
+}
+
+/* Facts row: Sector / Scope / Live at — small tracked labels over values. */
+.tm-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  gap: var(--s-4) var(--s-6);
+  margin-top: var(--s-6);
+  padding-top: var(--s-5);
+  border-top: 1px solid var(--line-faint);
+}
+.tm-facts dt {
+  font-size: var(--fs-xs);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-mut);
+}
+.tm-facts dd {
+  margin: var(--s-1) 0 0;
+  font-size: var(--fs-sm);
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.tm-facts a {
+  text-decoration: underline;
+  text-decoration-color: var(--line-strong);
+  text-underline-offset: 0.25em;
+  transition: color var(--dur-base) var(--ease-out-expo),
+              text-decoration-color var(--dur-base) var(--ease-out-expo);
+}
+.tm-facts a:hover,
+.tm-facts a:focus-visible {
+  color: var(--accent);
+  text-decoration-color: var(--accent-line);
+}
+
+/* Thumbnail link (look comes from .work-item / .work-art in components.css). */
+.tm-card__shot {
+  display: flex;
+  width: 100%;
+}
+.tm-card__shot .work-art { width: 100%; }
+
+/* Client quote — ships `hidden`; author display:grid must not override that. */
+.tm-quote {
+  display: grid;
+  gap: var(--s-4);
+  margin: 0;
+  padding-top: var(--s-6);
+  border-top: 1px solid var(--line-faint);
+}
+.tm-quote[hidden] { display: none; }
+.tm-quote__text p {
+  max-width: 40ch;
+  font-size: var(--fs-h3);
+  font-weight: var(--weight-medium);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+  text-wrap: pretty;
+}
+.tm-quote__text p::before { content: "\201C"; }
+.tm-quote__text p::after  { content: "\201D"; }
+.tm-quote__by {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2) var(--s-3);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+}
+.tm-quote__name { color: var(--text); font-weight: var(--weight-semibold); }
+.tm-quote__role { color: var(--text-mut); }
+
+/* ----- ≥ 900: info beside the thumbnail, sides alternating per row ----- */
+@media (min-width: 900px) {
+  .tm-card {
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    align-items: center;
+    column-gap: clamp(var(--s-7), 5vw, var(--s-9));
+    row-gap: var(--s-7);
+  }
+  .tm-item:nth-child(even) .tm-card { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); }
+  .tm-item:nth-child(even) .tm-card__shot { order: -1; }
+  .tm-quote { grid-column: 1 / -1; }
+
+  .work-item.tm-card__shot { transition: transform var(--dur-slow) var(--ease-out-expo); }
+  .work-item.tm-card__shot:hover,
+  .work-item.tm-card__shot:focus-visible { transform: translateY(-6px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .work-item.tm-card__shot:hover,
+  .work-item.tm-card__shot:focus-visible { transform: none; }
 }
