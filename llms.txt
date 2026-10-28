@@ -1,0 +1,36 @@
+# Ellevux
+
+> A one-person web studio. Websites designed and built by hand, then structured so
+> search engines can rank them and AI assistants can quote them. Remote, worldwide,
+> in English. Run by Yuvi.
+
+## What the studio does
+
+- **Websites.** Design and build, by hand. No page builders, no templates. From 2,000 USD.
+- **SEO and AEO.** Technical search foundations plus answer engine optimization:
+  a plain-text answer layer, real text in the HTML, and crawler policy set per vendor.
+  Every method is graded by evidence strength and sourced at /ai-search/.
+  AI visibility audit 600 USD. Included in a build from 9,000 USD.
+
+## Pricing
+
+- Launch, from 2,000 USD. One page, about one week.
+- Flagship, from 4,500 USD. Up to six pages, about two to three weeks.
+- Flagship + AI Search, from 9,000 USD. Six pages plus six answer pages, then ninety days.
+- AI visibility audit, 600 USD flat, for a site that already exists.
+
+Rankings and AI citations are never guaranteed, because nobody can control them.
+
+## Pages
+
+- [Home](https://ellevux-studio.vercel.app/): what the studio does, the work, how AI search works
+- [Pricing](https://ellevux-studio.vercel.app/pricing/): packages and what changes between them
+- [SEO and AI search](https://ellevux-studio.vercel.app/ai-search/): what works, what is unproven, and what gets sold anyway, each claim sourced
+- [Work](https://ellevux-studio.vercel.app/work/): two client sites, four studio pieces
+- [About](https://ellevux-studio.vercel.app/about/): how a project runs, and the common questions
+- [Contact](https://ellevux-studio.vercel.app/contact/): start a project
+- [Lab](https://ellevux-studio.vercel.app/lab/): GPU particle typography, a capability piece
+
+## Contact
+
+yuvrajsinghgill5492@gmail.com

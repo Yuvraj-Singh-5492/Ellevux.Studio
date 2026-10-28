@@ -894,3 +894,72 @@ html.work-particled #work .work__title { opacity: 0; }
   .work-item.tm-card__shot:hover,
   .work-item.tm-card__shot:focus-visible { transform: none; }
 }
+
+/* ============================================================
+   11 · BUILT WITH — a dashed grid of the stack, between
+   Selected Works and About. Two columns on phones, three from
+   600, five from 900, which is what the reference layout wants
+   without ever squeezing a name onto two lines.
+   ============================================================ */
+.stack {
+  padding-block: var(--s-9);
+}
+
+.stack__title {
+  font-size: clamp(1.6rem, 4vw, 2.6rem);
+  font-weight: var(--weight-black);
+  line-height: var(--lh-tight);
+  letter-spacing: var(--tracking-tight);
+  text-transform: uppercase;
+  text-align: center;
+  margin: 0 0 var(--s-6);
+}
+.stack__title .accent-serif {
+  color: inherit;
+  text-transform: none;
+}
+
+/* The grid draws its own hairlines: top/left on the list, right/bottom on
+   each cell, so the outer edge closes without doubling up anywhere. */
+.stack__grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-top: 1px dashed var(--line-faint);
+  border-left: 1px dashed var(--line-faint);
+}
+
+.stack__cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  min-height: clamp(7rem, 13vw, 10rem);
+  padding: var(--s-5) var(--s-3);
+  text-align: center;
+  border-right: 1px dashed var(--line-faint);
+  border-bottom: 1px dashed var(--line-faint);
+}
+
+.stack__name {
+  font-size: clamp(1rem, 1.5vw, 1.3rem);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-tight);
+  color: var(--text);
+}
+
+.stack__note {
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--text-mut);
+}
+
+/* Ten cells, so only 2 and 5 columns divide evenly. A 3-column middle band
+   left a single orphan cell on the last row, which read as a mistake. */
+@media (min-width: 900px) {
+  .stack__grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}

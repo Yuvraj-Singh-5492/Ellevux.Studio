@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SEO and AI search · Ellevux</title>
+<meta name="description" content="What actually works in search and AI visibility, what is unproven, and what gets sold anyway. Every claim graded by evidence strength, with the source linked.">
+<meta name="theme-color" content="#f8f8f6">
+<link rel="canonical" href="https://ellevux-studio.vercel.app/ai-search/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ellevux">
+<meta property="og:url" content="https://ellevux-studio.vercel.app/ai-search/">
+<meta property="og:title" content="SEO and AI search · Ellevux">
+<meta property="og:description" content="What actually works in search, what is unproven, and what gets sold anyway. Every claim graded, with the source linked.">
+<meta property="og:image" content="https://ellevux-studio.vercel.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap">
+<link rel="stylesheet" href="/assets/css/site.css?v=22">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ellevux-studio.vercel.app/#studio",
+      "name": "Ellevux",
+      "url": "https://ellevux-studio.vercel.app/",
+      "email": "yuvrajsinghgill5492@gmail.com",
+      "sameAs": ["https://www.instagram.com/ellevux.studio"],
+      "founder": { "@type": "Person", "name": "Yuvi" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://ellevux-studio.vercel.app/ai-search/#webpage",
+      "url": "https://ellevux-studio.vercel.app/ai-search/",
+      "name": "SEO and AI search · Ellevux",
+      "description": "What actually works in search and AI visibility, what is unproven, and what gets sold anyway. Every claim graded by evidence strength, with the source linked.",
+      "about": { "@id": "https://ellevux-studio.vercel.app/#studio" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://ellevux-studio.vercel.app/ai-search/#breadcrumbs",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Ellevux", "item": "https://ellevux-studio.vercel.app/" },
+        { "@type": "ListItem", "position": 2, "name": "SEO and AI search", "item": "https://ellevux-studio.vercel.app/ai-search/" }
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://ellevux-studio.vercel.app/ai-search/#faq",
+      "isPartOf": { "@id": "https://ellevux-studio.vercel.app/ai-search/#webpage" },
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is answer engine optimization?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Answer engine optimization, or AEO, is the work of making a page quotable by AI assistants rather than only rankable by a search engine. In practice that means a short plain-text answer near the top of each page, real text in the HTML rather than text drawn by a script, and headings that match how people actually ask."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you guarantee I will rank, or that AI assistants will mention me?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, and nobody honestly can. Google's own guidance on hiring an SEO says no one can guarantee a number one ranking, and that you should find someone else if they promise it. What I control is the work: a fast site, clean structure, real text in the HTML, and tracking in your own accounts so you can check the results yourself."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Should I block AI crawlers from my site?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "That is two decisions, not one. Each company runs a separate crawler for training and for search. OpenAI documents GPTBot for training and OAI-SearchBot for its search results, and states that the settings are independent of each other. Blocking the search crawler removes you from the answers. Blocking the training crawler does not."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does structured data get me quoted by AI assistants?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Google's own documentation says structured data is not required for generative AI search, and that there is no special markup to add for it. Schema earns its place by making a page eligible for rich results in ordinary search, and by stating facts that agree with the visible page. I add it for that."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is llms.txt worth paying for?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No, and I do not charge for it. It is a community proposal rather than a standard, and Google states plainly that Google Search does not use these files. No major AI company has committed to reading one for citation. I publish one on this site because it costs nothing, and I claim nothing for it."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you measure AI visibility?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Carefully, and with the spread shown. Asking an assistant the same question twice can return different sources, so a single check proves very little. I run each question repeatedly and report the range rather than one number. A tool reporting a tidy monthly score from one run per question is reporting noise."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="nav__dock">
+    <a class="nav__brand" href="/" aria-label="Ellevux, home">
+      <img class="nav__mark" src="/assets/img/logo-mark-light.png" alt="" width="34" height="34">
+    </a>
+
+    <nav class="nav__links" aria-label="Primary">
+      <a class="nav__link" href="/work/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4.6A1.6 1.6 0 0 1 3.6 3h2.5l1.3 1.7h5A1.6 1.6 0 0 1 14 6.3v5.1A1.6 1.6 0 0 1 12.4 13H3.6A1.6 1.6 0 0 1 2 11.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Work
+      </a>
+      <a class="nav__link" href="/pricing/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8.5 2.5H13V7l-5.6 5.6a1.3 1.3 0 0 1-1.9 0L2.9 9a1.3 1.3 0 0 1 0-1.9z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="10.6" cy="5.4" r="1" stroke="currentColor" stroke-width="1.2"/></svg>
+        Pricing
+      </a>
+      <a class="nav__link" href="/ai-search/" aria-current="page">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7.2" cy="7.2" r="4.2" stroke="currentColor" stroke-width="1.3"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        AI search
+      </a>
+      <a class="nav__link" href="/about/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5.7" r="2.4" stroke="currentColor" stroke-width="1.3"/><path d="M3.7 13.1a4.3 4.3 0 0 1 8.6 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        About
+      </a>
+    </nav>
+
+    <a class="btn btn--primary nav__cta" href="/contact/">Start a project <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></a>
+
+    <button class="nav__burger" id="nav-toggle" type="button"
+            aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="drawer" id="nav-drawer" data-open="false" aria-label="Menu">
+  <a class="drawer__link" href="/work/">Work</a>
+  <a class="drawer__link" href="/pricing/">Pricing</a>
+  <a class="drawer__link" href="/ai-search/">AI search</a>
+  <a class="drawer__link" href="/about/">About</a>
+  <img class="drawer__lockup" src="/assets/img/logo-lockup-420.png" alt=""
+       width="210" height="70" loading="lazy" decoding="async">
+  <div class="drawer__foot">
+    <a class="btn btn--primary" href="/contact/">Start a project <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ====================================================
+       BAND 1 · HERO · paper
+       The answer comes first, in plain text, in the HTML.
+       That is the practice this page argues for, so the page
+       has to be built the way it says.
+       ==================================================== -->
+  <section class="band hero grid-field grid-field--fade" id="hero" data-band="paper" aria-labelledby="ais-title">
+    <div class="container">
+      <p class="label">SEO and AI search</p>
+      <h1 id="ais-title" style="margin-top:var(--s-5);max-width:30ch">What actually works in search, and what gets sold anyway.</h1>
+      <p class="lead" style="margin-top:var(--s-5)">
+        Most of what is sold as SEO has no evidence behind it, and some of it breaks Google's
+        published policies. This page sorts what Google and the AI companies confirm in their
+        own documentation from what is unproven, and from what gets sold anyway. Every claim
+        is graded, and linked to its source.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 2 · WHY YOU CANNOT TELL · ink
+       Not "agencies are bad" but "the information supply is
+       broken, and here is the buyer's guide nobody showed you."
+       ==================================================== -->
+  <section class="band" data-band="ink" aria-labelledby="tell-title">
+    <div class="container">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="label">Start here</p>
+          <h2 id="tell-title">Why you cannot tell good SEO from bad.</h2>
+        </div>
+        <p class="lead head__lead">
+          Because almost everything written about it is written by someone selling it. Search for
+          research on AI citations and you land in a ring of sites citing each other, re-citing
+          the same few studies with the numbers changed, and no method you can check.
+        </p>
+      </div>
+
+      <div data-reveal>
+        <p class="label" style="margin-bottom:var(--s-4)">Google's own warning signs, quoted</p>
+        <ul class="excludes__list">
+          <li><strong>"No one can guarantee a #1 ranking on Google."</strong> And: "If they guarantee you that their changes will give you first place in search results, find someone else."</li>
+          <li>"Be wary of SEO firms and web consultants or agencies that email you out of the blue."</li>
+          <li>"Be careful if a company is secretive or won't clearly explain what they intend to do."</li>
+          <li>"You should never have to link to an SEO."</li>
+          <li>"Be wary of tools that claim to be 'acceptable' or 'approved' by Google Search."</li>
+          <li>Give an auditor <strong>read</strong> access to Search Console, never write access.</li>
+        </ul>
+
+        <p class="aeo__source" style="margin-top:var(--s-7)">
+          The same guide gives you two questions to ask whoever is selling to you.
+          <strong>"Do they cite official Google documentation as supporting evidence for their
+          recommendations?"</strong> And, about AEO and GEO sellers specifically,
+          <strong>"is their advice aligned with Google Search's official guidance on optimizing
+          for generative AI features?"</strong> Everything below is graded and linked so you can
+          answer both about me.
+          <a href="https://developers.google.com/search/docs/fundamentals/do-i-need-seo">Google, Do you need an SEO?</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 3 · WHAT GOOGLE CONFIRMS · paper
+       Every point carries a .status-pill tier and a source.
+       The pill is reused from the retired "open for projects"
+       chip: information, never the action colour.
+       ==================================================== -->
+  <section class="band" data-band="paper" aria-labelledby="conf-title">
+    <div class="container">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="label">The evidence</p>
+          <h2 id="conf-title">What Google actually confirms.</h2>
+        </div>
+        <p class="lead head__lead">
+          Three requirements make a page eligible at all: Googlebot is not blocked, the page
+          returns a 200, and it has indexable content. In Google's words, "there are actually
+          very few technical things you need to do to a web page." Everything else is weaker
+          than it is sold as.
+        </p>
+      </div>
+
+      <div class="aeo__points" data-reveal>
+        <div class="aeo__point">
+          <span class="aeo__point-num">01</span>
+          <div>
+            <h4>Crawlable, reachable, made of text</h4>
+            <p>Those three are the whole list. One trap: robots.txt stops crawling, but noindex only works if the page stays crawlable.</p>
+            <p><span class="status-pill">Confirmed</span> <a href="https://developers.google.com/search/docs/essentials/technical">Google, Technical requirements</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">02</span>
+          <div>
+            <h4>Real links, with a real href</h4>
+            <p>Google "can't reliably extract URLs from &lt;a&gt; elements that don't have an href attribute." Every page you care about needs a link from at least one other.</p>
+            <p><span class="status-pill">Confirmed</span> <a href="https://developers.google.com/search/docs/crawling-indexing/links-crawlable">Google, Link best practices</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">03</span>
+          <div>
+            <h4>The mobile page is the page</h4>
+            <p>"Only the content shown on the mobile site is used for indexing." Anything hidden on small screens is not demoted. It is not indexed.</p>
+            <p><span class="status-pill">Confirmed</span> <a href="https://developers.google.com/search/docs/crawling-indexing/mobile/mobile-sites-mobile-first-indexing">Google, Mobile-first indexing</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">04</span>
+          <div>
+            <h4>A title, and a heading that agrees with it</h4>
+            <p>Google builds the blue link from your title, your main heading and prominent text, and rewrites yours when it does not fit. You cannot request a correction.</p>
+            <p><span class="status-pill">Confirmed</span> <a href="https://developers.google.com/search/docs/appearance/title-link">Google, Title links</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">05</span>
+          <div>
+            <h4>Canonicals and redirects, not panic</h4>
+            <p>The two signals Google calls strong. And it gets sold as an emergency: duplicate content is not a penalty. Google says not to fret about it.</p>
+            <p><span class="status-pill">Confirmed</span> <a href="https://developers.google.com/search/docs/crawling-indexing/consolidate-duplicate-urls">Google, Consolidate duplicate URLs</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">06</span>
+          <div>
+            <h4>Speed counts, and relevance still wins</h4>
+            <p>"Core Web Vitals are used by our ranking systems," but also "there is no single signal," and Search shows the most relevant content "even if the page experience is sub-par." Fast is a floor, not a lever.</p>
+            <p><span class="status-pill">Confirmed, subordinate</span> <a href="https://developers.google.com/search/docs/appearance/page-experience">Google, Page experience</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">07</span>
+          <div>
+            <h4>HTTPS, and how small it really is</h4>
+            <p>Confirmed, but Google called it "a very lightweight signal" affecting "fewer than 1% of global queries." That was 2014, never updated since. Have it, and stop paying for it.</p>
+            <p><span class="status-pill">Confirmed, minor</span> <a href="https://developers.google.com/search/blog/2014/08/https-as-ranking-signal">Google, HTTPS as a ranking signal</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">08</span>
+          <div>
+            <h4>Structured data buys rich results, not citations</h4>
+            <p>It makes a page eligible for the extra detail in a Google result. But Google is explicit: "structured data isn't required for generative AI search." I write it everywhere, and never sell it as why an assistant quotes you.</p>
+            <p><span class="status-pill">Confirmed, not for AI</span> <a href="https://developers.google.com/search/docs/fundamentals/ai-optimization-guide">Google, AI features and your site</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">09</span>
+          <div>
+            <h4>Quotable writing is the one tested tactic</h4>
+            <p>A peer-reviewed 2024 KDD experiment tested content changes against generative engines. Direct quotations raised visibility most, statistics and cited sources close behind, and keyword stuffing scored below making no change at all. It ran on 2023-era models.</p>
+            <p><span class="status-pill">Peer reviewed</span> <a href="https://arxiv.org/abs/2311.09735">Aggarwal and others, GEO, KDD 2024</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 4 · HOW AI ASSISTANTS WORK · ink
+       The crawler split is the most useful thing on the page:
+       concrete, checkable, and almost always set by accident.
+       ==================================================== -->
+  <section class="band" data-band="ink" aria-labelledby="how-title">
+    <div class="container">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="label">The machines</p>
+          <h2 id="how-title">How AI assistants actually find you.</h2>
+        </div>
+        <p class="lead head__lead">
+          For Google's own answers there is no second job. To appear in AI Overviews a page
+          "must be indexed and eligible to be shown in Google Search with a snippet," and
+          "there are no additional technical requirements." The search work is the AI work.
+        </p>
+      </div>
+
+      <div data-reveal>
+        <p class="label" style="margin-bottom:var(--s-5)">Two crawlers each, and people block the wrong one</p>
+        <div class="problems">
+          <div class="problems__item">
+            <h4>OpenAI</h4>
+            <p>GPTBot trains. OAI-SearchBot decides whether you appear in ChatGPT's search answers. Each setting is "independent of the others."</p>
+          </div>
+          <div class="problems__item">
+            <h4>Anthropic</h4>
+            <p>ClaudeBot collects for models. Claude-SearchBot works on search quality. A robots rule matching every agent containing "Claude" removes you from the answers too.</p>
+          </div>
+          <div class="problems__item">
+            <h4>Perplexity</h4>
+            <p>PerplexityBot surfaces and links sites in results. Perplexity states it is not used to crawl for foundation models, because it does not build them.</p>
+          </div>
+          <div class="problems__item">
+            <h4>Google</h4>
+            <p>Google-Extended governs Gemini training and grounding. It "does not impact a site's inclusion in Google Search," so blocking it does not remove you from AI Overviews.</p>
+          </div>
+        </div>
+
+        <p class="aeo__source" style="margin-top:var(--s-7)">
+          <span class="status-pill">Confirmed</span>
+          Each company documents this itself:
+          <a href="https://developers.openai.com/api/docs/bots">OpenAI</a>,
+          <a href="https://support.claude.com/en/articles/8896518-does-anthropic-crawl-data-from-the-web-and-how-can-site-owners-block-the-crawler">Anthropic</a>,
+          <a href="https://docs.perplexity.ai/guides/bots">Perplexity</a>,
+          <a href="https://developers.google.com/search/docs/crawling-indexing/google-common-crawlers">Google</a>.
+          Setting these four on purpose is an afternoon of work most sites have never done.
+        </p>
+      </div>
+
+      <div class="aeo__points" style="margin-top:var(--s-8)" data-reveal>
+        <div class="aeo__point">
+          <span class="aeo__point-num">01</span>
+          <div>
+            <h4>Most assistants do not run your JavaScript</h4>
+            <p>Vercel and MERJ measured this in December 2024: GPTBot, ClaudeBot and PerplexityBot fetch JavaScript but do not execute it, while Gemini and Applebot render. Text that only exists after a script runs was, on that evidence, invisible to three of them.</p>
+            <p><span class="status-pill">One study, dated</span> <a href="https://vercel.com/blog/the-rise-of-the-ai-crawler">Vercel and MERJ, December 2024</a></p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">02</span>
+          <div>
+            <h4>A citation is presence, not traffic</h4>
+            <p>Pew Research Center tracked real browsing: people clicked a result on about 8% of visits where an AI summary appeared, against about 15% where none did, and clicked a link inside the summary on roughly 1%. Being in the answer is worth having, but it is not a traffic channel, and anyone selling you AI traffic is selling what the best independent data does not support.</p>
+            <p><span class="status-pill">Independent</span> <a href="https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/">Pew Research Center, July 2025</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 5 · WHAT NOBODY KNOWS · paper
+       The section that sells, because no competitor has one.
+       Ends with a conflict-of-interest disclosure about this
+       studio's own argument, at full size.
+       ==================================================== -->
+  <section class="band" data-band="paper" aria-labelledby="unk-title">
+    <div class="container">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="label">The honest part</p>
+          <h2 id="unk-title">What nobody knows yet, including me.</h2>
+        </div>
+        <p class="lead head__lead">
+          AI search has existed at scale for about two years. Anyone describing it as a settled
+          discipline is describing something that does not exist. Here is what is genuinely
+          unknown, from me rather than later.
+        </p>
+      </div>
+
+      <div class="aeo__points" data-reveal>
+        <div class="aeo__point">
+          <span class="aeo__point-num">01</span>
+          <div>
+            <h4>The same question gives different answers</h4>
+            <p>Published testing found models served over an API matched their own earlier output only about a fifth of the time, even at a fixed temperature and seed. So one check proves little, and a monthly score built from one run per question is measuring noise. Ask any vendor how many runs they average.</p>
+            <p><span class="status-pill">Unknown</span> Reproducibility is still being characterised</p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">02</span>
+          <div>
+            <h4>One controlled experiment exists</h4>
+            <p>The KDD study above is the only peer-reviewed controlled test of content tactics I could find, and it ran on 2023-era models. Everything else is correlation, mostly on data owned by whoever sells the tool that measured it.</p>
+            <p><span class="status-pill">Unknown</span> No causal evidence on current models</p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">03</span>
+          <div>
+            <h4>Nobody outside these companies knows how retrieval works</h4>
+            <p>ChatGPT's mix of its own index and third-party providers is unpublished. Anthropic does not name a search provider. Perplexity's third-party crawlers are under agreement. Advice built on a guessed architecture inherits the guess.</p>
+            <p><span class="status-pill">Unknown</span> Architectures are undisclosed, and change without notice</p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">04</span>
+          <div>
+            <h4>Attribution is partly broken</h4>
+            <p>Traffic from Claude's own app carries no referrer, so ordinary analytics cannot attribute it. Anyone promising clean reporting on AI-driven visits is promising what the plumbing does not support.</p>
+            <p><span class="status-pill">Unknown</span> The gaps are structural, not a tooling problem</p>
+          </div>
+        </div>
+
+        <div class="aeo__point">
+          <span class="aeo__point-num">05</span>
+          <div>
+            <h4>Cause and effect may run backwards</h4>
+            <p>The strongest published correlate of being cited is how often a brand is mentioned elsewhere. But brands mentioned often were already well known. "Get more mentions" may describe success rather than cause it.</p>
+            <p><span class="status-pill">Unknown</span> The direction of causation is unestablished</p>
+          </div>
+        </div>
+
+        <p class="aeo__source">
+          One disclosure, since this page asks you to check sources. <strong>I sell web work, so
+          "hand-written HTML with the text in the source" is a conclusion that happens to favour
+          what I build.</strong> The study is linked above, dated December 2024, never replicated
+          at scale, and it does not apply to Google. Read it and decide for yourself.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 6 · WHAT DOES NOT WORK · ink
+       Names the practice and the policy it breaks, never the
+       seller. Every line is checkable against a public Google
+       document, which is the point.
+       ==================================================== -->
+  <section class="band" data-band="ink" aria-labelledby="no-title">
+    <div class="container">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="label">Still being sold</p>
+          <h2 id="no-title">What does not work, and gets sold anyway.</h2>
+        </div>
+        <p class="lead head__lead">
+          Each is named in Google's spam policies, contradicted by Google's own documentation, or
+          measured and found not to work. If one is in a proposal you have been sent, ask the
+          person to show you the policy page.
+        </p>
+      </div>
+
+      <div data-reveal>
+        <ul class="excludes__list">
+          <li><strong>Buying links, packages or placements, including to raise "Domain Authority".</strong> Google's link spam policy names "buying or selling links for ranking purposes." A disclosed sponsored link is fine; one that passes ranking credit is not. Since 2022 there is usually no penalty notice either: the links are quietly neutralised, so you paid for nothing. Domain Authority is a Moz metric anyway, not a number Google uses.</li>
+          <li><strong>Guaranteed rankings, or guaranteed AI mentions.</strong> Google: "No one can guarantee a #1 ranking on Google."</li>
+          <li><strong>Submission to hundreds of directories.</strong> "Low-quality directory or bookmark site links" is enumerated link spam, and Google says you "usually don't need to do anything except publish your site on the web."</li>
+          <li><strong>The meta keywords tag.</strong> Google: "not used by Google Search, and it has no effect on indexing and ranking at all." Dead since 2009.</li>
+          <li><strong>Keyword density targets.</strong> Google specifies no density, and in the one controlled generative-engine experiment stuffing scored below making no change at all. Debunked for ordinary search and AI search, by separate evidence.</li>
+          <li><strong>Monthly blog volume, or a word-count minimum.</strong> Google's scaled content abuse policy targets pages "generated for the primary purpose of manipulating search rankings," and says "the length of the content alone doesn't matter." Using AI is not the violation. Volume without value is.</li>
+          <li><strong>"Helpful content update recovery."</strong> Google folded that system into core ranking in March 2024 and says "there's no longer one signal or system used to do this." It is sold as recovery from a system that no longer exists.</li>
+          <li><strong>llms.txt as a visibility service.</strong> Google: "Google Search itself doesn't use them." This site publishes one because it costs nothing. It is not charged for, and nothing is claimed for it.</li>
+          <li><strong>An audit that is really a tool export.</strong> Google: "Be wary of tools that claim to be 'acceptable' or 'approved' by Google Search." A third-party score grades you against a vendor's heuristics, not Google's systems.</li>
+        </ul>
+
+        <p class="aeo__source" style="margin-top:var(--s-7)">
+          Sources, in roughly the order they get ignored:
+          <a href="https://developers.google.com/search/docs/essentials/spam-policies">Google spam policies</a>,
+          <a href="https://developers.google.com/search/docs/fundamentals/do-i-need-seo">Do you need an SEO?</a>,
+          <a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide">SEO starter guide</a>,
+          <a href="https://developers.google.com/search/docs/crawling-indexing/special-tags">Meta tags Google supports</a>,
+          <a href="https://developers.google.com/search/blog/2024/03/core-update-spam-policies">March 2024 core update and spam policies</a>.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 7 · WHAT I DO · paper
+       Every item traces to band 3 or band 4. Nothing from
+       band 5 is billed as though it were settled.
+       ==================================================== -->
+  <section class="band" data-band="paper" aria-labelledby="do-title">
+    <div class="container">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="label">The work</p>
+          <h2 id="do-title">So this is what I actually do.</h2>
+        </div>
+        <p class="lead head__lead">
+          Only the things above that survived. Nothing from the unknown list is billed as
+          settled, and nothing from the list that does not work appears at all.
+        </p>
+      </div>
+
+      <div class="card service" data-reveal>
+        <p class="label label--on-card">What is included</p>
+        <h3 class="service__title">Search and AI visibility</h3>
+        <p class="service__promise">Built so the page can be read, ranked and quoted, with every decision traceable to something public.</p>
+        <ul class="service__list">
+          <li>Hand-written HTML with the answer in the source, before any script runs</li>
+          <li>Google's three technical requirements, checked rather than assumed</li>
+          <li>Real links, real titles, canonical discipline, and a mobile page carrying everything</li>
+          <li>Structured data for rich-result eligibility, stating facts that match the page</li>
+          <li>Writing built to be quoted: specific, checkable statements instead of adjectives</li>
+          <li>Crawler policy set on purpose, training and retrieval decided per company</li>
+          <li>Tracking in your own accounts, so the numbers are yours and you can audit me</li>
+        </ul>
+        <div class="service__foot">
+          <span class="service__from">Audit 600 USD &middot; In a build from 9,000 USD</span>
+          <a class="btn btn--text" href="/pricing/">
+            See what that costs
+            <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <p class="steps__note" data-reveal style="margin-top:var(--s-6)">
+        What you will not get: a ranking promise, a citation promise, a monthly score with no
+        error bars, or an invoice for a file that Google says it ignores.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 8 · QUESTIONS · ink
+       Self-contained answers, 40 to 60 words, mirrored
+       verbatim in the FAQPage above. Two of these moved here
+       from /about/, where they were being buried.
+       ==================================================== -->
+  <section class="band" data-band="ink" id="faq" aria-labelledby="aisfaq-title">
+    <div class="container">
+      <div class="head" data-reveal>
+        <p class="label">Questions</p>
+        <h2 id="aisfaq-title">The things people ask about search.</h2>
+      </div>
+
+      <div class="faq">
+        <details class="faq__item">
+          <summary class="faq__q">What is answer engine optimization?<span class="faq__icon" aria-hidden="true"></span></summary>
+          <div class="faq__a"><p>Answer engine optimization, or AEO, is the work of making a page quotable by AI assistants rather than only rankable by a search engine. In practice that means a short plain-text answer near the top of each page, real text in the HTML rather than text drawn by a script, and headings that match how people actually ask.</p></div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">Do you guarantee I will rank, or that AI assistants will mention me?<span class="faq__icon" aria-hidden="true"></span></summary>
+          <div class="faq__a"><p>No, and nobody honestly can. Google's own guidance on hiring an SEO says no one can guarantee a number one ranking, and that you should find someone else if they promise it. What I control is the work: a fast site, clean structure, real text in the HTML, and tracking in your own accounts so you can check the results yourself.</p></div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">Should I block AI crawlers from my site?<span class="faq__icon" aria-hidden="true"></span></summary>
+          <div class="faq__a"><p>That is two decisions, not one. Each company runs a separate crawler for training and for search. OpenAI documents GPTBot for training and OAI-SearchBot for its search results, and states that the settings are independent of each other. Blocking the search crawler removes you from the answers. Blocking the training crawler does not.</p></div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">Does structured data get me quoted by AI assistants?<span class="faq__icon" aria-hidden="true"></span></summary>
+          <div class="faq__a"><p>No. Google's own documentation says structured data is not required for generative AI search, and that there is no special markup to add for it. Schema earns its place by making a page eligible for rich results in ordinary search, and by stating facts that agree with the visible page. I add it for that.</p></div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">Is llms.txt worth paying for?<span class="faq__icon" aria-hidden="true"></span></summary>
+          <div class="faq__a"><p>No, and I do not charge for it. It is a community proposal rather than a standard, and Google states plainly that Google Search does not use these files. No major AI company has committed to reading one for citation. I publish one on this site because it costs nothing, and I claim nothing for it.</p></div>
+        </details>
+
+        <details class="faq__item">
+          <summary class="faq__q">How do you measure AI visibility?<span class="faq__icon" aria-hidden="true"></span></summary>
+          <div class="faq__a"><p>Carefully, and with the spread shown. Asking an assistant the same question twice can return different sources, so a single check proves very little. I run each question repeatedly and report the range rather than one number. A tool reporting a tidy monthly score from one run per question is reporting noise.</p></div>
+        </details>
+      </div>
+
+      <p class="faq__foot" data-reveal>
+        <a class="btn btn--text" href="/about/#faq">
+          Questions about working together
+          <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+        </a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 9 · CLOSE · paper
+       ==================================================== -->
+  <section class="band close" data-band="paper" aria-labelledby="sclose-title">
+    <div class="container">
+      <div data-reveal>
+        <p class="label" style="text-align:center">Start a project</p>
+        <h2 class="close__title" id="sclose-title">Ask me to show you the source.</h2>
+        <p class="lead close__lead" style="text-align:center">
+          For anything on this page, or anything in a proposal someone else has sent you.
+        </p>
+        <div class="btn-row close__cta">
+          <a class="btn btn--primary" href="/contact/" data-magnetic>
+            <span data-magnetic-text>Start a project</span>
+            <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="/pricing/">See the prices</a>
+        </div>
+        <p class="close__promise">
+          A written price within one business day, and a straight answer about what is known
+          and what is not.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="band footer" data-band="paper" id="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__col">
+        <p class="label">Ellevux</p>
+        <p style="font-size:var(--fs-sm);color:var(--ink-soft);max-width:34ch">
+          A one-person web studio. Websites built by hand, structured so people and
+          machines can both read them.
+        </p>
+      </div>
+      <div class="footer__col">
+        <p class="label">Services</p>
+        <a class="footer__link" href="/#websites">Websites</a>
+        <a class="footer__link" href="/ai-search/">SEO and AI search</a>
+        <a class="footer__link" href="/pricing/">Pricing</a>
+      </div>
+      <div class="footer__col">
+        <p class="label">Studio</p>
+        <a class="footer__link" href="/work/">Work</a>
+        <a class="footer__link" href="/about/">About</a>
+        <a class="footer__link" href="/lab/">Lab</a>
+      </div>
+      <div class="footer__col">
+        <p class="label">Get in touch</p>
+        <a class="footer__link" href="/contact/">Start a project</a>
+        <a class="footer__link" href="mailto:yuvrajsinghgill5492@gmail.com">Email</a>
+        <a class="footer__link" href="https://www.instagram.com/ellevux.studio" rel="noopener">Instagram</a>
+      </div>
+    </div>
+    <span class="footer__wordmark" aria-hidden="true">Ellevux</span>
+    <div class="footer__strip">
+      <span class="footer__fine">&copy; <span id="year">2026</span> Ellevux. All rights reserved.</span>
+      <span class="footer__fine">Hand-written static HTML. No page builder.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/site.js?v=5" defer></script>
+</body>
+</html>

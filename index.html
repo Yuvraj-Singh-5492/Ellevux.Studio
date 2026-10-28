@@ -1,298 +1,600 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ellevux · Websites that get found, by people and by AI</title>
+<meta name="description" content="Ellevux is a one-person web studio. I design and build websites by hand, then set them up so Google can rank them and AI assistants can quote them. Prices start at 2,000 USD.">
+<meta name="author" content="Ellevux">
+<meta name="theme-color" content="#f8f8f6">
 
-  <title>Ellevux · Independent Web Developer · 2026 Portfolio</title>
-  <meta name="description" content="The personal portfolio of Ellevux, an independent web developer building fast, expressive, accessible websites with real-time 3D and choreographed motion. Selected works, about, and contact.">
-  <meta name="author" content="Ellevux">
-  <meta name="theme-color" content="#000000">
+<!-- Absolute URLs live ONLY in this block and in the JSON-LD @id values
+     below. Swap the origin here when a real domain is attached. -->
+<link rel="canonical" href="https://ellevux-studio.vercel.app/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ellevux">
+<meta property="og:url" content="https://ellevux-studio.vercel.app/">
+<meta property="og:title" content="Ellevux · Websites that get found, by people and by AI">
+<meta property="og:description" content="A one-person web studio. Websites built by hand, structured so search engines and AI assistants can actually read them.">
+<meta property="og:image" content="https://ellevux-studio.vercel.app/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ellevux, a one-person web studio.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ellevux · Websites that get found, by people and by AI">
+<meta name="twitter:description" content="A one-person web studio. Websites built by hand, structured so search engines and AI assistants can actually read them.">
+<meta name="twitter:image" content="https://ellevux-studio.vercel.app/og.png">
 
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="Ellevux · Independent Web Developer">
-  <meta property="og:description" content="Personal portfolio of Ellevux, an independent web developer. Selected works in real-time 3D, motion, and interaction. Welcome to my 2026 portfolio.">
-  <meta property="og:site_name" content="Ellevux">
-  <!-- Live on the default Vercel host. When the ellevux.studio domain is attached in Vercel, swap these four absolute URLs (og:url, og:image, twitter:image, canonical) to https://ellevux.studio/. -->
-  <meta property="og:url" content="https://ellevux-studio.vercel.app/">
-  <meta property="og:image" content="https://ellevux-studio.vercel.app/og.png">
-  <meta property="og:image:width" content="1200">
-  <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Ellevux, independent web developer, 2026 portfolio">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Ellevux · Independent Web Developer">
-  <meta name="twitter:description" content="Personal portfolio of Ellevux, an independent web developer. Selected works, about, and contact.">
-  <meta name="twitter:image" content="https://ellevux-studio.vercel.app/og.png">
-  <link rel="canonical" href="https://ellevux-studio.vercel.app/">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 
-  <!-- Favicon: inline SVG data-URI, acid-green "e" mark on black -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2032%2032'%3E%3Crect%20width='32'%20height='32'%20rx='7'%20fill='%23000000'/%3E%3Cpath%20d='M9%208h14v3.6H12.6v3.0H21v3.4h-8.4v3.4H23V28H9z'%20fill='%23c8fa3c'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..700&display=swap">
+<link rel="stylesheet" href="assets/css/site.css?v=22">
 
-  <!-- Fonts (v5: Inter grotesque + Instrument Serif italic accents) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-
-  <!-- Styles -->
-  <link rel="stylesheet" href="assets/css/tokens.css?v=11">
-  <link rel="stylesheet" href="assets/css/base.css?v=11">
-  <link rel="stylesheet" href="assets/css/components.css?v=11">
-  <link rel="stylesheet" href="assets/css/main.css?v=11">
-
-  <!-- Hide the crisp hero <h1> BEFORE first paint (so the hero boots straight as
-       particles, no crisp-text flash), but ONLY if WebGL is available and motion
-       is allowed. three-hero.js clears the failsafe on success and REVEALS the
-       headline on any failure; the 2.5s failsafe reveals it if the script never
-       confirms — so the real heading is always the fail-open fallback. -->
-  <script>
-    (function () {
-      try {
-        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        var gl = false;
-        try {
-          var c = document.createElement('canvas');
-          gl = !!(window.WebGLRenderingContext && (c.getContext('webgl') || c.getContext('experimental-webgl')));
-        } catch (e) {}
-        if (gl && !reduce) {
-          var de = document.documentElement;
-          de.classList.add('hero-particled');   // hide the crisp hero <h1> pre-paint
-          de.classList.add('work-particled');    // hide the crisp #work <h2> pre-paint
-          window.__heroFailsafe = window.setTimeout(function () {
-            de.classList.remove('hero-particled');
-            de.classList.remove('work-particled');
-          }, 2500);
-        }
-      } catch (e) {}
-    })();
-  </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ellevux-studio.vercel.app/#studio",
+      "name": "Ellevux",
+      "alternateName": "Ellevux Studio",
+      "url": "https://ellevux-studio.vercel.app/",
+      "description": "A one-person web studio. Websites designed and built by hand, then structured so search engines and AI assistants can read them.",
+      "email": "yuvrajsinghgill5492@gmail.com",
+      "sameAs": ["https://www.instagram.com/ellevux.studio"],
+      "founder": { "@type": "Person", "name": "Yuvi" },
+      "knowsAbout": [
+        "Web design",
+        "Front-end development",
+        "Search engine optimization",
+        "Answer engine optimization",
+        "Structured data",
+        "Core Web Vitals"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://ellevux-studio.vercel.app/#website",
+      "url": "https://ellevux-studio.vercel.app/",
+      "name": "Ellevux",
+      "inLanguage": "en",
+      "publisher": { "@id": "https://ellevux-studio.vercel.app/#studio" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://ellevux-studio.vercel.app/#webpage",
+      "url": "https://ellevux-studio.vercel.app/",
+      "name": "Ellevux · Websites that get found, by people and by AI",
+      "isPartOf": { "@id": "https://ellevux-studio.vercel.app/#website" },
+      "about": { "@id": "https://ellevux-studio.vercel.app/#studio" }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://ellevux-studio.vercel.app/#service-websites",
+      "name": "Website design and build",
+      "serviceType": "Web design and development",
+      "description": "A website designed and built by hand, mobile first, with no page builder and no template. Copy structured the way people actually buy.",
+      "provider": { "@id": "https://ellevux-studio.vercel.app/#studio" },
+      "areaServed": { "@type": "Place", "name": "Worldwide" },
+      "offers": {
+        "@type": "Offer",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "2000",
+          "priceCurrency": "USD",
+          "minPrice": "2000",
+          "valueAddedTaxIncluded": false
+        },
+        "description": "Starts at 2,000 USD."
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://ellevux-studio.vercel.app/#service-ai-search",
+      "name": "SEO and AEO",
+      "serviceType": "Search engine and answer engine optimization",
+      "description": "Technical search foundations plus answer engine optimization: question-shaped pages, structured data and a plain-text answer layer, so a business can be found by Google and quoted by AI assistants.",
+      "provider": { "@id": "https://ellevux-studio.vercel.app/#studio" },
+      "areaServed": { "@type": "Place", "name": "Worldwide" },
+      "offers": {
+        "@type": "Offer",
+        "priceSpecification": {
+          "@type": "PriceSpecification",
+          "price": "600",
+          "priceCurrency": "USD",
+          "minPrice": "600",
+          "valueAddedTaxIncluded": false
+        },
+        "description": "AI visibility audit, 600 USD flat. Included in a build from 9,000 USD."
+      }
+    }
+  ]
+}
+</script>
 </head>
-
 <body>
 
-  <a class="skip-link" href="#main">Skip to content</a>
+<a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- Particle-text layer (three-hero.js): the hero headline is rendered as a
-       cluster of particles that, on scroll, morphs into and lands on the real
-       "Selected Works" heading. A FIXED, full-viewport layer BEHIND all content
-       (z-index:-1, above the black body bg) so the particles can travel from the
-       hero down onto the #work title. -->
-  <canvas id="hero-canvas" aria-hidden="true"></canvas>
+<header class="nav" id="nav">
+  <div class="nav__dock">
+    <a class="nav__brand" href="/" aria-label="Ellevux, home">
+      <img class="nav__mark" src="/assets/img/logo-mark-light.png" alt="" width="34" height="34">
+    </a>
 
-  <!-- Subtle film grain overlay (CSS, kept very subtle) -->
-  <div id="grain" aria-hidden="true"></div>
-
-  <!-- ============================ NAV ============================ -->
-  <header id="nav">
-    <div class="nav__inner container container--wide">
-
-      <!-- left: wordmark (stand-in for the user's real name) -->
-      <a class="nav__logo wordmark" href="#hero" aria-label="Ellevux, home">ellevux</a>
-
-      <!-- right: primary nav links -->
-      <nav class="nav__menu" aria-label="Primary">
-        <ul class="nav__list">
-          <li><a class="nav__link" href="#work">Projects</a></li>
-          <li><a class="nav__link" href="testimonials.html">Testimonials</a></li>
-          <li><a class="nav__link" href="#about">About</a></li>
-          <li><a class="nav__link" href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <!-- ============================ MAIN ============================ -->
-  <main id="main">
-
-    <!-- ----------------------------- HERO ----------------------------- -->
-    <section id="hero" aria-labelledby="hero-title">
-      <!-- The particle headline is drawn on the page-level #hero-canvas (above). -->
-
-      <div class="hero__inner container container--wide">
-
-        <p class="hero__welcome" data-reveal>
-          Welcome to <em class="accent-serif">my</em> 2026 <em class="accent-serif">portfolio.</em>
-        </p>
-
-        <h1 id="hero-title" class="hero__title">
-          <span class="hero__line">Independent</span>
-          <span class="hero__line">Web Developer</span>
-        </h1>
-
-        <div class="hero__bottom" data-reveal>
-          <!-- left: hero tagline (the social links live in the footer) -->
-          <p class="hero__tagline">
-            Building websites that feel <em class="accent-serif">alive</em>, with real-time 3D and choreographed motion.
-          </p>
-        </div>
-
-        <!-- Editorial meta caption, upper-right of the hero. Mirrors the welcome
-             line on the left: a hairline rule, an eyebrow, an availability status
-             (with a slow pulsing accent dot), and a soft sub-line. Decorative
-             (aria-hidden); the dot pulse stops under reduced-motion. Shown >=768px. -->
-        <div class="hero-meta-block" aria-hidden="true">
-          <p class="hero-meta">
-            <span class="hero-meta__rule"></span>
-            <span class="hero-meta__eyebrow">Currently</span>
-            <span class="hero-meta__line hero-meta__line--status">Open for work<span class="hero-meta__dot"></span></span>
-            <span class="hero-meta__line hero-meta__line--soft">Available worldwide</span>
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ----------------------------- WORK ----------------------------- -->
-    <section id="work" aria-labelledby="work-title" data-reveal>
-      <div class="container container--wide work__inner">
-
-        <h2 id="work-title" class="work__title">
-          Selected <em class="accent-serif">Works</em>
-        </h2>
-
-        <!-- Scattered project thumbnails (asymmetric on desktop, clean
-             stack < 768px). Each .work-item is a link to a project. -->
-        <div class="work-scatter">
-
-          <!-- 01 · Buzzy, Coffee House -->
-          <a class="work-item work-item--a" href="demos/cafe/index.html" data-cursor="View">
-            <span class="work-label">
-              <span class="work-label__num">01</span>
-              <span class="work-label__name">Buzzy</span>
-              <span class="work-label__sector">Coffee House</span>
-            </span>
-            <span class="work-art work-art--a">
-              <img src="assets/img/work-cafe.png?v=2" alt="Buzzy coffee house website" loading="lazy" decoding="async">
-              <span class="work-art__cue" aria-hidden="true">
-                View
-                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </span>
-          </a>
-
-          <!-- 02 · Ellevux, AI SaaS — live at ellevux.vercel.app (also built by the owner) -->
-          <a class="work-item work-item--b" href="https://ellevux.vercel.app/" rel="noopener" data-cursor="Visit">
-            <span class="work-label">
-              <span class="work-label__num">02</span>
-              <span class="work-label__name">Ellevux</span>
-              <span class="work-label__sector">AI SaaS</span>
-            </span>
-            <span class="work-art work-art--b">
-              <img src="assets/img/work-ellevux-site.png" alt="Ellevux AI receptionist landing page" loading="lazy" decoding="async">
-              <span class="work-art__cue" aria-hidden="true">
-                Visit
-                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </span>
-          </a>
-
-          <!-- 03 · Mirror Solutions, a real client (an AI agentic agency).
-               Replaced the Elements showcase (demos/lab, now unlinked). -->
-          <a class="work-item work-item--c" href="https://mirror-solutions.com/" rel="noopener" data-cursor="Visit">
-            <span class="work-label">
-              <span class="work-label__num">03</span>
-              <span class="work-label__name">Mirror Solutions</span>
-              <span class="work-label__sector">AI Agency</span>
-            </span>
-            <span class="work-art work-art--c">
-              <img src="assets/img/work-mirror.png" alt="Mirror Solutions homepage: the headline beside an exploded 3D mechanical part" loading="lazy" decoding="async">
-              <span class="work-art__cue" aria-hidden="true">
-                Visit
-                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </span>
-          </a>
-
-          <!-- 04 · ARC, Architecture Studio — Vite/React/R3F 3D site (its own Vercel deploy) -->
-          <a class="work-item work-item--d" href="https://arc-atelier.vercel.app/" rel="noopener" data-cursor="Visit">
-            <span class="work-label">
-              <span class="work-label__num">04</span>
-              <span class="work-label__name">ARC</span>
-              <span class="work-label__sector">Architecture &amp; 3D</span>
-            </span>
-            <span class="work-art work-art--d">
-              <img src="assets/img/work-arc.png" alt="ARC architecture studio site with a scroll-built low-poly 3D house" loading="lazy" decoding="async">
-              <span class="work-art__cue" aria-hidden="true">
-                Visit
-                <svg viewBox="0 0 24 24" fill="none" width="14" height="14"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </span>
-            </span>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ----------------------------- ABOUT ----------------------------- -->
-    <section id="about" class="section section--raised" aria-labelledby="about-title" data-reveal>
-      <div class="container container--wide">
-        <div class="about-card">
-
-          <!-- vertical rotated strip down the left edge -->
-          <span class="vertical-text about-card__vertical" aria-hidden="true">Know more about me.</span>
-
-          <div class="about-card__body">
-            <h2 id="about-title" class="sr-only">About</h2>
-
-            <p class="about-card__bio">
-              <em class="accent-serif">Hey!</em> I&rsquo;m Yuvraj, a 20-year-old web developer.
-              I build fast, expressive websites that people <em class="accent-serif">remember</em>,
-              equal parts pixels, motion, and clean code.
-            </p>
-
-            <ul class="social-links about-card__social">
-              <li><a class="social-link" href="https://www.instagram.com/ellevux/" rel="noopener noreferrer" target="_blank" aria-label="Ellevux on Instagram">Instagram</a></li>
-            </ul>
-          </div>
-
-          <!-- B&W portrait slot -->
-          <div class="portrait about-card__portrait">
-            <img src="assets/img/portrait.jpg" alt="Yuvraj at work, a hooded silhouette at a laptop by a cliffside window" loading="lazy" decoding="async">
-          </div>
-
-        </div>
-      </div>
-    </section>
-
-  </main>
-
-  <!-- ============================ CONTACT / FOOTER ============================ -->
-  <footer id="contact" aria-labelledby="contact-title" data-reveal>
-    <div class="container container--wide footer__inner">
-
-      <p class="footer__discuss">
-        Want to discuss a <em class="accent-serif">new project?</em>
-      </p>
-
-      <a class="pill-btn footer__pill" href="mailto:yuvrajsinghgill5492@gmail.com" data-magnetic>
-        <span data-magnetic-text>Send me an e-mail</span>
-        <span class="pill-btn__icon" aria-hidden="true">&#8629;</span>
+    <nav class="nav__links" aria-label="Primary">
+      <a class="nav__link" href="/work/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M2 4.6A1.6 1.6 0 0 1 3.6 3h2.5l1.3 1.7h5A1.6 1.6 0 0 1 14 6.3v5.1A1.6 1.6 0 0 1 12.4 13H3.6A1.6 1.6 0 0 1 2 11.4z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
+        Work
       </a>
+      <a class="nav__link" href="/pricing/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8.5 2.5H13V7l-5.6 5.6a1.3 1.3 0 0 1-1.9 0L2.9 9a1.3 1.3 0 0 1 0-1.9z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="10.6" cy="5.4" r="1" stroke="currentColor" stroke-width="1.2"/></svg>
+        Pricing
+      </a>
+      <a class="nav__link" href="/ai-search/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7.2" cy="7.2" r="4.2" stroke="currentColor" stroke-width="1.3"/><path d="m10.5 10.5 3 3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        AI search
+      </a>
+      <a class="nav__link" href="/about/">
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="5.7" r="2.4" stroke="currentColor" stroke-width="1.3"/><path d="M3.7 13.1a4.3 4.3 0 0 1 8.6 0" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+        About
+      </a>
+    </nav>
 
-      <!-- giant wordmark (stand-in for the user's name; can bleed) -->
-      <h2 id="contact-title" class="big-wordmark footer__wordmark">Ellevux</h2>
+    <a class="btn btn--primary nav__cta" href="/contact/">Start a project <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></a>
 
-      <div class="footer__strip">
-        <p class="footer__thanks">
-          Thanks for stopping by. If something here speaks to you, send me a line.
-        </p>
+    <button class="nav__burger" id="nav-toggle" type="button"
+            aria-expanded="false" aria-controls="nav-drawer" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
 
-        <p class="footer__copy">&copy; <span id="year">2026</span> Ellevux</p>
+<div class="drawer" id="nav-drawer" data-open="false" aria-label="Menu">
+  <a class="drawer__link" href="/work/">Work</a>
+  <a class="drawer__link" href="/pricing/">Pricing</a>
+  <a class="drawer__link" href="/ai-search/">AI search</a>
+  <a class="drawer__link" href="/about/">About</a>
+  <img class="drawer__lockup" src="/assets/img/logo-lockup-420.png" alt=""
+       width="210" height="70" loading="lazy" decoding="async">
+  <div class="drawer__foot">
+    <a class="btn btn--primary" href="/contact/">Start a project <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg></a>
+  </div>
+</div>
+
+<main id="main">
+
+  <!-- ====================================================
+       BAND 1 · HERO · the stage
+       Headline left, the real client sites right, both sitting on
+       one photograph. The console and the studio intro were cut at
+       the owner's request: the hero carries the claim and the proof
+       and nothing else.
+       ==================================================== -->
+  <section class="band hero hero--stage" id="hero" data-band="ink" aria-labelledby="hero-title">
+    <div class="hero__stage">
+      <img class="hero__photo" src="/assets/img/hero.jpg" alt=""
+           width="1584" height="672" fetchpriority="high" decoding="async">
+      <div class="hero__atmos" aria-hidden="true"></div>
+
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <!-- One colour at two opacities, which is how the reference
+               gets a two-tone headline without a second token. -->
+          <h1 class="hero__title" id="hero-title">
+            <span class="hero__title-lead">Websites that get found.</span>
+            <span class="hero__title-rest">By people and by AI.</span>
+          </h1>
+
+          <div class="btn-row hero__cta">
+            <a class="btn btn--primary" href="/contact/" data-magnetic>
+              <span data-magnetic-text>Start a project</span>
+              <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+            </a>
+            <a class="btn btn--ghost" href="#work">See the work</a>
+          </div>
+        </div>
+
+        <!-- The device stage. A macOS browser window and an iPhone,
+             rotated in real CSS 3D, showing the ACTUAL client sites.
+             Drag to spin, release and it springs back. -->
+        <div class="stage">
+          <div class="stage__scene" id="stage-scene" data-dragging="false">
+            <div class="stage__group" id="stage-group">
+
+              <div class="win">
+                <div class="win__bar" aria-hidden="true">
+                  <span class="win__dot win__dot--r"></span>
+                  <span class="win__dot win__dot--y"></span>
+                  <span class="win__dot win__dot--g"></span>
+                  <span class="win__addr">
+                    <span class="shot" data-project="mirror">mirror-solutions.com</span>
+                    <span class="shot is-active" data-project="receptionist">ellevux.vercel.app</span>
+                    <span class="shot" data-project="buzzy">buzzy.coffee</span>
+                  </span>
+                </div>
+                <div class="win__view">
+                  <picture class="shot" data-project="mirror">
+                    <source type="image/avif" sizes="(min-width: 1040px) 46vw, 92vw" srcset="assets/img/screen-mirror-desk-800.avif 800w, assets/img/screen-mirror-desk-1400.avif 1400w">
+                    <source type="image/webp" sizes="(min-width: 1040px) 46vw, 92vw" srcset="assets/img/screen-mirror-desk-800.webp 800w, assets/img/screen-mirror-desk-1400.webp 1400w">
+                    <img src="assets/img/screen-mirror-desk-1400.webp" width="1440" height="900"
+                         alt="The Mirror Solutions site, a Spanish-language page for an AI agency." decoding="async" loading="lazy">
+                  </picture>
+                  <picture class="shot is-active" data-project="receptionist">
+                    <source type="image/avif" sizes="(min-width: 1040px) 46vw, 92vw" srcset="assets/img/screen-receptionist-desk-800.avif 800w, assets/img/screen-receptionist-desk-1400.avif 1400w">
+                    <source type="image/webp" sizes="(min-width: 1040px) 46vw, 92vw" srcset="assets/img/screen-receptionist-desk-800.webp 800w, assets/img/screen-receptionist-desk-1400.webp 1400w">
+                    <img src="assets/img/screen-receptionist-desk-1400.webp" width="1440" height="900"
+                         alt="The Ellevux agentic systems product site, built for a partner team." decoding="async">
+                  </picture>
+                  <picture class="shot" data-project="buzzy">
+                    <source type="image/avif" sizes="(min-width: 1040px) 46vw, 92vw" srcset="assets/img/screen-buzzy-desk-800.avif 800w, assets/img/screen-buzzy-desk-1400.avif 1400w">
+                    <source type="image/webp" sizes="(min-width: 1040px) 46vw, 92vw" srcset="assets/img/screen-buzzy-desk-800.webp 800w, assets/img/screen-buzzy-desk-1400.webp 1400w">
+                    <img src="assets/img/screen-buzzy-desk-1400.webp" width="1440" height="900"
+                         alt="Buzzy, an illustrated comic coffee house site." decoding="async" loading="lazy">
+                  </picture>
+                </div>
+              </div>
+
+              <div class="phone">
+                <span class="phone__notch" aria-hidden="true"></span>
+                <div class="phone__screen">
+                  <picture class="shot" data-project="mirror">
+                    <source type="image/avif" sizes="(min-width: 1040px) 12vw, 26vw" srcset="assets/img/screen-mirror-phone-400.avif 400w, assets/img/screen-mirror-phone-640.avif 640w">
+                    <source type="image/webp" sizes="(min-width: 1040px) 12vw, 26vw" srcset="assets/img/screen-mirror-phone-400.webp 400w, assets/img/screen-mirror-phone-640.webp 640w">
+                    <img src="assets/img/screen-mirror-phone-640.webp" width="390" height="844"
+                         alt="The Mirror Solutions site on a phone, a Spanish-language page for an AI agency." decoding="async" loading="lazy">
+                  </picture>
+                  <picture class="shot is-active" data-project="receptionist">
+                    <source type="image/avif" sizes="(min-width: 1040px) 12vw, 26vw" srcset="assets/img/screen-receptionist-phone-400.avif 400w, assets/img/screen-receptionist-phone-640.avif 640w">
+                    <source type="image/webp" sizes="(min-width: 1040px) 12vw, 26vw" srcset="assets/img/screen-receptionist-phone-400.webp 400w, assets/img/screen-receptionist-phone-640.webp 640w">
+                    <img src="assets/img/screen-receptionist-phone-640.webp" width="390" height="844"
+                         alt="The Ellevux agentic systems product site on a phone, built for a partner team." decoding="async">
+                  </picture>
+                  <picture class="shot" data-project="buzzy">
+                    <source type="image/avif" sizes="(min-width: 1040px) 12vw, 26vw" srcset="assets/img/screen-buzzy-phone-400.avif 400w, assets/img/screen-buzzy-phone-640.avif 640w">
+                    <source type="image/webp" sizes="(min-width: 1040px) 12vw, 26vw" srcset="assets/img/screen-buzzy-phone-400.webp 400w, assets/img/screen-buzzy-phone-640.webp 640w">
+                    <img src="assets/img/screen-buzzy-phone-640.webp" width="390" height="844"
+                         alt="Buzzy, an illustrated comic coffee house site on a phone." decoding="async" loading="lazy">
+                  </picture>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <div class="stage__ui">
+            <div class="seg" role="radiogroup" aria-label="Choose which project to preview">
+              <span class="seg__item">
+              <input type="radio" name="stage-project" id="sp-mirror" value="mirror">
+              <span class="seg__label">Mirror</span>
+            </span>
+            <span class="seg__item">
+              <input type="radio" name="stage-project" id="sp-receptionist" value="receptionist" checked>
+              <span class="seg__label">Agentic systems</span>
+            </span>
+            <span class="seg__item">
+              <input type="radio" name="stage-project" id="sp-buzzy" value="buzzy">
+              <span class="seg__label">Buzzy</span>
+            </span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </footer>
 
-  <!-- ============================ SCRIPTS ============================ -->
-  <!-- GSAP (UMD globals) load first; defer preserves order so ScrollTrigger
-       resolves before the classic scripts that consume it. Three.js via import
-       map; the chrome blob is a single type=module entry (three-hero.js). -->
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-  <script type="importmap">{ "imports": { "three":"https://unpkg.com/three@0.160.0/build/three.module.js","three/addons/":"https://unpkg.com/three@0.160.0/examples/jsm/" } }</script>
-  <script type="module" src="assets/js/three-hero.js?v=8"
-          onerror="var d=document.documentElement;d.classList.remove('hero-particled');d.classList.remove('work-particled');if(window.__heroFailsafe){clearTimeout(window.__heroFailsafe);window.__heroFailsafe=0;}"></script>
-  <script defer src="assets/js/animations.js?v=7"></script>
-  <script defer src="assets/js/main.js?v=7"></script>
+    <div class="container">
+      <div class="hero__split">
+        <a class="hero__split-item" href="#websites">
+          <span class="hero__split-name">Websites</span>
+          <span class="hero__split-note">Designed and built by hand. No templates.</span>
+        </a>
+        <a class="hero__split-item" href="#ai-search">
+          <span class="hero__split-name">SEO and AEO</span>
+          <span class="hero__split-note">Found by Google. Quoted by AI assistants.</span>
+        </a>
+      </div>
+    </div>
+  </section>
 
+  <!-- ====================================================
+       BAND 2 · SERVICES · paper · cards invert to ink
+       ==================================================== -->
+  <section class="band" data-band="paper" aria-labelledby="services-title">
+    <div class="container">
+      <div class="head" data-reveal>
+        <p class="label">What I do</p>
+        <h2 id="services-title">Two things, done properly.</h2>
+      </div>
+
+      <div class="services">
+        <article class="card service" id="websites" data-reveal>
+          <p class="label label--on-card">01 &middot; Design and build</p>
+          <h3 class="service__title">Websites</h3>
+          <p class="service__promise">The real thing, built by hand, structured to sell.</p>
+          <ul class="service__list">
+            <li>Design and copy worked out with you, not guessed at</li>
+            <li>Written by hand, mobile first, no page builder and no template</li>
+            <li>A form with qualifying questions that reaches your inbox</li>
+            <li>Search foundations: structured data, internal linking, a speed pass</li>
+            <li>A live staging link you can watch from the first week</li>
+          </ul>
+          <div class="service__foot">
+            <span class="service__from">From 2,000 USD</span>
+            <a class="btn btn--text" href="/pricing/">
+              What a build includes
+              <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="card service" id="ai-search" data-reveal>
+          <p class="label label--on-card">02 &middot; Be findable</p>
+          <h3 class="service__title">SEO and AEO</h3>
+          <p class="service__promise">Found by Google, and quoted by AI assistants when someone asks for a business like yours.</p>
+          <ul class="service__list">
+            <li>Technical search pass: structure, speed, indexing, image handling</li>
+            <li>Question-shaped pages, written to be lifted as an answer</li>
+            <li>Valid structured data for rich results, stating facts that match the page</li>
+            <li>Local search setup, if you serve an area</li>
+            <li>Tracking in your own accounts, so the numbers are yours</li>
+          </ul>
+          <div class="service__foot">
+            <span class="service__from">Audit 600 USD · In a build from 9,000 USD</span>
+            <a class="btn btn--text" href="/ai-search/">
+              How that actually works
+              <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================================================
+       BAND 3 · THE AI ANSWER PANEL · ink
+       The signature move. An illustration, labelled as one.
+       The example business is deliberately invented: putting a
+       real client in a mock AI answer would imply a citation
+       that may not exist.
+       ==================================================== -->
+  <section class="band" data-band="ink" aria-labelledby="aeo-title">
+    <div class="container">
+      <div class="head head--split" data-reveal>
+        <div>
+          <p class="label">The part almost nobody has done yet</p>
+          <h2 id="aeo-title">People stopped searching. They started asking.</h2>
+        </div>
+        <p class="lead head__lead">
+          When someone asks an assistant for a business like yours, it answers with a
+          handful of sources. Being one of them is a different job from ranking, and it
+          comes down to whether your pages can be read and quoted.
+        </p>
+      </div>
+
+      <div class="aeo">
+        <div data-reveal>
+          <div class="answer">
+            <div class="answer__bar">
+              <span class="answer__bar-label">An assistant, answering</span>
+            </div>
+            <div class="answer__query">
+              <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="4.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 10.5 14 14" stroke="currentColor" stroke-width="1.5"/></svg>
+              <span>who can rewire a workshop near me this month?</span>
+            </div>
+            <div class="answer__body">
+              <p class="answer__text">
+                For commercial rewiring at short notice, <b>Northgate Electrical</b> lists
+                workshop and light industrial work as a core service, states a two week
+                lead time, and is certified for commercial installations. Two other firms
+                nearby cover domestic work only.
+              </p>
+              <div class="answer__sources">
+                <span class="answer__chip answer__chip--first">northgate-electrical.co.uk</span>
+                <span class="answer__chip">directory listing</span>
+                <span class="answer__chip">trade register</span>
+              </div>
+            </div>
+          </div>
+          <p class="answer__disclaimer">
+            An illustration of how assistants answer and what makes a page quotable.
+            Not a screenshot, and Northgate Electrical is an invented example.
+          </p>
+        </div>
+
+        <div class="aeo__points" data-reveal>
+          <div class="aeo__point">
+            <span class="aeo__point-num">01</span>
+            <div>
+              <h4>A heading shaped like the question</h4>
+              <p>So the assistant can match the page to what was actually asked. Nobody has proved this works, it costs nothing, so I do it and say so.</p>
+            </div>
+          </div>
+          <div class="aeo__point">
+            <span class="aeo__point-num">02</span>
+            <div>
+              <h4>The answer in plain text, in the HTML</h4>
+              <p>Not inside an image, not drawn by a script after load. If it is not in the page source, it cannot be quoted.</p>
+            </div>
+          </div>
+          <div class="aeo__point">
+            <span class="aeo__point-num">03</span>
+            <div>
+              <h4>Specifics worth quoting</h4>
+              <p>Named facts, real figures, a price. The one peer-reviewed test of this found quotable detail helped most, and keyword stuffing did worse than nothing.</p>
+            </div>
+          </div>
+          <p class="aeo__source">
+            All three are in this page. Right-click and view source: the headings and the
+            answers are there in the HTML, before any JavaScript runs. The evidence
+            behind each one, and what does not work, is on the
+            <a href="/ai-search/">AI search page</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ====================================================
+       BAND 4 · SELECTED WORK
+       One folder, not a grid of tiles. The whole thing is a single
+       link: the projects peek out of it and the tap target is the
+       folder itself.
+       ==================================================== -->
+  <section class="band" data-band="paper" id="work" aria-labelledby="work-title">
+    <div class="container work-folder">
+      <div class="work-folder__text" data-reveal>
+        <p class="label">Selected work</p>
+        <h2 id="work-title">My work</h2>
+        <p class="lead" style="margin-top:var(--s-5)">
+          Two client sites, built end to end, and four studio pieces built to prove a
+          technique. Both clients are live and clickable.
+        </p>
+        <p class="work-folder__hint">
+          <svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5"/></svg>
+          Open the folder
+        </p>
+      </div>
+
+      <a class="folder" href="/work/" data-reveal
+         aria-label="Open the work folder: two client sites and four studio pieces">
+        <span class="folder__back" aria-hidden="true">
+          <span class="folder__tab">Work</span>
+        </span>
+
+        <!-- The projects peeking out. Real screenshots, not props. -->
+        <span class="folder__papers">
+          <span class="folder__paper folder__paper--a">
+            <picture>
+              <source type="image/avif" sizes="320px" srcset="/assets/img/work-cafe-640.avif 640w">
+              <source type="image/webp" sizes="320px" srcset="/assets/img/work-cafe-640.webp 640w">
+              <img src="/assets/img/work-cafe-640.webp" width="1280" height="720"
+                   alt="Buzzy, an illustrated comic coffee house." loading="lazy" decoding="async">
+            </picture>
+          </span>
+          <span class="folder__paper folder__paper--b">
+            <picture>
+              <source type="image/avif" sizes="340px" srcset="/assets/img/work-ellevux-site-640.avif 640w">
+              <source type="image/webp" sizes="340px" srcset="/assets/img/work-ellevux-site-640.webp 640w">
+              <img src="/assets/img/work-ellevux-site-640.webp" width="1280" height="720"
+                   alt="The product site for a six service agentic platform." loading="lazy" decoding="async">
+            </picture>
+          </span>
+          <span class="folder__paper folder__paper--c">
+            <picture>
+              <source type="image/avif" sizes="320px" srcset="/assets/img/work-mirror-640.avif 640w">
+              <source type="image/webp" sizes="320px" srcset="/assets/img/work-mirror-640.webp 640w">
+              <img src="/assets/img/work-mirror-640.webp" width="1280" height="720"
+                   alt="Mirror Solutions, a Spanish language site for an AI agency." loading="lazy" decoding="async">
+            </picture>
+          </span>
+        </span>
+
+        <span class="folder__front" aria-hidden="true">
+          <span class="folder__count">6 pieces</span>
+          <span class="folder__go">
+            <svg viewBox="0 0 16 16" fill="none"><path d="M4 12 12 4M6 4h6v6" stroke="currentColor" stroke-width="1.5"/></svg>
+          </span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+
+
+
+
+  <!-- ====================================================
+       BAND 5 · CLOSE · ink · the loudest moment
+       ==================================================== -->
+  <section class="band close" data-band="ink" aria-labelledby="close-title">
+    <div class="container">
+      <div data-reveal>
+        <p class="label" style="text-align:center">Start a project</p>
+        <h2 class="close__title" id="close-title">Tell me what the business does. I will tell you what it needs.</h2>
+        <p class="lead close__lead" style="text-align:center">
+          A few questions, then a written price within one business day. You do not have
+          to get on a call to find out what it costs.
+        </p>
+        <div class="btn-row close__cta">
+          <a class="btn btn--primary" href="/contact/" data-magnetic>
+            <span data-magnetic-text>Start a project</span>
+              <svg class="btn__arrow" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6"/></svg>
+          </a>
+          <a class="btn btn--ghost" href="mailto:yuvrajsinghgill5492@gmail.com">Email me instead</a>
+        </div>
+        <p class="close__promise">
+          I read every message myself. You get a reply within one business day, even if it
+          is a no.
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ====================================================
+     BAND 6 · FOOTER · paper
+     The giant wordmark survives, on paper, which is more
+     distinctive than a conventional dark footer.
+     ==================================================== -->
+<footer class="band footer" data-band="paper" id="footer">
+  <div class="container">
+    <div class="footer__top">
+      <div class="footer__col">
+        <p class="label">Ellevux</p>
+        <p style="font-size:var(--fs-sm);color:var(--ink-soft);max-width:34ch">
+          A one-person web studio. Websites built by hand, structured so people and
+          machines can both read them.
+        </p>
+      </div>
+      <div class="footer__col">
+        <p class="label">Services</p>
+        <a class="footer__link" href="/#websites">Websites</a>
+        <a class="footer__link" href="/ai-search/">SEO and AI search</a>
+        <a class="footer__link" href="/pricing/">Pricing</a>
+      </div>
+      <div class="footer__col">
+        <p class="label">Studio</p>
+        <a class="footer__link" href="/work/">Work</a>
+        <a class="footer__link" href="/about/">About</a>
+        <a class="footer__link" href="/lab/">Lab</a>
+      </div>
+      <div class="footer__col">
+        <p class="label">Get in touch</p>
+        <a class="footer__link" href="/contact/">Start a project</a>
+        <a class="footer__link" href="mailto:yuvrajsinghgill5492@gmail.com">Email</a>
+        <a class="footer__link" href="https://www.instagram.com/ellevux.studio" rel="noopener">Instagram</a>
+      </div>
+    </div>
+
+    <span class="footer__wordmark" aria-hidden="true">Ellevux</span>
+
+    <div class="footer__strip">
+      <span class="footer__fine">&copy; <span id="year">2026</span> Ellevux. All rights reserved.</span>
+      <span class="footer__fine">Hand-written static HTML. No page builder.</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- iOS-style bottom action bar. Phones only, and only once the
+     hero has scrolled away. Its button is INK, not acid: a fixed
+     acid element would share a viewport with the pricing CTA and
+     break the one-acid-per-viewport rule. -->
+<div class="actionbar" id="actionbar" data-show="false">
+  <span class="actionbar__price">
+    <span class="actionbar__label">From</span>
+    <span class="actionbar__amount" id="actionbar-amount">$4,500</span>
+  </span>
+  <a class="btn" href="/contact/">Start a project</a>
+</div>
+
+<script src="assets/js/site.js?v=5" defer></script>
 </body>
 </html>

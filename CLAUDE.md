@@ -3,237 +3,570 @@
 Project guidance for Claude Code (and any developer) working on this repo.
 
 ## What this is
-**Ellevux** is a personal front-end developer **portfolio**, designed in the editorial style of
-henriheymans.com: pure-black canvas, bold grotesque headlines with italic-serif accents, one acid-green
-accent used sparingly, a **particle-text hero** (the headline is a GPU particle cluster that, on scroll,
-flies down and morphs into the "Selected Works" heading), scattered "Selected Works", a playful About,
-and a giant footer wordmark.
 
-- **Brand / wordmark:** "Ellevux" (lowercase `ellevux` in the nav, `Ellevux` in the footer wordmark).
-- **Person:** "Yuvi" / "Yuvraj Singh" (a 20-year-old web developer) appears in the About copy only.
-- Do not confuse the two: the site is branded **Ellevux**; the human is **Yuvi**.
+**Ellevux** is a **one-person web studio site**. It sells two things to business owners:
+websites (design and build) and **SEO/AEO** (answer engine optimization, getting a business quoted
+by AI assistants, not just ranked by Google).
+
+It is **not** a portfolio any more. It was one until 2026-10-22, and the rebuild is described below.
+
+- **Brand:** Ellevux (lowercase `ellevux` in the nav, `Ellevux` in the footer wordmark).
+- **Person:** **Yuvi** (legal name Yuvraj Singh). All visible copy says "Yuvi". The only "Yuvraj" in
+  shipped files is the real mailbox `yuvrajsinghgill5492@gmail.com`, which must never be renamed.
+- **Voice: studio, person-led.** "Ellevux is a one-person web studio. I'm Yuvi." Always "I", never
+  "we", never "the team". **His age never appears on the site.**
+- **Market: international, remote, English, USD.** No geography is ever claimed for Ellevux itself.
+  Local SEO is still a *service sold*, so "near me" copy may describe a client, never the studio.
 
 ## Status: LIVE
-- **Portfolio:** deployed to Vercel, production at **https://ellevux-studio.vercel.app** (project
-  `ellevux-studio`, under the `ellevux` team scope). Source repo: GitHub **Yuvraj-Singh-5492/Ellevux.Studio**.
-- **ARC** (Selected Works 04) is its own Vercel project, **https://arc-atelier.vercel.app**.
-- See **Deploy** below for how deploys actually happen (no Node here → Vercel REST API).
 
-## Stack & hard constraints
-- **Static, no build step** for the portfolio. Plain HTML/CSS/JS. There is **no Node/npm** on this machine
-  (git is). **Python 3.12 + Playwright were UNINSTALLED (found 2026-09-18).** Workarounds: Blender's bundled
-  Python `D:/Blender/5.2/python/bin/python.exe` runs stdlib-only scripts (deploy, a local http server);
-  headless Chrome (`--headless=new`, own `--user-data-dir`) does screenshots, and a same-origin harness page
-  of fixed-width iframes gives true-viewport overflow checks. Do not introduce a bundler/framework for the
-  portfolio unless explicitly asked. (ARC is the exception — it is a separate Vite/React app, see ARC below.)
-- **Libraries via CDN:** Three.js (ES module, via `<script type="importmap">`) for the hero particle-text
-  system (a custom GPU `ShaderMaterial`), and GSAP + ScrollTrigger for scroll motion (incl. the hero morph).
-- **Must be served over http** (the hero uses ES modules, which browsers block on `file://`).
-  Run: `python -m http.server 5510` from the project root, or VS Code **Live Server**. See `README.md`.
+- Production: **https://studio.ellevux.com** and **https://ellevux-studio.vercel.app** (Vercel
+  project `ellevux-studio`, team `ellevux`, id `prj_Y4oC7i8GWoKkV67JOFX12Jn0P5zE`). `ellevux.com` is
+  registered at GoDaddy (`ns55/ns56.domaincontrol.com`); the apex is still parked, the `studio`
+  subdomain is aliased to this project. **Every canonical, OG and JSON-LD `@id` still says
+  `ellevux-studio.vercel.app`**, so the custom domain currently serves pages that point search
+  engines at the Vercel one. See "Swapping the origin".
+- Source repo: GitHub **Yuvraj-Singh-5492/Ellevux.Studio**.
+- ARC (a studio piece) is its own Vercel project: **https://arc-atelier.vercel.app**.
+
+## Marketing: Instagram and reels (lives outside this repo)
+
+- **Instagram @ellevux.studio** (Business account). The site already links it (12 links plus
+  `Organization.sameAs`). Bio, set 2026-10-25: "Websites too good to scroll past. / DM "SITE" for a
+  free homepage concept." Two reels posted (2026-10-23 Shugetsu, 2026-10-25 MANZAR).
+- **The reel pipeline is `D:\yuvraj-reels`** (Node engine + Studio at localhost:4747); its own
+  `CLAUDE.md` is the source of truth for reels, plates, music and posting. The lead list it feeds
+  is `D:\lead-engine` (Dubai brokerages without a working website).
+- **MANZAR is an invented brand**: a concept site in `D:\yuvraj-reels\sites\manzar` used in a reel
+  and as the free homepage concept for leads. It is never a client and never goes on `/work/` as one.
+- **The same rules bind posts as the site:** "I", no em-dashes, no invented clients, names or
+  results, no "guaranteed". Reel scenes and photos are AI-generated, so every post carries
+  Instagram's AI label. Licensed trending songs are picked in the Instagram app only, never
+  downloaded and baked into a video.
+
+## Stack and hard constraints
+
+- **Static, no build step.** Plain HTML/CSS/JS. No bundler, no framework, no `package.json`, no npm
+  dependency ships. Do not introduce one for this site. (ARC and CLIENT-DEMO are separate Vite apps.)
+- **Libraries:** none on the studio pages. `/lab/` alone loads Three.js and GSAP from CDN.
+- **Must be served over http** for `/lab/` (ES modules are blocked on `file://`).
+  Run `python -m http.server 5510` from the repo root.
+- **Local toolchain (verified 2026-10-22):** node v24.19.0, npm 11.17.0, git 2.55, Python 3.12.10,
+  Chrome and Edge. `playwright-core` 1.61.0 lives in `ARC/node_modules` and is resolved explicitly by
+  the scripts in `tools/`, so they run from anywhere.
 
 ## File map
+
 ```
-index.html              the whole portfolio (nav · hero · #work · #about · footer/#contact)
-testimonials.html       second page: client/project cards, 2 client quotes + star ratings (see "Testimonials page")
-og.png                  1200x630 social share image (the hero on black). Served at site root (/og.png).
-robots.txt, sitemap.xml at root. Their host + og:url/canonical use the live Vercel origin
-                        ellevux-studio.vercel.app; swap to ellevux.studio if that domain is ever attached.
-.gitignore              excludes the Obsidian vault (Ellevux WEB/), the cafe backup, ARC/ (separate project),
-                        secrets, and a stale in-folder cafe backup.
-assets/css/             linked from index.html AND testimonials.html with ?v=11 cache-bust (bump ALL EIGHT
-                        links together on any CSS edit):
-  tokens.css            design tokens (single source of truth) — colors, type, spacing, motion. The legacy
-                        v4 token map was removed (see "Dead-code cleanup" below).
-  base.css              reset, base elements, a11y (focus, skip link, reduced-motion)
-  components.css        reusable UI (nav, .work-item/.work-art, .pill-btn, social-links, labels...). Its
-                        "PART B legacy components" block (.bento/.case/.glass/.stat/.browser/.btn/...) was
-                        REMOVED in the dead-code cleanup (see "Dead-code cleanup" below).
-  main.css              page layout (hero, the Selected Works scatter, about, footer; §9 phone nav 2x2
-                        grid <=600px; §10 the testimonials page .tm-*)
-assets/js/
-  three-hero.js         (ES module) the HERO PARTICLE TEXT. #hero-canvas is a PAGE-LEVEL fixed layer
-                        (z-index:-1, behind all content, on the black bg) — NOT inside #hero. Samples the
-                        real <h1> into a GPU ShaderMaterial particle cluster; on scroll the particles fly
-                        DOWN and morph into the #work "Selected Works" heading (scroll-scrubbed, no pin) and
-                        PERSIST as it. Boots straight to particles (no crisp flash). FAIL OPEN (see below).
-                        Runs on ALL screens incl. phones (mobile uses ~22000 particles, smaller dots, near-
-                        zero wobble/jitter so the small glyphs read SOLID, not scattered). The #work heading's
-                        particle copy is all Inter (the DOM "Works" is a narrower serif), so sampleWorkTitle()
-                        shrinks it to fit the h2 box on phones (was clipping the edge S's). Cursor-repel is
-                        gated to fine pointers (no touch "blackhole"). Morph survives the mobile address bar
-                        (ScrollTrigger ignoreMobileResize + width-only resize guard).
-  animations.js         GSAP/ScrollTrigger reveals (FAIL OPEN) + nav compact-on-scroll
-  main.js               mobile nav, smooth anchor scroll, contextual custom cursor (data-cursor),
-                        magnetic buttons, tilt, contact form, footer #year
-assets/img/
-  work-cafe.png         16:9 thumbnail for the Buzzy cafe work card (comic hero screenshot)
-  work-ellevux-site.png 16:9 thumbnail for the Ellevux SaaS card (headless screenshot of ellevux.vercel.app)
-  work-arc.png          16:9 thumbnail for the ARC card (the scroll-built 3D house hero, from ARC/.verify)
-  work-mirror.png       16:9 thumbnail for Mirror Solutions (headless-Chrome shot of mirror-solutions.com);
-                        used by Selected Works 03 AND the testimonials page
-  portrait.jpg          About-card B&W portrait (4:5): a moody hooded silhouette at a laptop by a cliffside
-                        window. Fills the .portrait slot (object-fit:cover, grayscale). NOTE: it is a stock-
-                        style aesthetic shot, not a real photo of Yuvi.
-demos/                  (only the cafe is LINKED from #work; lab, aurora + nebula are deployed but unlinked)
-  cafe/index.html       BUZZY (was Marigold), Selected Works 01, LIVE. A CUTE COMIC / illustrated coffee
-                        house (cream paper, Baloo 2 + Caveat, brown ink, amber/terracotta pops, doodles,
-                        chunky "comic" buttons) toggled by class="comic" on <body>. A dark "Liquid Coffee
-                        Spectacle" (WebGL fluid-coffee shader you stir with the cursor) is preserved
-                        UNDERNEATH and disabled by the comic class. three (ESM) + GSAP + ScrollTrigger +
-                        Draggable + Lenis (InertiaPlugin tag was removed — not on any free CDN). Uses ONE
-                        external image (cafe/assets/iced-coffee.png, the owner's watercolor cup).
-  cafe/assets/iced-coffee.png  the owner's own watercolor iced-coffee illustration (bg removed); hero art.
-  _cafe-backup-2026-06-16/     backup of the pre-comic cafe build (gitignored).
-  lab/index.html        ELEMENTS, a capabilities showcase (NOT a site demo). Was Selected Works 03 until
-                        2026-09-21, when Mirror Solutions replaced it; now UNLINKED (still deployed). 11 numbered
-                        sections: nav, a WebGL 3D render + particle morph, feature tabs, tilt cards, micro-
-                        interactions, accordion, form, modal, loaders/progress, count-up stats, footers.
-                        Ships LOCKED to the dark .editorial theme. ACCENT IS NOW **CHROME / metallic silver**
-                        (--accent #d6dde6, plus --chrome / --chrome-surf gradient tokens applied via
-                        background-clip:text to accent text + as beveled-metal button surfaces; the 3D render
-                        is a polished silver-chrome). The theme switcher + 6-colour accent picker + deep-links
-                        were REMOVED (the .lab playful token set is kept below as dead/reference CSS only).
-                        Self-contained; three (ESM importmap) + GSAP. a11y-cleaned (switch label, accordion
-                        aria-expanded, modal focus trap, tablist roving + arrow keys, --faint contrast).
-  aurora/index.html     old luxury-beauty demo, ARCHIVED, unlinked (deployed but not referenced anywhere)
-  nebula/index.html     old AI-SaaS demo,        ARCHIVED, unlinked
-ARC/                    GITIGNORED. A SEPARATE Vite + React 19 + react-three-fiber + Tailwind v4 + GSAP +
-                        Lenis app ("ARC Atelier", an architecture studio with a scroll-built low-poly 3D
-                        house hero). Deployed on its OWN Vercel project (arc-atelier.vercel.app). Has its
-                        own node_modules; not part of the portfolio repo. See "ARC" below.
-Ellevux WEB/            an Obsidian vault (gitignored). STALE — describes an abandoned AI-SaaS direction.
-CAFE-RESEARCH.md / CAFE-SPEC.md / CONTRACT*.md / REDESIGN-PLAN.md   historical specs/research (reference only)
-handover.md             current state + what's left (read alongside this file)
+index.html              the home page · 8 bands. The STAGE hero with the live console, the
+                        device stage, who paid me, what I do, the AI answer moment, three work
+                        tiles, close, footer. Deliberately short: everything else has a page
+                        of its own.
+pricing/index.html      the CONFIGURATOR (its centrepiece) + what differs + money FAQ
+work/index.html         "Client work, 2" and "Studio pieces, 4", with both quotes
+about/index.html        Yuvi's intro, what I do not do, the process, the 6 general questions
+ai-search/index.html    THE evidence page. 9 bands: why you cannot tell good SEO from bad,
+                        what Google confirms, how assistants retrieve, what nobody knows,
+                        what does not work, what I do, 6 questions, close. Every claim
+                        carries a .status-pill evidence tier and a linked primary source.
+                        The longest page on the site, on purpose: depth IS the argument.
+contact/index.html      the one conversion destination · the real form
+thanks/index.html       post-submit expectations · noindex · a countable URL
+lab/index.html          the preserved GPU particle hero, as a craft showpiece
+vercel.json             clean URLs, the /testimonials.html redirect, cache + security headers
+robots.txt sitemap.xml llms.txt og.png     at root
+assets/css/site.css     THE stylesheet for the studio pages. One file, 31 numbered sections.
+                        1-23 are the page system; 24-31 are the interactive layer.
+                        §10 is the stage hero, §31 the console.
+assets/js/site.js       THE script for the studio pages. Zero dependencies, 14 features.
+assets/css/tokens.css   ) the ORIGINAL dark system. Loaded ONLY by /lab/.
+assets/css/base.css     ) Do not load these alongside site.css: both define
+assets/css/components.css ) .container, .nav and .btn, and they would collide.
+assets/css/main.css     )
+assets/js/three-hero.js the 840-line particle hero. Used ONLY by /lab/.
+assets/js/animations.js ) the original GSAP reveal engine + cursor/magnetic.
+assets/js/main.js       ) Used ONLY by /lab/. site.js replaces both elsewhere.
+assets/img/logo-mark.svg  the brand mark. PLACEHOLDER: a hand-authored vortex standing in
+                        until the real asset lands. Overwrite this one file and the nav,
+                        favicon reference and everything else picks it up.
+assets/img/*.avif|webp  the shipped thumbnails + the hero device screens, in two widths
+assets/img/src/         the source PNGs + the unused portrait. EXCLUDED from deploys.
+tools/verify.mjs        the automated design-lock and a11y checks. NOT deployed.
+tools/interact.mjs      drawer, form, stage, configurator, action bar. NOT deployed.
+tools/shot.mjs          screenshot one element, or "viewport". NOT deployed.
+tools/thumb.mjs         capture a 16:9 work thumbnail from a URL. Takes a scrollFraction,
+                        because a scroll-built 3D hero shows nothing at all at y=0.
+tools/device-shots.mjs  capture each project at desktop AND phone viewports, for the hero
+                        stage. Uses a real iPhone UA so sites serve their mobile layout.
+demos/cafe/             Buzzy, linked from /work/. An illustrated comic coffee house.
+demos/lab/              Elements, linked from /work/. 11 sections of UI and motion.
+demos/aurora|nebula/    archived, unlinked, still deployed.
+ARC/ CLIENT-DEMO/       GITIGNORED separate Vite apps. CLIENT-DEMO is "Urbane Ivy".
+Ellevux WEB/            a stale Obsidian vault. Gitignored.
+handover.md             current state and what is left
 ```
 
-## Testimonials page (`testimonials.html`, nav link on both pages)
-Three cards: **01 Mirror Solutions** (real client, https://mirror-solutions.com, a Spanish-language AI agentic
-agency working with real estate teams; the owner wants it described as an "AI agentic agency"), **02 Ellevux** (client project: an AI receptionist SaaS the owner built for a
-partner team), **03 ARC** (labelled a SELF-INITIATED CONCEPT, since the studio is fictional; it has NO quote).
-**Quotes (live since 2026-09-21):** Mirror Solutions 5.0 stars, Ellevux 4.5 stars. Both clients told the owner
-to write their testimonial for them; Claude drafted the words, the owner approved them (the owner edited the
-Mirror line to "an AI agentic firm"). They are attributed to the COMPANY for now; the owner will send the real
-person's name + role for each, which go in `.tm-quote__name` / `.tm-quote__role`. Only publish quotes a client
-has authorized or approved, and never invent a person's name. Stars = `--rating` on `.tm-rating__stars`
-(0 to 5, halves exact via a masked hard-stop gradient) + the wrapper's `aria-label`. Do NOT add schema.org
-Review/AggregateRating markup (self-serving reviews). The nav has FOUR links now; <=600px they fold into a
-right-aligned 2x2 grid (one row overflows at phone widths).
+## The design lock (read before touching any CSS)
 
-## Selected Works (in `#work`) — FOUR cards now, scattered (4 corners on desktop, stacked < 768px)
-The `.work-art` tiles are **16:9**; thumbnails are `object-fit: cover`, grayscale at rest, full colour on hover.
-1. **Buzzy — Coffee House** → `demos/cafe/index.html` (internal; cute comic coffee house, `body.comic` theme).
-2. **Ellevux — AI SaaS** → `https://ellevux.vercel.app/` (external, opens **same tab**; an AI receptionist
-   the owner built for a partner team, NOT the owner's solo product; same name as this portfolio's brand). Thumbnail `work-ellevux-site.png` (live-site screenshot, reads dark — that's the site).
-3. **Mirror Solutions — AI Agency** → `https://mirror-solutions.com/` (external, opens **same tab**,
-   `rel="noopener"`; a real client, a Spanish-language AI agentic agency working with real estate teams). Thumbnail
-   `work-mirror.png`. It replaced **Elements** (`demos/lab`, now unlinked); the inline-SVG wordmark thumbnail
-   and its `.work-art__word` CSS were removed with it.
-4. **ARC — Architecture & 3D** → `https://arc-atelier.vercel.app/` (external, opens **same tab**,
-   `rel="noopener"`; a separate Vite/React/R3F architecture site). Thumbnail `work-arc.png`.
+The direction was chosen through Refero research and is **locked**. Primary reference:
+**Patch, thepatchsystem.com**. Five traits that must not soften. If a change softens one, it is drift:
 
-The #work `<h2>` "Selected Works" is the morph TARGET: the hero particles land on it and persist (the real
-`<h2>` is hidden, see the FAIL-OPEN note in Conventions).
+1. **A visible hairline grid** as page structure, not decoration.
+2. **Ultra-condensed heavy all-caps display type.** Leading ~0.85, tracking ~0.03em.
+3. **Near-sharp radii (~5px).** Flat colour blocks, no gradients.
+4. **Zero box-shadows, ever.** Depth comes only from surface inversion.
+5. **One reserved action colour.**
 
-## ARC (the architecture demo, separate project under `ARC/`)
-- **Stack:** Vite 6 + React 19 + TypeScript + @react-three/fiber 9 + drei 10 + three 0.180 + Tailwind v4
-  (CSS-first `@theme` in `src/styles/globals.css`) + GSAP/ScrollTrigger + @gsap/react + framer-motion + Lenis.
-- **Fonts:** **Inter** (display + body, self-hosted via @fontsource) + **IBM Plex Mono** (small/technical
-  labels, via Google Fonts). The owner rejected a serif (Fraunces) display — keep it Inter.
-- **Hero:** a scroll-built low-poly 3D house (440vh scroll) with a `3D House / Blueprint` toggle (the
-  Blueprint is a line-drawn SVG section). The 3D render pauses (`frameloop="never"`) once scrolled offscreen.
-- **Content is FICTIONAL placeholder** (studio "ARC Atelier", a fake email `studio@arc-atelier.com`, made-up
-  projects/architects/awards). No em-dashes in copy (owner rule applied here too).
-- **Deploy:** Vercel builds it (framework `vite`, buildCommand `vite build` to skip the `tsc` typecheck,
-  outputDirectory `dist`). Upload the SOURCE only (exclude node_modules, .verify, scripts, dist).
-- **Cannot build/run locally** (no Node) — verify ARC changes by redeploying + screenshotting the live site.
+Bounded borrows, each with one job and no more: **Elementor** gives only the alternating band rhythm;
+**designstripe** gives only the dotted-grid variant and mono technical labels; **Perplexity** gives
+only the surface language *inside* the AI answer panel, which must not leak onto the page.
 
-## Design system (use tokens, never hard-code)
-- **Portfolio palette:** pure black `--bg:#000`, white text, ONE acid-green accent `--accent:#c8fa3c` used
-  **sparingly** (the email pill, focus states). The cafe (Buzzy) is its own comic world; the Elements page is
-  its own dark editorial world (CHROME accent); ARC is its own light architecture world (warm off-white,
-  corten accent). Do NOT bleed the portfolio palette/fonts into the demos.
-- **Type:** `--font-sans` = **Inter**, `--font-serif` = **Instrument Serif** (italic accent via `.accent-serif`
-  on a few words). Loaded from Google Fonts in `index.html`.
-- Editorial, asymmetric, lots of negative space, oversized type.
+### The one amendment: the interactive layer (2026-10-22)
 
-## Conventions / rules (follow these)
-- **No em-dashes in copy.** Use commas, periods, colons, or middots. (Owner preference, ALL visible text,
-  every project including the demos and ARC. Code comments may keep them.)
-- **Reveals must FAIL OPEN:** `[data-reveal]` hidden states are set in JS only, with try/catch + a ~2.5s
-  failsafe, so content is always visible if a script/library never loads. (ARC's framer-motion reveals + the
-  blueprint also have failsafes now.)
-- **Particle headings FAIL OPEN (read before touching the hero):** the hero `<h1>` and the #work `<h2>` are
-  hidden via CSS (`html.hero-particled` / `html.work-particled`) so the particle text shows with no crisp-
-  text flash — but ONLY after a pre-paint inline `<head>` script confirms WebGL + motion. `three-hero.js`
-  REMOVES those classes (revealing the crisp headings) on ANY failure, and the inline script's 2.5s failsafe
-  + the module-tag `onerror` are backstops. Do NOT hide either heading in CSS without a JS reveal path. The
-  DOM keeps one real `<h1>`/`<h2>` (opacity:0, still in the a11y tree).
-- **Responsive, mobile-first:** must hold at 375 / 768 / 1280 / 1440 with no horizontal overflow. Test with
-  TRUE viewports (a same-origin harness page of fixed-width iframes; see Stack) — headless Chrome's
-  `--window-size` clamps to ~482px and HIDES real mobile overflow (this exact trap masked a real bug earlier).
-- **WCAG 2.1 AA:** semantic landmarks, one `<h1>`, labelled form fields, visible focus on black, decorative
-  canvas/SVG `aria-hidden`. Do not use `--text-dim`-level greys for body copy.
-- **`prefers-reduced-motion`:** every animation has a calm static fallback; the particle hero does NOT run.
-- **60fps:** animate transform/opacity only; cap canvas `devicePixelRatio <= 2`; pause rAF/render offscreen.
+Traits 3 and 4 above apply to **structure**: bands, the grid, cards, dividers. Anything the visitor
+can **touch** instead gets soft radii and a whisper of lift, so the controls feel like the phone they
+already own. That is `--r-control: 12px`, `--r-surface: 20px` and `--shadow-lift`.
 
-## Deploy (IMPORTANT — there is no Node, so no Vercel/GitHub CLI)
-- **Tokens** are provided by the owner per-session and revoked afterward. Store them OUTSIDE the repo (e.g.
-  `~/.ev_vc`), never commit them, and delete them when done.
-- **Portfolio → Vercel** via the REST API (a Python script): for each tracked web file, `POST /v2/files`
-  with an `x-vercel-digest` SHA, then `POST /v13/deployments` with `{name:"ellevux-studio", files:[{file,
-  sha,size}], target:"production", projectSettings:{framework:null,...}}`. It is a static deploy (no build).
-  Exclude `.md`, `.gitignore`, and `demos/cafe/assets/README.txt` from the upload set.
-- **ARC → Vercel** the same way but `projectSettings:{framework:"vite", buildCommand:"vite build",
-  outputDirectory:"dist", installCommand:null}` and upload `ARC/` SOURCE (no node_modules/.verify/scripts).
-  Vercel runs npm install + vite build in the cloud.
+This is a deliberate amendment, not drift, and it is reference-backed. **Lusion** (lusion.co) is a
+bright, sharp, type-led technical page described by Refero as a "computational laboratory
+blueprint" with lime-green punctuation, and it does exactly this: flat surfaces throughout, soft
+radii and a 0.04-alpha shadow reserved for interactive and elevated components. `--shadow-lift` *is*
+Lusion's value. The radii come from **Sleeve** (replay.software/sleeve), a macOS app page: 12px
+controls, ~24px window-like surfaces.
+
+The test for whether a change is drift: **could you press it?** If no, it stays flat and sharp.
+
+**Reject list.** Warm ivory/cream/parchment canvases, olive or terracotta palettes, and decorative
+serif-italic word swaps in headlines: these are current AI-slop defaults. The canvas is *neutral*
+paper. Also reject: a third accent colour, softening the display face to a polite grotesque, and
+adding a shadow to make a card "pop".
+
+## Design system
+
+**One canvas, and one dark room.** Replicated from **ai.work** (Refero style "Henry") on
+2026-10-23 at the owner's instruction, then turned light on the same day: the page is a soft
+warm off-white, and the hero stage is the single dark element on the site.
+
+| Token | Value | Role |
+|---|---|---|
+| `--canvas` | `#f4f3f0` | **the page.** Soft, never `#ffffff`: full-bleed hard white is glare |
+| `--raised` | `#faf9f7` | cards and panels, one step above the canvas |
+| `--sunk` | `#eceae5` | wells, inputs, inset recesses |
+| `--graphite` | `#171614` | primary text. Soft black, not `#000` |
+| `--slate` | `#6b6963` | muted text · **5.6:1** on canvas |
+| `--hairline` | `rgba(23,22,20,0.11)` | the border that makes a card a card |
+
+The **dark room** stack is reserved for the hero stage and the drawer, and appears nowhere else:
+`--obsidian #000`, `--tar #0c0c0c`, `--carbon #141414`, `--smoke #615f5c`, `--ash #878581`,
+`--bone #d4d0c9`, `--chalk #ffffff`.
+
+Warm-neutral throughout. **Not cream, ivory or parchment** — those are on the reject list and read
+as AI-default. This is grey with a trace of warmth. **There is still no accent colour.** A filled
+button is graphite on the canvas, and chalk inside the dark room.
+
+**Type. ONE family: Inter.** The reference sets NB International Pro, which cannot be licensed, and
+names Inter as its own substitute. What carries over is how it is *used*: **headlines at weight 300**
+(`--w-light`), line-height 1.0 at display size, tracking about -0.02em, and never 600 or heavier on
+display text. The display voice is weight and tracking, not a second typeface.
+
+**Shape scale, from the reference exactly:** tags 2px, icons and inputs 6px (`--r-icon`), cards and
+panels 10px (`--r-surface`), **buttons 100px** (`--r-control`). Buttons are pills.
+
+## The home page, after the 2026-10-23 cuts
+
+Six bands: hero, the two-service split (inside the hero), services, the AI answer panel, the work
+folder, close, footer. Three things were removed outright at the owner's request and are not coming
+back without being asked for:
+
+- **The clients strip** ("Who has paid for this", two named rows). Its `.clients*` CSS went with it.
+- **The hero console** (ticket + brief + engine picker) and the studio intro paragraph.
+- **The three work tiles.** Replaced by `.folder`.
+
+**The work folder** (`§16`). One object instead of a grid: "My work" on the left, a folder on the
+right with three real project screenshots peeking out of it, and the whole folder is a single link
+to `/work/`. Three things are load-bearing: the stack order is back → papers → front, because the
+front panel has to paint *over* the papers or nothing is in the folder; the folder needs
+`overflow: hidden` or the papers rise past its top edge on hover; and the fan spread is `left` while
+the tilt is `transform`, because mixing a centring translate with a per-paper offset in one
+transform makes every later value fight the first.
+
+**`.work-item__*` and `.work-row*` still belong to `/work/`.** They were shared with the home grid,
+and removing the grid's whole CSS block dropped `/work/`'s facts list to unstyled stacked text.
+`§16` now says which three selectors are genuinely dead (`.work`, `.work-item`, `.work__foot`).
+
+**`head--split`** is a head that spans the section on the same grid as the content below it: heading
+in the left track, lead in the right. The default `.head` is capped at 46ch, which left the answer
+section's heading in a narrow column with most of the section empty and nothing aligned.
+
+**The section rhythm lives on `.band`**, and it is easy to lose: replacing the band-inversion block
+once deleted `.band` entirely, and every section on every page rendered with **zero vertical
+padding**. `--band-y` is `clamp(3.5rem, 2rem + 4.5vw, 6rem)`, so adjacent bands put ~192px between
+content. It was 11rem, which put 352px between bands, wider than most of the blocks it separated.
+
+## Retired on 2026-10-23: glass, inversion, and the tactile key
+
+Three systems were removed wholesale when the site was rebuilt against ai.work. They are described
+here so nobody reintroduces them thinking they are missing:
+
+- **Frosted glass on cards.** `backdrop-filter` panes, rims and inset sheens. The reference's own
+  don't list forbids shadows and hover lift on cards, and a frosted pane over a flat canvas does
+  nothing anyway. A card is now `--raised` plus a hairline.
+- **Band inversion.** `[data-band]` no longer alternates: **both values resolve to the same canvas**
+  in one shared scope. The attribute survives in the markup so the page could be re-banded without
+  touching every file, but nothing flips. One continuous surface is the single biggest reason the
+  reference reads as one object rather than a stack of blocks. **Cards no longer invert either.**
+- **The tactile key.** `--btn-edge`, `--btn-sheen` and the press travel. Both tokens still exist and
+  are `transparent`, so any rule that still references them is inert rather than broken.
+
+`verify.mjs` lost its band-inversion check with them, because under one canvas it failed on every
+page by definition. **It was replaced, not deleted:** a `SURFACE` check asserts every `.card` has a
+real hairline border (the only thing separating it from the page now) and that the hero stage stays
+clearly darker than the body.
+
+## Logo
+
+Real assets, supplied by the owner, in `assets/img/`:
+
+| File | Use |
+|---|---|
+| `apple-touch-icon.png` 180px | source for the nav mark, and the iOS home-screen icon |
+| `logo-mark.png` 104px | the nav mark, generated from the above (3 KB) |
+| `favicon-32.png` / `favicon-64.png` | the real favicons; the old inline SVG data-URI is gone |
+| `logo-icon.png` | white-on-light variant, unused so far |
+| `logo-lockup.png` / `logo-lockup-420.png` | white mark + wordmark, used in the ink drawer |
+
+The dark-tile versions are for the bone nav; the lockup is white and only works on ink. **Do not put
+a CSS `border-radius` on `.nav__mark`** — the asset carries its own rounded tile and a second corner
+clips the artwork.
+
+**Band inversion is structural, not a convention.** `[data-band="paper"|"ink"]` **remaps** the
+semantic tokens in scope, and `--card-surface` is defined as the opposite of `--surface` in *both*
+scopes, so a card can never match its parent band. A `.card` is itself a full token scope: it flips
+`--line`, `--on-surface`, `--well` and `--focus` too. Inverting only the background is the bug that
+made ghost-button borders invisible on cards. **Never hardcode `var(--ink)` or `var(--paper)` for
+anything inside a band** — use `--on-surface`, `--line`, `--well`. The nav, the drawer and the
+answer panel are the deliberate exceptions, because they are fixed chrome or a quoted artifact.
+
+## Conventions and rules
+
+- **No em-dashes in any visible copy. Absolute.** Commas, periods, colons or middots. This covers alt
+  text, meta descriptions, form labels, button and chip text, **JSON-LD strings**, and 404 copy.
+- **No metrics about his own work. None, ever.** There are zero real performance numbers for
+  Ellevux. If a number appears it is a price, a duration, a page count, a revision count, or an
+  approved star rating. **Amended 2026-10-28 for `/ai-search/` only:** a number may also appear when
+  it is **quoted from a named public source that is named in the same sentence the reader sees**, for
+  example "Pew Research Center found ... about 1% of visits". A number without its source in the
+  sentence is not allowed anywhere, and a number about his own results is never allowed at all.
+- **Claims describe what he does, never what will happen.** "Structured so assistants can quote it"
+  is allowed. "Gets you quoted" is not. "Guaranteed" is banned, and its absence is stated once, in
+  the FAQ. This single rule keeps the site truthful with no case-study data.
+- **Never invent a testimonial, a person's name, or a role.** The two approved quotes live in
+  `work/index.html` (the home page's quotes band was cut on 2026-10-22) and came from the clients.
+  They are company-attributed until the owner supplies real names. *(This rule exists because
+  quotes were once fabricated here and had to be replaced with the approved text.)*
+- **An approved quote may be SHORTENED, never reworded.** When the Ellevux product was rebuilt from
+  an AI receptionist into an agentic platform, its quote still described call handling that no
+  longer exists. Quoting less of what a client said is ordinary editorial practice; changing their
+  words to fit a new product is fabrication. The elision is disclosed in visible copy under the
+  quotes, and the removed sentence is preserved in an HTML comment beside it.
+- **Honesty labels are first-class copy at full size, never fine print:** "Illustration",
+  "Self-initiated concept", "Spec pitch, not a client", "Published with the client's approval".
+- **Reveals must FAIL OPEN.** `[data-reveal]` has **no hidden state in CSS**, by design. The
+  from-state is set in JS only, with per-element try/catch and a 2.5s failsafe. Do not add an
+  `opacity: 0` rule for it.
+- **`prefers-reduced-motion`:** every animation has a calm static fallback, and the particle hero
+  does not run at all.
+- **Responsive:** must hold at 320/375/768/1280/1440 with no horizontal overflow.
+- **`body` has NO `overflow-x`.** A global `hidden` or `clip` stops `documentElement.scrollWidth`
+  reporting real overflow and silently voids the automated check. Anything that legitimately bleeds
+  (the footer wordmark) clips itself locally.
+
+## Verification
+
+```bash
+python -m http.server 5510                        # from the repo root
+node tools/verify.mjs                             # home only
+PAGES="/,/ai-search/,/about/,/pricing/,/work/,/contact/,/thanks/,/lab/" node tools/verify.mjs
+node tools/interact.mjs                           # drawer, form, stage, console, pricing, bar
+```
+
+In Git Bash, prefix with `MSYS_NO_PATHCONV=1` or a leading `/` is mangled into a Windows path.
+
+> **`NAVCLASH` IS DEAD, and it is the check that matters most here.** `verify.mjs:153` queries
+> `.nav__pill`. That class exists in **no HTML file in the repo**: the nav has been `.nav__dock`
+> since 2026-10-23. `querySelector` returns null, the check returns null, and it **silently skips on
+> every page at every width**. It was written precisely because a hero refactor once dropped the nav
+> onto five pages' headings while every check passed, so the repo currently has no protection
+> against the exact bug it was built for. Until the selector is repaired, any new page must get its
+> clearance **by construction**: the first band carries `class="band hero"`, which supplies the
+> `padding-top` that clears the dock. Omitting `hero` puts the dock on the `<h1>` and **the whole
+> suite still reports ALL CHECKS PASSED.**
+>
+> Two more blind spots, both verified by hand on 2026-10-28 instead:
+> **the 940 to 1024px window is never measured** (chips render at `min-width: 940px`, and the
+> widths jump 768 to 1280), and **the drawer is only ever measured shut**, so a link added to it is
+> unchecked. Measured with the fourth chip: dock 810px against 893px available at 940px, 83px slack;
+> drawer foot at 575px inside a 640px-tall phone.
+
+`verify.mjs` checks, at five widths: horizontal overflow (naming the culprit elements), **band
+inversion** (no two adjacent or nested bands share a tone), **acid discipline** (role fence plus
+never two acid elements in a viewport), **the floating pill not covering the first heading on
+any page** (see the warning above: this one does nothing), one `<h1>` and the landmarks, explicit `width`/`height` on
+every image, JSON-LD parses with no dangling `@id` and origins matching the canonical, **the FAQ
+answers matching the visible copy verbatim**, the reveal failsafe, plus a no-JS pass and a
+reduced-motion pass. It drives **true viewports** via `newContext({ viewport })`: raw headless
+Chrome's `--window-size` clamps to ~482px and hides real mobile overflow.
+
+## Images
+
+No build step, so derivatives are generated **once, by hand**, with `sharp` installed in a scratch
+directory so nothing lands in the repo:
+
+```bash
+cd "$SCRATCH" && npm i sharp     # then resize to 640 + 1280, avif q52 + webp q74
+```
+
+Sources live in `assets/img/src/` and are **excluded from the deploy set**. The shipped pages
+reference only `.avif` and `.webp` through `<picture>`, with the 1280 WebP as the `<img>` fallback.
+This took the four thumbnails from 2.3 MB to 413 KB on disk and ~28 KB per page load.
+`tools/thumb.mjs` captures a new 16:9 thumbnail from any URL, with a `scrollFraction` argument
+because the scroll-built 3D heroes show nothing at all at y=0.
+
+## Structured data and AEO
+
+Every page carries `Organization` + `WebSite`/`WebPage`. The home page adds two `Service` nodes whose
+`priceSpecification` must match the visible "from" prices exactly. **The home page has NO `FAQPage`
+and no `#faq`** (this file claimed otherwise until 2026-10-28, and two CTAs pointed at that
+non-existent anchor). Three pages carry a `FAQPage`, each with **different questions**, because
+duplicating them would be the obvious mistake: `/about/` 6, `/pricing/` 4, `/ai-search/` 6.
+`/work/`, `/contact/`, `/pricing/`, `/ai-search/` and `/lab/` carry `BreadcrumbList`.
+
+**`verify.mjs` pairs `FAQPage.mainEntity[i]` with the i-th visible `.faq__item` POSITIONALLY**, and
+reads only the first `<p>` of each `.faq__a`. So reordering an accordion without reordering the
+JSON-LD fails, and a two-paragraph answer silently compares against paragraph one.
+
+- **Do NOT use `LocalBusiness` or `ProfessionalService`.** Both imply an address and would break the
+  no-geography positioning. `Organization` carries none.
+- **Do NOT add `Review` or `AggregateRating`.** Self-serving review markup about your own business is
+  a policy risk and buys nothing. The stars stay visual with an `aria-label`.
+- **Google's Rich Results Test will report "no eligible rich results"** for `Organization`,
+  `Service` and `FAQPage`. **That is the expected, correct outcome, not a failure.** The obvious
+  "fix" is to add `AggregateRating`, which is exactly the trap above. Only `BreadcrumbList` lights up.
+- **The evidence grades, researched 2026-10-28 and regraded on the spot.** Two claims this file
+  used to make were wrong, and `/ai-search/` now states the corrected versions publicly:
+
+  - **Confirmed, and load-bearing:** everything in the initial HTML (GPTBot, ClaudeBot and
+    PerplexityBot *fetch* JavaScript but do not execute it, per Vercel and MERJ, December 2024),
+    crawlable and indexable, the mobile page carrying everything, fast load, self-contained answers
+    of 40 to 60 words with no "as mentioned above" (an assistant can only lift an answer that does
+    not refer to the page around it).
+  - **Confirmed, but NOT an AI lever:** `structured data`. Google states plainly that "structured
+    data isn't required for generative AI search, and there's no special schema.org markup you need
+    to add." Keep it for **rich-result eligibility** and for stating facts that agree with the
+    visible page. **Do not sell it as the reason an assistant quotes you.**
+  - **Peer reviewed:** quotable material in the text. The one controlled experiment (GEO, KDD 2024)
+    found direct quotations, statistics and cited sources raised visibility, and **keyword stuffing
+    scored below doing nothing**. It ran on 2023-era models; say so whenever it is cited.
+  - **Reasonable bet, NOT evidence-based:** question-shaped headings. No controlled study isolates
+    heading format as a cause of citation. The mechanism is plausible and it costs nothing, so it
+    stays in the work, but it does not go in the evidence column.
+  - **Speculative:** `llms.txt`. Google states "Google Search itself doesn't use them." It ships
+    because it is cheap and harmless. **It is never sold, and `/ai-search/` says so in public.**
+
+## Swapping the origin
+
+Absolute URLs appear in each page's `<head>` block (canonical + OG + Twitter) and in the JSON-LD
+`@id` values, plus `robots.txt`, `sitemap.xml` and `llms.txt`. They all use
+`https://ellevux-studio.vercel.app`. When a real domain is attached, find and replace that one
+string. `verify.mjs` fails loudly if a JSON-LD `@id` origin stops matching the canonical, which is
+the error that would otherwise sever every entity reference silently.
+
+## Deploy (Vercel REST API, proven)
+
+- **Tokens** are supplied by the owner per session and revoked afterward. Store them OUTSIDE the repo
+  (`~/.ev_vc`), never commit them, delete them when done, and redact them from command output.
+- **Portfolio → Vercel:** for each tracked web file, `POST /v2/files` with an `x-vercel-digest` SHA,
+  then `POST /v13/deployments` with `{name:"ellevux-studio", files:[{file,sha,size}],
+  target:"production", projectSettings:{framework:null,...}}`. A static deploy, no build.
+  **Exclude from the upload set:** `*.md`, `.gitignore`, `tools/`, `assets/img/src/`,
+  `demos/cafe/assets/README.txt`.
+- **Confirm `vercel.json` is honoured** on the first deploy, since this is a `framework: null` REST
+  deploy. If the headers come back absent, the config was not processed and that blocks everything
+  else. Check: `/assets/*` should return `max-age=31536000, immutable`, and `/testimonials.html`
+  should 308 to `/work/`.
+- **`vercel.json` allows NO extra keys.** A `"comment"` field inside a redirect object fails the
+  whole deployment with `INVALID_VERCEL_CONFIG`, and the deploy goes to ERROR rather than degrading.
+  Explain a rule in this file, not in the JSON.
+- **`cleanUrls` and `trailingSlash` normalise the path BEFORE `redirects` are matched.** So
+  `/testimonials.html` arrives at the rules as `/testimonials/`, and sources written as
+  `/testimonials.html` and `/testimonials` both miss. Verified live on 2026-10-26: it 308'd to
+  `/testimonials/` and then **404'd**, on a URL that is in the old sitemap. All three variants are
+  now listed. **Test a redirect by following it to its final status**, not by checking it returns a
+  308.
 - **git push needs the token in the URL** (`https://x-access-token:<PAT>@github.com/...`); the bearer
-  extraHeader does NOT work for GitHub git. Redact the token from any command output.
-- **The GitHub repo is BEHIND the live site:** recent turns only had a Vercel token, so several commits are
-  local-only (committed but unpushed). The LIVE site is current. Push to sync when a GitHub token is given.
-- **Contact email** is real now: `mailto:yuvrajsinghgill5492@gmail.com`. og:url / og:image / canonical /
-  robots / sitemap use the live `ellevux-studio.vercel.app` origin (`ellevux.studio` is not attached).
+  extraHeader does not work for GitHub git.
+
+## The hero: the stage
+
+The home page hero is a **dark photographic stage, inset and rounded**, carrying the headline on the
+left and the real client sites on the right. It is the one dark element on a light site, and it is a
+replication of **ai.work**, analysed frame by frame on 2026-10-23.
+
+| ai.work | here |
+|---|---|
+| stage inset 8px / radius 8px, over `#141414` | inset 12px / radius 14px, over `--canvas` |
+| **one full-bleed golden-hour photograph** | `assets/img/hero.jpg`, same role, same tonal structure |
+| headline 64px weight 400, line-height **1.0**, tracking -0.02em, two lines | same, Inter at `--w-light` |
+| line 1 at `#d4d0c9`, line 2 the **same colour at 60% alpha** | `--on-surface`, then `color-mix(… 52%, transparent)` |
+| transparent nav flush over the photo, fill on scroll | `.nav--over-dark`, then `.nav--scrolled` |
+
+**The photograph does the work.** It was generated to a written brief and its tonal structure is
+load-bearing, not decorative: dark storm sky in the **top third** so the headline reads, the lit
+valley through the **middle**, shadowed foreground at the **bottom**. Replace it with an evenly lit
+image and the headline stops separating. `.hero__atmos` is the scrim that guarantees the rest, and
+`.hero__copy` carries a `text-shadow` as the floor under that, because a photograph makes no promise
+about what sits under any given glyph.
+
+**Four things are load-bearing:**
+
+- **`.hero__stage` declares the whole dark scope itself**, including `color: var(--on-surface)`.
+  Redefining the token alone is not enough: `.band` already resolved `color` from the page scope
+  further up, and **inherited colour does not re-resolve when a descendant changes the variable**.
+  The headline's first line stayed graphite on a dark photograph until that one line existed.
+- **`.hero--stage` is the home page; `.hero` is shared.** The other five pages are a heading on a
+  band and still need the padding that clears the nav. Folding the stage's padding into `.hero` put
+  the nav on top of their headings and **every check passed**. Hence the `NAVCLASH` check.
+- **The nav asks the stage, not the scroll position.** `nav--scrolled` fires at 40px, where you are
+  still inside the stage; `nav--over-dark` is driven by the stage's own `getBoundingClientRect`, and
+  pages without a stage never get the class. Both can be on the element at once, so the dark rules
+  are written after.
+- **Vertical rhythm answers to viewport HEIGHT.** `vh`-based clamps plus a `@media (max-height:
+  880px)` block scoped `and (min-width: 600px)`: a phone is short by nature and has its own smaller
+  display size. Letting the laptop block reach the phone put the 36px floor back and wrapped a
+  two-line headline into four.
+
+**Cut from the hero on 2026-10-23, at the owner's request:** the studio intro paragraph, and the
+"console" (a scripted ticket + brief + engine-picker demo). The device stage, which had been moved
+to its own band, came back into the right-hand column. `initConsole` and its tests are gone.
+
+## Navigation: the dock
+
+A **dark floating dock**, replicated from the Mirror Solutions nav at the owner's request on
+2026-10-23: the brand in its own light tile, then every destination as its own chip with an icon
+and an uppercase label, then the filled action. It replaced a flush full-width bar, which replaced
+a small capsule.
+
+**Four destination chips** since 2026-10-28: Work, Pricing, AI search, About, plus the brand tile
+and the filled Contact CTA. Chips render **only at `min-width: 940px`**, so a chip costs phones and
+tablets nothing. The budget is real but not tight: each chip is ~73px of fixtures (48px padding,
+2px border, 14px icon, 9px gap) plus ~9px per character, and `.nav__link` is `white-space: nowrap`,
+so chips cannot shrink. They overflow instead. **A fifth chip needs measuring at 940, 1000 and 1024
+by hand**, because `verify.mjs` never tests that window.
+
+**Four things are load-bearing:**
+
+- **It is dark on EVERY page, including the light ones.** One state instead of three. The bar it
+  replaced had to flip its colours between the dark hero and the light page, driven by the hero
+  stage's own geometry (`nav--over-dark`); none of that is needed now and all of it is deleted.
+  `nav--scrolled` survives only to deepen the shadow.
+- **The chips are 12px rounded rectangles, not the 100px pills the rest of the site uses.** That is
+  the reference. The dock is the one place it applies. Do not "fix" it to match the buttons.
+- **The mark is `logo-mark-light.png`**, generated once by inverting `logo-mark.png` with sharp. The
+  normal mark is a *dark* tile and vanishes on a dark dock. It carries its own rounded corner, so
+  there is **no `border-radius` on `.nav__mark`**: a second corner clips the artwork.
+- **Safe areas still matter.** The outer `.nav` padding includes `env(safe-area-inset-*)`, which is
+  what keeps the dock clear of a Dynamic Island, and the layer is `pointer-events: none` so the
+  empty space beside the dock never swallows a click.
+
+**Appending same-specificity overrides: put them in §32, at the end of the file.** A narrow-screen
+`.seg__label` override was spliced into the middle of the `forced-colors` block by a script that
+anchored on the last matching selector. It matched nothing, **the brace count still balanced, and
+every check still passed.** Brace counting is not structural validation.
+
+## Buttons
+
+**Pills, 100px radius, flat.** Chalk-filled inside the hero's dark room, graphite-filled on the
+page, ghost is a hairline with no fill. **No shadow, no key edge, no press travel** — the reference
+forbids all three on a button, and the `TactileButton` treatment the owner supplied earlier was
+retired with the rest of that direction on 2026-10-23.
+
+## The interactive components
+
+**The device stage** (`site.css` §25, `site.js` §10). A macOS browser window and an iPhone rotated
+in real CSS 3D, showing the ACTUAL client sites. No library, no canvas: the whole interaction costs
+about 9 KB of JavaScript, where Three.js would have been ~160 KB gzipped on a page whose Lighthouse
+score is the sales argument. Four things that are load-bearing:
+
+- **Rotation is clamped** (`MIN_RY`/`MAX_RY`). CSS 3D has no backface geometry, so a free spin shows
+  the flat reverse of the window. Apple's own product viewers are constrained the same way.
+- **Drag is tracked on `window`, not with `setPointerCapture`.** Capture retargets events in a way
+  that silently drops moves, and a drag must survive the pointer leaving the stage.
+- **`.shot img` needs `pointer-events: none`.** Otherwise the browser starts its own image-drag on
+  pointerdown, fires `pointercancel`, and the rotation dies a few pixels in. This cost real debugging
+  time; do not remove it.
+- **Grid children need `min-width: 0`.** The segmented control is wider than 280px, and `min-width:
+  auto` lets it force the whole hero track wide and scroll the page sideways at 320.
+
+**The configurator** (§26, §11). Apple's pick-a-model pattern. The price and panel swap is **pure
+CSS `:has()`**, so it works with JavaScript off and every figure stays real text for crawlers and
+assistants. JS only rewrites the CTA link and mirrors the visible price into the sticky bar; it
+never computes money. **Only approved prices appear**: 2,000 / 4,500 / 9,000, plus the 600 audit
+(2,600 and 5,100 combined). Do not add a figure that the owner has not approved.
+
+**The sticky action bar** (§27, §12). Phones only, after the hero leaves view. Its button is **ink,
+never acid**: a fixed acid element would share a viewport with the pricing CTA and break the
+one-acid-per-viewport rule. It toggles `visibility` as well as `transform`, or a hidden off-screen
+link stays in the tab order.
+
+**The scroll-driven work reveal** (§28) is a native `animation-timeline: view()` animation on the
+inner `.work-item__art` only, so it composes with the JS `[data-reveal]` engine that owns the
+parent's opacity. Browsers without support simply get the existing reveal.
 
 ## Gotchas
-- **Hero particle layering:** `#hero-canvas` is a page-level `position:fixed; z-index:-1` layer on the black
-  body bg, BEHIND all content. Works only because every `section{isolation:isolate}` and the design is pure-
-  black with transparent sections. Don't move the canvas into `#hero` or change the z-index without re-checking.
-- **Hero morph is scroll-driven, no pin.** Particle positions are placed from each heading's cached document
-  position minus live scroll. There is NO `.hero__scrim` anymore; legibility is content-bound `text-shadow`.
-- **bfcache:** work links open in the SAME tab, so the browser **Back** button restores the page from bfcache
-  without re-running init. `three-hero.js` PAUSES on `pagehide[e.persisted]` and RELOADS on `pageshow
-  [e.persisted]`. Verify Back-button behaviour after touching the hero lifecycle.
-- **Hero meta caption** (`.hero-meta-block`, top-right, >=768px, `aria-hidden`): "Currently / Open for work /
-  Available worldwide" with a pulsing dot. Hero bottom-left is now a **tagline** (`.hero__tagline`), not a
-  social row. The footer has no social row; the only social link is the **Instagram** one in the About card.
-- **Test the real thing.** Headless Chrome can't reliably scroll-to-anchor and WebGL/loaders may stall;
-  use the headless-Chrome iframe harness for true viewports. For screenshots after timers/animations use
-  `--virtual-time-budget` (plain `--screenshot` fires at load), and never make an iframe taller than the
-  viewport on index.html (the 100svh hero grows with it). The cafe/ARC heroes need a real browser.
-- **Browser caches CSS/ESM hard.** Hard-refresh after edits; the CSS `?v=` bump exists for this.
-- **Headless screenshots of external live sites** need an isolated `--user-data-dir` or they collide with an
-  open Chrome and silently fail to write.
 
-## Dead-code cleanup (DONE)
-An audit found large blocks of provably-dead CSS/JS (leftover from removed features + the abandoned AI-SaaS
-phase). None of it affected behavior (it was unreferenced). The whole sweep is now COMPLETE and verified:
-the render is unchanged (mobile pixel-identical to pre-cleanup; desktop reproduces the baseline byte-for-byte
-in a clean capture — the only variance is a headless image-decode race on a work thumbnail), no horizontal
-overflow, and the functional snapshot is intact (particle hero boots, 4 work cards, 3 nav links, About
-portrait, footer pill, Instagram → ellevux, slot-03 SVG wordmark). Removed across the sweep:
-- **components.css:** the "PART B legacy components" block (bento/case/demo-card/glass/stat/browser/btn/badge/
-  chip/loader + `ev-spin` + index/eyebrow + the legacy reduced-motion @media); the MARQUEE block; the
-  SCROLL-CUE block; `.work-art__ph`; `.portrait__ph`; `.vertical-text--down`; `.big-wordmark--outline`;
-  `.accent-serif--accent`; `.strike`; `.divider`/`.divider--accent`; + comment tidy.
-- **main.css:** the `.nav__marquee` rules (+ its `display:none` in the <=768 @media); stale comments scrubbed
-  (marquee / scroll-cue / socials / `.ph`/`.strike` / "placeholder slots 03/04"). (`.ph`/`.strike` only ever
-  appeared in main.css COMMENTS, never as rules.)
-- **base.css:** `.ph`; `.text-gradient`/`.text-nebula`; comment tidy.
-- **tokens.css:** 62 unused tokens (the entire "LEGACY TOKEN MAP" except the still-referenced `--text-muted`,
-  plus `--bg-soft-2`, `--text-dim`, `--shadow-sm/md/lg`, `--tracking-base`, `--r-none`, `--dur-slower`,
-  `--dur-marquee`, `--z-bg`, `--blur-sm`, `--accent-dim`). Detected by transitive `var()`-usage; after removal
-  every defined token has a live consumer and no `var()` is dangling.
-- **three-hero.js:** the write-only `revealed` variable.
-- **asset:** `assets/img/work-lab.png` (orphaned; slot 03 was an inline SVG wordmark at the time).
+- **`/lab/` is a separate world.** It loads the original dark CSS and `three-hero.js`, and must never
+  load `site.css`. It needs `#hero-canvas`, `#hero`, `#hero-title` with `.hero__line` spans, **and**
+  `#work-title` as the morph target: remove the second heading and the morph breaks.
+- **The particle hero fails open.** The pre-paint inline script hides both headings only after
+  confirming WebGL and motion; `three-hero.js` reveals them on any failure, with a 2.5s failsafe and
+  the module tag's `onerror` as backstops. Never hide either heading in CSS without a JS reveal path.
+- **bfcache:** `three-hero.js` pauses on `pagehide[persisted]` and reloads on `pageshow[persisted]`.
+- **Test the real thing.** Drive scroll explicitly in Playwright rather than hoping a screenshot
+  lands after the animation. WebGL pages need `--use-angle=swiftshader --use-gl=angle
+  --ignore-gpu-blocklist` to render headlessly.
+- **Browsers cache CSS and JS hard.** `?v=` on `site.css` and `site.js` is load-bearing, because
+  `vercel.json` marks `/assets/` immutable. Bump it on every edit:
+  ```bash
+  grep -rl 'site.css?v=' --include=*.html . | xargs sed -i 's/site\.css?v=[0-9]*/site.css?v=2/'
+  ```
 
-ALWAYS keep `.social-links`/`.social-link` (the About Instagram link), `.section--raised` (#about), and the
-`--text-muted` token — they are LIVE.
+## History: two deleted rebuilds
+
+A ground-up rebuild as "Ellevux Studios" was built in a `STUDIO/` directory over two sessions and
+**deleted at the owner's request** on 2026-10-22, never deployed, never committed. An earlier
+scroll-driven cinematic was scrapped before it. **Do not resurrect either.**
+
+What went wrong was not a coding problem, and the lesson governs this repo:
+
+- **It was built before the direction was settled.** The brief, the reference lock and the content
+  all moved while the implementation was being written, so every piece was rebuilt several times and
+  none of it felt chosen. Pin down what the site IS, who it is for, and what it must look like, with
+  references agreed, **before** writing code. The current site was built that way: research, a
+  locked reference, then a plan, then code.
+- **A procedural 3D set piece has a hard ceiling.** No amount of iteration closes the gap to a
+  reference made by a large studio. The honest options are a licensed rigged model or a separate
+  showpiece page, never an inline sequence on the conversion path. `/lab/` is that separate page.
+- **Iterating fast made it worse.** Change code, take a screenshot, repeat produces work that is
+  roughly right and never good. Build it properly, judge it on its own, then integrate.
+
+## Local tooling (this machine)
+
+- **No `claude` CLI.** The VSCode extension bundles its runtime, so `claude mcp add` is unavailable.
+  MCP servers are configured by writing `.mcp.json` in the project root.
+- **MCP `refero`** is connected and is the primary design research tool. The `refero-design` skill
+  says to prefer it over generic frontend-design skills, and research is mandatory before design work.
+- **MCP `figma`** needs recreating; spawn it as `cmd /c npx` (bare `npx` fails on Windows) and
+  reference the token as `${FIGMA_API_KEY}` so no secret lands in the repo. The Figma REST API is
+  read-only for design content. **A Figma token was leaked into a transcript on 2026-10-22 and must
+  be rotated.**
+- **Blender 5.2.1 LTS** at `D:/Blender/blender.exe`. Headless works. Blender is **Z up**.

@@ -1,5 +1,6 @@
+# Ellevux · a one-person web studio
 User-agent: *
 Allow: /
+Disallow: /thanks/
 
-# Update the host below to https://ellevux.studio/ when that domain is attached in Vercel.
 Sitemap: https://ellevux-studio.vercel.app/sitemap.xml

@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Update <loc> to https://ellevux.studio/ when that domain is attached in Vercel. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://ellevux-studio.vercel.app/</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://ellevux-studio.vercel.app/testimonials.html</loc>
-    <lastmod>2026-09-21</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
+  <url><loc>https://ellevux-studio.vercel.app/</loc><lastmod>2026-10-28</lastmod><changefreq>monthly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://ellevux-studio.vercel.app/pricing/</loc><lastmod>2026-10-28</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ellevux-studio.vercel.app/ai-search/</loc><lastmod>2026-10-28</lastmod><changefreq>monthly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://ellevux-studio.vercel.app/work/</loc><lastmod>2026-10-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ellevux-studio.vercel.app/about/</loc><lastmod>2026-10-28</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ellevux-studio.vercel.app/contact/</loc><lastmod>2026-10-22</lastmod><changefreq>yearly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ellevux-studio.vercel.app/lab/</loc><lastmod>2026-10-22</lastmod><changefreq>yearly</changefreq><priority>0.4</priority></url>
 </urlset>

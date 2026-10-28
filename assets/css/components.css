@@ -84,6 +84,29 @@
 /* keep each part whole ("MIRROR SOLUTIONS", not "MIRROR / SOLUTIONS") */
 .work-label > span { white-space: nowrap; }
 
+/* Status chip for a project that is mid-rebuild. Deliberately a hairline +
+   muted text rather than the acid accent, which stays reserved for the email
+   pill and focus states. Inherits the uppercase/tracking of whatever label
+   row it sits in, so it works in .work-label and .tm-card__kicker alike. */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55em;
+  padding: 0.22em 0.7em;
+  border: 1px solid var(--line);
+  border-radius: var(--r-pill);
+  color: var(--text-mut);
+  font-weight: var(--weight-medium);
+}
+.status-pill::before {
+  content: "";
+  flex: none;
+  width: 0.38em;
+  height: 0.38em;
+  border-radius: var(--r-pill);
+  background: currentColor;
+}
+
 /* the art tile — CSS duotone/gradient fill with an <img> slot on top */
 .work-art {
   position: relative;

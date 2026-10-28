@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lab · GPU particle typography · Ellevux</title>
+<meta name="description" content="A headline rendered as 22,000 GPU particles that fly down and reassemble into the next heading as you scroll. Built with a custom Three.js shader, and it fails open.">
+<meta name="theme-color" content="#000000">
+<link rel="canonical" href="https://ellevux-studio.vercel.app/lab/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ellevux">
+<meta property="og:url" content="https://ellevux-studio.vercel.app/lab/">
+<meta property="og:title" content="Lab · GPU particle typography · Ellevux">
+<meta property="og:description" content="A headline made of 22,000 GPU particles that morphs into the next heading as you scroll.">
+<meta property="og:image" content="https://ellevux-studio.vercel.app/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="/assets/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/assets/img/favicon-64.png" sizes="64x64" type="image/png">
+<link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://ellevux-studio.vercel.app/#studio",
+      "name": "Ellevux",
+      "url": "https://ellevux-studio.vercel.app/",
+      "email": "yuvrajsinghgill5492@gmail.com",
+      "sameAs": ["https://www.instagram.com/ellevux.studio"],
+      "founder": { "@type": "Person", "name": "Yuvi" }
+    },
+    {
+      "@type": "WebPage",
+      "@id": "https://ellevux-studio.vercel.app/lab/#webpage",
+      "url": "https://ellevux-studio.vercel.app/lab/",
+      "name": "Lab · GPU particle typography · Ellevux",
+      "about": { "@id": "https://ellevux-studio.vercel.app/#studio" }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://ellevux-studio.vercel.app/lab/#breadcrumbs",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Ellevux", "item": "https://ellevux-studio.vercel.app/" },
+        { "@type": "ListItem", "position": 2, "name": "Lab", "item": "https://ellevux-studio.vercel.app/lab/" }
+      ]
+    }
+  ]
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdnjs.cloudflare.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap">
+
+<!-- This page deliberately loads the ORIGINAL dark token system, not
+     site.css. The lab is its own world: pure black, Inter, acid
+     accent. Keeping the two stylesheets separate means neither can
+     collide with the other. -->
+<link rel="stylesheet" href="/assets/css/tokens.css?v=12">
+<link rel="stylesheet" href="/assets/css/base.css?v=12">
+<link rel="stylesheet" href="/assets/css/components.css?v=12">
+<link rel="stylesheet" href="/assets/css/main.css?v=12">
+
+<!-- PRE-PAINT GUARD. Hides the real headings only once WebGL and
+     motion are both confirmed, so the particle text never flashes
+     crisp text first. three-hero.js REMOVES these classes on ANY
+     failure, and the 2.5s failsafe plus the module tag's onerror are
+     the backstops. Never hide either heading in CSS without a JS
+     reveal path. -->
+<script>
+(function () {
+  try {
+    var reduce = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var gl = false;
+    try {
+      var c = document.createElement('canvas');
+      gl = !!(window.WebGLRenderingContext &&
+        (c.getContext('webgl') || c.getContext('experimental-webgl')));
+    } catch (e) { gl = false; }
+    if (gl && !reduce) {
+      document.documentElement.classList.add('hero-particled', 'work-particled');
+      window.__heroFailsafe = window.setTimeout(function () {
+        document.documentElement.classList.remove('hero-particled', 'work-particled');
+      }, 2500);
+    }
+  } catch (e) {}
+})();
+</script>
+
+<style>
+  /* A few page-local rules. The lab is one page, so these stay here
+     rather than growing the shared stylesheet. */
+  .lab-note {
+    max-width: 62ch;
+    color: var(--text-soft);
+    font-size: var(--fs-lead);
+    line-height: var(--lh-base);
+  }
+  .lab-note + .lab-note { margin-top: var(--s-5); }
+  .lab-specs {
+    display: grid;
+    gap: 1px;
+    margin-top: var(--s-8);
+    background: var(--line);
+    border-block: 1px solid var(--line);
+  }
+  .lab-specs div { background: var(--bg); padding: var(--s-5) var(--s-4); }
+  .lab-specs dt {
+    font-size: var(--fs-label);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-mut);
+    margin-bottom: var(--s-2);
+  }
+  .lab-specs dd { font-size: var(--fs-body); color: var(--text); }
+  @media (min-width: 680px) { .lab-specs { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .lab-specs { grid-template-columns: repeat(4, 1fr); } }
+  .lab-back { margin-top: var(--s-9); }
+  #work { padding-block: var(--section-y); }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Page-level fixed layer at z-index:-1, BEHIND all content, on the
+     black body background. This works only because every section is
+     transparent and isolated. Do not move it inside #hero. -->
+<canvas id="hero-canvas" aria-hidden="true"></canvas>
+
+<header id="nav">
+  <div class="nav__inner container container--wide">
+    <a class="nav__logo wordmark" href="/">ellevux</a>
+    <nav class="nav__menu" aria-label="Primary">
+      <ul class="nav__list">
+        <li><a class="nav__link" href="/">Studio</a></li>
+        <li><a class="nav__link" href="/work/">Work</a></li>
+        <li><a class="nav__link" href="/contact/">Start a project</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+  <section id="hero" aria-labelledby="hero-title">
+    <div class="hero__inner container container--wide">
+      <p class="hero__welcome">A piece from the <span class="accent-serif">lab.</span></p>
+      <h1 class="hero__title" id="hero-title">
+        <span class="hero__line">Particle</span>
+        <span class="hero__line">Typography</span>
+      </h1>
+      <div class="hero__bottom">
+        <p class="hero__tagline">
+          That headline is not text. It is 22,000 points on the GPU, sampled from the
+          real heading. Scroll, and they fly down and rebuild themselves as the next one.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section id="work" data-reveal aria-labelledby="work-title">
+    <div class="container container--wide">
+      <h2 class="work__title" id="work-title">Twenty Two Thousand</h2>
+
+      <div style="margin-top:var(--s-9)">
+        <p class="lab-note">
+          Most sites that do something like this animate an image or a video. This reads
+          the live heading out of the page, rasterises it, and turns every lit pixel into
+          a point in a single mesh. Change the text and the effect changes with it,
+          because there is no asset to re-export.
+        </p>
+        <p class="lab-note">
+          The whole morph runs in a custom shader: position blending, the mid-flight
+          scatter, the idle drift and the cursor repulsion all happen on the GPU. The
+          JavaScript only writes a handful of uniforms per frame, which is why it holds
+          60fps on a phone.
+        </p>
+        <p class="lab-note">
+          It also fails open, which matters more than the effect does. No WebGL, a shader
+          that will not link, a library that never loads, or Reduce Motion switched on,
+          and you get the ordinary crisp headings instead. Nothing on this page can be
+          made invisible by a script that did not arrive.
+        </p>
+
+        <dl class="lab-specs">
+          <div><dt>Points</dt><dd>22,000 on phones, 24,000 on desktop</dd></div>
+          <div><dt>Draw calls</dt><dd>One. A single Points mesh</dd></div>
+          <div><dt>Per frame</dt><dd>Uniforms only. No per-particle JavaScript</dd></div>
+          <div><dt>Built with</dt><dd>Three.js, a custom ShaderMaterial, GSAP ScrollTrigger</dd></div>
+        </dl>
+
+        <p class="lab-note" style="margin-top:var(--s-8)">
+          This is a capability piece, not a template. Most business websites should not
+          have a particle hero, and I will say so. It is here because when a brand does
+          need to be unforgettable, this is the level the work can reach.
+        </p>
+
+        <p class="lab-back">
+          <a class="pill-btn" href="/contact/" data-magnetic>
+            <span data-magnetic-text>Start a project</span>
+            <span class="pill-btn__icon" aria-hidden="true">&#8629;</span>
+          </a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="contact" data-reveal>
+  <div class="footer__inner container container--wide">
+    <div class="footer__strip">
+      <p class="footer__thanks">Back to <a href="/">the studio</a>.</p>
+      <p class="footer__copy">&copy; <span id="year">2026</span> Ellevux.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script type="module" src="/assets/js/three-hero.js?v=8"
+        onerror="document.documentElement.classList.remove('hero-particled','work-particled');clearTimeout(window.__heroFailsafe);"></script>
+<script src="/assets/js/animations.js?v=7" defer></script>
+<script src="/assets/js/main.js?v=7" defer></script>
+</body>
+</html>
