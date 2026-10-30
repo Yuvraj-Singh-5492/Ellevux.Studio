@@ -134,16 +134,31 @@
 
         <!-- action + method are real, so the form still does something
              with JavaScript off. site.js upgrades it to a background
-             POST once a form endpoint is configured. -->
+             POST and sends people to /thanks/ without a page jump. -->
         <form class="form" id="contact-form"
-              action="mailto:yuvrajsinghgill5492@gmail.com"
-              method="post" enctype="text/plain" novalidate>
+              action="https://api.web3forms.com/submit"
+              method="post" novalidate>
+
+          <!-- Web3Forms. The access key is PUBLIC by design: their docs
+               say "You do not need to hide the access key." The worst a
+               leak allows is someone emailing this inbox. There is no
+               enctype, because text/plain was for the old mailto action
+               and would corrupt a real POST body.
+               `redirect` is only used when JavaScript is off; site.js
+               intercepts and sends people to /thanks/ itself. Web3Forms'
+               free tier allows same-domain redirects only, so this must
+               stay on studio.ellevux.com. -->
+          <input type="hidden" name="access_key" value="488289b6-fc92-4131-91ac-4ef92e5c8c49">
+          <input type="hidden" name="subject" value="New project enquiry from the Ellevux site">
+          <input type="hidden" name="from_name" value="Ellevux website">
+          <input type="hidden" name="redirect" value="https://studio.ellevux.com/thanks/">
 
           <!-- Honeypot. Off-screen rather than display:none, which bots
-               detect, and hidden from assistive tech. -->
+               detect, and hidden from assistive tech. Named botcheck
+               because Web3Forms rejects that field server side too. -->
           <div class="hp" aria-hidden="true">
-            <label for="website-hp">Leave this empty</label>
-            <input type="text" id="website-hp" name="website-hp" tabindex="-1" autocomplete="off">
+            <label for="botcheck">Leave this empty</label>
+            <input type="checkbox" id="botcheck" name="botcheck" tabindex="-1" autocomplete="off">
           </div>
 
           <div class="field">
@@ -278,6 +293,6 @@
   </div>
 </footer>
 
-<script src="/assets/js/site.js?v=5" defer></script>
+<script src="/assets/js/site.js?v=6" defer></script>
 </body>
 </html>

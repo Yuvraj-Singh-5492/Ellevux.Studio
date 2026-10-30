@@ -488,7 +488,7 @@
       var controls = qsa('input, textarea, select', form);
       for (var i = 0; i < controls.length; i++) {
         var c = controls[i];
-        if (c.name === 'website-hp') continue;
+        if (c.name === 'botcheck') continue;
         if (c.willValidate && !c.checkValidity()) return c;
       }
       return null;
@@ -522,13 +522,10 @@
         return;
       }
 
-      // No POST endpoint configured yet. Rather than leave a dead
-      // form, compose a prefilled email from the answers and hand it
-      // to the visitor's mail client. The markup's native
-      // action="mailto:" covers the same ground with JS off, but it
-      // is flaky across browsers, so this does it properly.
-      // Swap the form's action for a real endpoint (Formspree, Basin)
-      // and this branch stops running: it POSTs in the background.
+      // Kept for any form that still points at a mailto: address.
+      // The contact form posts to Web3Forms, so this branch does not
+      // run there; it falls through to the fetch below. If an endpoint
+      // is ever removed, this is what stops the form being dead.
       if (endpoint.indexOf('mailto:') === 0) {
         e.preventDefault();
         var data = new FormData(form);

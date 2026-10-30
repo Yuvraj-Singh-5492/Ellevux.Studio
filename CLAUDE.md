@@ -33,7 +33,8 @@ It is **not** a portfolio any more. It was one until 2026-10-22, and the rebuild
 
 - **Instagram @ellevux.studio** (Business account). The site already links it (12 links plus
   `Organization.sameAs`). Bio, set 2026-10-25: "Websites too good to scroll past. / DM "SITE" for a
-  free homepage concept." Two reels posted (2026-10-23 Shugetsu, 2026-10-25 MANZAR).
+  free homepage concept." Three reels posted (2026-10-23 Shugetsu, 2026-10-25 MANZAR,
+  2026-10-29 the "QR roofs in Dubai" story reel); a fourth, "parrots on the phones", is ready.
 - **The reel pipeline is `D:\yuvraj-reels`** (Node engine + Studio at localhost:4747); its own
   `CLAUDE.md` is the source of truth for reels, plates, music and posting. The lead list it feeds
   is `D:\lead-engine` (Dubai brokerages without a working website).

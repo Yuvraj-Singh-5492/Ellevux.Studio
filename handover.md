@@ -40,10 +40,20 @@ Marketing runs outside this repo, in `D:\yuvraj-reels` (its `CLAUDE.md` has the 
 - **The reel machinery got better:** the first plate whose finger-on-the-mouse-wheel actually drives
   the scroll (`evening-monitor-mouse-02`), a fix for a cyan line round the screen, a zoom setting
   (used to keep the person's face out of frame), and three royalty-free tracks safe to auto-post.
-- **Next reel:** a "why do they do this?" story reel, after a reference Yuvi sent on 2026-10-28 (3D
-  cartoon, voice-over, one word on screen at a time, a website as the punchline). Breakdown and
-  three versions: `D:\yuvraj-reels\ideas\2026-10-28-story-reel.md`. Not started; the version is
-  his call.
+- **Third reel, posted 2026-10-29 (14:04 IST, https://www.instagram.com/reel/DfElsEqlXEw/):** a
+  "why do they do this?" story reel, after a
+  reference Yuvi sent on 2026-10-28 (3D cartoon, voice-over, one word on screen at a time, a website
+  as the punchline). He picked "QR roofs in Dubai": villa owners paint QR codes on their roofs, a
+  delivery drone scans one, opens the villa's website (the MANZAR site, on the drone's screen) and
+  books a viewing. 19 s, `D:\yuvraj-reels\reels\2026-10-28-qr-roofs-in-dubai\`. The reel engine
+  gained a `story` step to build this format (`engine/story.js`). After about 31 hours: 124 views
+  and an average watch of 11.8 s of 19 s, against 1.3 s for MANZAR. Small numbers on a
+  zero-follower account, but the first sign that the story format holds people.
+- **Fourth reel, rendered 2026-10-30:** "Why Dubai brokers hired parrots to answer their phones",
+  built on the hook template that research on 2026-10-30 found behind the 2M+ view story reels
+  (`D:\yuvraj-reels\ideas\2026-10-30-trending-story-hooks.md`, with the reel links). The parrots
+  squawk "Call me back!" until the brokers build a website; now they only say "It's on the
+  website!" Files ready in `D:\Ready to post\Parrots-dubai-*`.
 
 **Open, and only the owner can decide:** the Instagram profile shows a **street address in
 Amritsar**, which is public and contradicts the no-geography positioning; the profile's **name and
