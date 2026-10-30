@@ -1,7 +1,7 @@
 # Handover — Ellevux
 
 Where things stand and what is left. Conventions, the design lock and deploy mechanics live in
-`CLAUDE.md`. Date: **2026-10-28**.
+`CLAUDE.md`. Date: **2026-10-30**.
 
 ## TL;DR
 
@@ -59,6 +59,51 @@ Marketing runs outside this repo, in `D:\yuvraj-reels` (its `CLAUDE.md` has the 
 Amritsar**, which is public and contradicts the no-geography positioning; the profile's **name and
 link fields are empty** (the link can only be set in the app, and should point at
 `studio.ellevux.com` once the canonical swap is done).
+
+## Latest session (2026-10-30) — the contact form, and a leak I caused
+
+**The form now emails him.** `action` was `mailto:`, which hands the text to the *visitor's* mail
+client: on a phone with no mail account, or on webmail, the enquiry simply vanished. That was on the
+one conversion page. It now POSTs to Web3Forms. `site.js` already had the seam, so this was mostly
+markup: its mailto branch only ran *because* the action was a mailto.
+
+Web3Forms over Formspree and Basin for two reasons. Its docs state outright that the access key is
+public, which matters because the repo is public; and its free tier allows a same-domain redirect,
+so visitors with JavaScript off still land on `/thanks/` rather than a third-party page. Formspree
+charges for that. Also removed `enctype="text/plain"` (it was for the mailto and would corrupt a
+real POST body), renamed the honeypot to `botcheck` so Web3Forms rejects it server side too, and
+bumped `site.js?v=5` to `v=6` on all seven pages, which is load-bearing because `/assets` is
+immutable and a stale script would still look for the old honeypot name.
+
+**It cannot be tested headlessly.** Web3Forms is behind Cloudflare bot protection. `curl` and
+headless Playwright both get a 403 whose body is a "Performing security verification" page, which
+reads exactly like a bad access key. A headed browser works. Verified end to end on localhost and
+then again on the live domain.
+
+### The incident, recorded because it was mine
+
+A `git add -A` swept in `YuvrajReels-datachrome-profile/`, a stray Chrome automation profile that
+had appeared in the repo root, and pushed **1,825 files to the public GitHub repo**: 11 live
+Instagram and Facebook cookies including `sessionid` and `ds_user_id`, plus `Local State`, which
+holds the key that decrypts them. No saved passwords (that table was empty). The values are AES-GCM
+encrypted under a DPAPI key bound to this Windows account, so they were not usable off this machine,
+and the commit was amended and force-pushed out within minutes. The owner was told to invalidate the
+Instagram sessions anyway, because a force-push only makes a commit unreachable, not gone.
+
+**Then the same folder nearly shipped to the website.** The deploy walker starts at the repo root,
+so the next `--list` showed **1,913 files, 554 MB**, which would have put those same cookies at a
+public URL with no auth at all. The dry run caught it one command before upload.
+
+Two fixes, both structural rather than one more name on a denylist:
+
+- `tools/deploy.mjs` now intersects its upload set with
+  `git ls-files --cached --others --exclude-standard`, so **anything `.gitignore` excludes can never
+  be published**. The script also moved into the repo, because it had been recreated from memory in
+  a scratch directory each session, which is how a guard gets lost.
+- `.gitignore` covers the folder and `*chrome-profile/`.
+
+The lesson worth keeping: **the two mistakes were the same mistake.** Both came from a tool that
+walks the whole repo root and trusts whatever it finds. Naming the folder would have fixed neither.
 
 ## Latest session (2026-10-28) — `/ai-search/`, and a self-correction
 

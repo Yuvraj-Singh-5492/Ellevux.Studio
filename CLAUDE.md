@@ -71,7 +71,10 @@ ai-search/index.html    THE evidence page. 9 bands: why you cannot tell good SEO
                         what does not work, what I do, 6 questions, close. Every claim
                         carries a .status-pill evidence tier and a linked primary source.
                         The longest page on the site, on purpose: depth IS the argument.
-contact/index.html      the one conversion destination · the real form
+contact/index.html      the one conversion destination · the real form, POSTing to
+                        Web3Forms so enquiries arrive by email. The access key is
+                        PUBLIC by vendor design. Honeypot is `botcheck`, which
+                        Web3Forms also rejects server side.
 thanks/index.html       post-submit expectations · noindex · a countable URL
 lab/index.html          the preserved GPU particle hero, as a craft showpiece
 vercel.json             clean URLs, the /testimonials.html redirect, cache + security headers
@@ -92,6 +95,10 @@ assets/img/logo-mark.svg  the brand mark. PLACEHOLDER: a hand-authored vortex st
                         favicon reference and everything else picks it up.
 assets/img/*.avif|webp  the shipped thumbnails + the hero device screens, in two widths
 assets/img/src/         the source PNGs + the unused portrait. EXCLUDED from deploys.
+tools/deploy.mjs        the Vercel REST deploy. NOT deployed (tools/ is skipped).
+                        Carries the GITIGNORE GUARD: the upload set is intersected
+                        with `git ls-files --cached --others --exclude-standard`,
+                        so nothing .gitignore excludes can ever be published.
 tools/verify.mjs        the automated design-lock and a11y checks. NOT deployed.
 tools/interact.mjs      drawer, form, stage, configurator, action bar. NOT deployed.
 tools/shot.mjs          screenshot one element, or "viewport". NOT deployed.
@@ -386,6 +393,17 @@ the error that would otherwise sever every entity reference silently.
 
 - **Tokens** are supplied by the owner per session and revoked afterward. Store them OUTSIDE the repo
   (`~/.ev_vc`), never commit them, delete them when done, and redact them from command output.
+- **Use `tools/deploy.mjs`. Do not rewrite it from memory into a scratch directory.** It holds the
+  gitignore guard described below, and a from-memory copy will not.
+- **DEPLOYING IS PUBLISHING, and the walker starts at the repo root.** On 2026-10-30 a stray Chrome
+  automation profile (`YuvrajReels-datachrome-profile/`, created by the reels pipeline running with
+  the wrong cwd) appeared in the root. The deploy walker collected **1,825 of its files, 554 MB**,
+  including `Default/Network/Cookies` and `Local State`, for upload to a **public** URL. It was
+  caught by the `--list` dry run, one command before the upload. The fix is structural, in
+  `tools/deploy.mjs`: the upload set is intersected with what git can see, so **anything
+  `.gitignore` excludes can never ship, whatever it is named**. A hardcoded directory name would
+  only have stopped that one folder. **Always run `--list` and read the folder counts before a real
+  deploy.**
 - **Portfolio → Vercel:** for each tracked web file, `POST /v2/files` with an `x-vercel-digest` SHA,
   then `POST /v13/deployments` with `{name:"ellevux-studio", files:[{file,sha,size}],
   target:"production", projectSettings:{framework:null,...}}`. A static deploy, no build.
@@ -406,6 +424,15 @@ the error that would otherwise sever every entity reference silently.
   308.
 - **git push needs the token in the URL** (`https://x-access-token:<PAT>@github.com/...`); the bearer
   extraHeader does not work for GitHub git.
+- **NEVER `git add -A` in this repo. Stage explicit paths.** On 2026-10-30 a blind `git add -A`
+  committed and pushed that same Chrome profile to the **public** GitHub repo: 1,825 files carrying
+  11 live Instagram and Facebook cookies, `sessionid` among them, plus `Local State`, which holds
+  the key that decrypts them. The values are AES-GCM encrypted under a DPAPI key bound to the
+  Windows account, so they were not readable off this machine, and the commit was amended and
+  force-pushed within minutes. It should not have happened at all. **Run `git status --porcelain`
+  and read the file list before every commit**, and remember that a force-push only makes the old
+  commit unreachable: GitHub can still serve it by SHA until it garbage-collects, so a leaked
+  credential must be rotated, not just un-pushed.
 
 ## The hero: the stage
 
@@ -524,6 +551,12 @@ inner `.work-item__art` only, so it composes with the JS `[data-reveal]` engine 
 parent's opacity. Browsers without support simply get the existing reveal.
 
 ## Gotchas
+
+- **The contact form cannot be tested headlessly.** Web3Forms sits behind Cloudflare bot
+  protection, which is the spam prevention their docs describe. A headless Playwright run or a
+  `curl` gets **403 with a "Performing security verification" HTML body**, which looks exactly like
+  a rejected access key and is not one. Test with `headless: false`, or by hand. Verified working
+  end to end this way on both localhost and the live domain on 2026-10-30.
 
 - **`/lab/` is a separate world.** It loads the original dark CSS and `three-hero.js`, and must never
   load `site.css`. It needs `#hero-canvas`, `#hero`, `#hero-title` with `.hero__line` spans, **and**
